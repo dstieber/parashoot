@@ -28,6 +28,7 @@ extern "C" {
 #include "fmod.h"
 #endif
 
+
 //X Windows variables
 Display *dpy;
 Window win;
