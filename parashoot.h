@@ -9,9 +9,15 @@
 #include <GL/glx.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <X11/Xutil.h>
 #include "log.h"
 #include "ppm.h"
+#include "danielS.h"
+#include "jonP.h"
+#include "michaelH.h"
+#include "alexB.h"
 extern "C" {
 #include "fonts.h"
 }
@@ -21,12 +27,11 @@ extern "C" {
 #define MAX_PARTICLES 1
 #define GRAVITY 3.0
 #define USE_SOUND
+//X Windows variables
+Display *dpy;
+Window win;
+GLXContext glc;
 
-#ifdef USE_SOUND
-#include <FMOD/fmod.h>
-#include <FMOD/wincompat.h>
-#include "fmod.h"
-#endif
 int xres = WINDOW_WIDTH;
 int yres = WINDOW_HEIGHT;
 bool size_flag = false;
@@ -78,8 +83,8 @@ int check_keys(XEvent *e);
 void movement(Game *game);
 void render(Game *game);
 void check_resize(Game *game, XEvent *e);
-void create_sounds();
-void play();
+//void create_sounds();
+//void play();
 void init_keys();
 //-----------------------------------------------------------------------------
 //Setup timers
@@ -97,9 +102,5 @@ void timeCopy(struct timespec *dest, struct timespec *source) {
     memcpy(dest, source, sizeof(struct timespec));
 }
 //-----------------------------------------------------------------------------
-//X Windows variables
-Display *dpy;
-Window win;
-GLXContext glc;
 
-
+Game game;

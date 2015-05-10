@@ -4,7 +4,6 @@ int main(void)
     int done=0;
     srand(time(NULL));
     initXWindows();
-    Game game;
     init_opengl(&game);
     create_sounds();
     play();
@@ -97,7 +96,6 @@ void reshape_window(Game *game, int width, int height)
     glViewport(0,0, (GLint)width, (GLint)height);
     glMatrixMode(GL_PROJECTION); glLoadIdentity();
     glMatrixMode(GL_MODELVIEW); glLoadIdentity();
-    //glOrtho(0, width, 0, height, -1, 1);
     glOrtho(0, width, (game->altitude - height), game->altitude, -1, 1);
     set_title();
 }
@@ -284,23 +282,6 @@ int check_keys(XEvent *e)
     return 0;
 }
 
-void create_sounds() {
-#ifdef USE_SOUND
-    if(fmod_init()) {
-	printf("ERROR");
-	return;
-    }
-    if(fmod_createsound((char *)"./sounds/Highly_Suspicious.mp3", 0)) {
-	printf("ERROR");
-	return;
-    }
-    fmod_setmode(0, FMOD_LOOP_NORMAL);
-#endif
-}
-
-void play() {
-    fmod_playsound(0);
-}
 
 void movement(Game *game)
 {
@@ -345,28 +326,6 @@ void movement(Game *game)
 	p->velocity.y = 3;
     }
 
-    //check for off-screen
-    /*
-       if (p->s.center.y < 0.0) {
-       game->n = 0;
-       }
-       if(size_flag == true){
-       if(p->s.center.x < 0.0){
-       p->s.center.x += xres;
-       }
-       else if(p->s.center.x > xres) {
-       p->s.center.x -= xres;
-       }
-       }
-       else if(size_flag == false){
-       if(p->s.center.x < 0.0) {
-       p->s.center.x += WINDOW_WIDTH;
-       }
-       else if(p->s.center.x > WINDOW_WIDTH) {
-       p->s.center.x -= WINDOW_WIDTH;
-       }
-       }
-       */
 }
 
 void render(Game *game)
@@ -376,7 +335,6 @@ void render(Game *game)
 	glClear(GL_COLOR_BUFFER_BIT);
 	//Pop default matrix onto current matrix
 	glMatrixMode(GL_MODELVIEW);
-	//glPopMatrix();
 	//Save default matrix again
 	glPushMatrix();
 	glTranslatef(0.f, gCameraY, 0.f);
@@ -436,7 +394,6 @@ void render(Game *game)
     if(start_flag) {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
-	//glPopMatrix();
 	glPushMatrix();
 	glColor3f(1.0, 1.0, 1.0);
 	if (sky) {
