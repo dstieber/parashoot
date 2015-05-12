@@ -41,6 +41,7 @@ struct Game {
     Shape box;
     Character character;
     Character BlueBird;
+    Character BlueBird2;
     int n;
     float altitude;
     Game() {

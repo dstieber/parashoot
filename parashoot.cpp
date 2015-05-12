@@ -160,6 +160,7 @@ void init_opengl(Game *game)
     mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
     characterImage = ppm6GetImage("./images/character2.ppm");
     InitBlueBird();
+    InitBlueBird2();
 
     //create opengl texture elements
     glGenTextures(1, &skyTexture);
@@ -232,6 +233,7 @@ void makeCharacter(Game *game)
     game->n++;
     start_flag = false;
 MakeBlueBird(game);
+MakeBlueBird2(game);
 }
 
 void check_mouse(XEvent *e, Game *game)
@@ -322,6 +324,7 @@ void movement(Game *game)
     game->altitude -= GRAVITY;
     gCameraY += (float)GRAVITY;
     BlueBirdMovement(game);
+    BlueBirdMovement2(game);
     //check for collision with objects here...
     //Shape *s;
     if (keys[XK_Right]) {
@@ -407,7 +410,8 @@ void render(Game *game)
             glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
 	    glEnd();
         }
-	BlueBirdRender(game);	
+	BlueBirdRender(game);
+	BlueBirdRender2(game);	
         glEnd();
         int i = STARTING_ALTITUDE;
         while (i > 0) {
