@@ -372,6 +372,8 @@ void render(Game *game)
            renderSky(game); 
         }
 
+	renderMountain(game);
+	/*
         glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, 0.0f);
@@ -383,6 +385,7 @@ void render(Game *game)
         glTexCoord2f(1.0f, 0.0f); glVertex2i(xres, game->altitude);
         glTexCoord2f(1.0f, 1.0f); glVertex2i(xres, ybottom);
         glEnd();
+	*/
 
         //glBindTexture(GL_TEXTURE_2D, characterTexture);
         glBindTexture(GL_TEXTURE_2D, silhouetteTexture);

@@ -1,3 +1,4 @@
+// Jonathan Popkin
 #ifndef _JONP_H_
 #define _JONP_H_
 

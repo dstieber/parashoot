@@ -1,3 +1,4 @@
+// Jonathan Popkin
 #include "jonP.h"
 
 Ppmimage *BlueBirdImage = NULL;
