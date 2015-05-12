@@ -1,4 +1,5 @@
 #include "parashoot.h"
+#include "jonP.h"
 int main(void)
 {
     int done=0;
@@ -158,6 +159,7 @@ void init_opengl(Game *game)
     skyImage = ppm6GetImage("./images/Sunset.ppm");
     mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
     characterImage = ppm6GetImage("./images/character2.ppm");
+    InitBlueBird();
 
     //create opengl texture elements
     glGenTextures(1, &skyTexture);
@@ -229,6 +231,7 @@ void makeCharacter(Game *game)
     p->velocity.x = 0;
     game->n++;
     start_flag = false;
+MakeBlueBird(game);
 }
 
 void check_mouse(XEvent *e, Game *game)
@@ -318,6 +321,7 @@ void movement(Game *game)
     p->s.center.y -= GRAVITY;
     game->altitude -= GRAVITY;
     gCameraY += (float)GRAVITY;
+    BlueBirdMovement(game);
     //check for collision with objects here...
     //Shape *s;
     if (keys[XK_Right]) {
@@ -391,13 +395,16 @@ void render(Game *game)
             glTexCoord2f(0.0f, 0.0f); glVertex2i(c->x-w, c->y+h);
             glTexCoord2f(0.5f, 0.0f); glVertex2i(c->x+w, c->y+h);
             glTexCoord2f(0.5f, 1.0f); glVertex2i(c->x+w, c->y-h);
+	    glEnd();
         }
         if (game->character.velocity.x >= 0) {
             glTexCoord2f(0.5f, 1.0f); glVertex2i(c->x-w, c->y-h);
             glTexCoord2f(0.5f, 0.0f); glVertex2i(c->x-w, c->y+h);
             glTexCoord2f(1.0f, 0.0f); glVertex2i(c->x+w, c->y+h);
             glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
-        }	
+	    glEnd();
+        }
+	BlueBirdRender(game);	
         glEnd();
         int i = STARTING_ALTITUDE;
         while (i > 0) {

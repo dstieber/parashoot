@@ -40,6 +40,7 @@ struct Character {
 struct Game {
     Shape box;
     Character character;
+    Character BlueBird;
     int n;
     float altitude;
     Game() {
