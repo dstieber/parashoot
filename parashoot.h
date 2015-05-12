@@ -12,6 +12,7 @@ Window win;
 GLXContext glc;
 
 Game game;
+XEvent e;
 int xres = WINDOW_WIDTH;
 int yres = WINDOW_HEIGHT;
 bool size_flag = false;
