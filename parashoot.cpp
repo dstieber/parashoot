@@ -7,30 +7,29 @@ int main(void)
     init_opengl(&game);
     create_sounds();
     play();
-    //declare game object
     init_keys();
     clock_gettime(CLOCK_REALTIME, &timePause);
     clock_gettime(CLOCK_REALTIME, &timeStart);
 
     //start animation
     while(!done) {
-	while(XPending(dpy)) {
-	    XEvent e;
-	    XNextEvent(dpy, &e);
-	    check_mouse(&e, &game);
-	    check_resize(&game, &e);
-	    done = check_keys(&e);
-	}
-	clock_gettime(CLOCK_REALTIME, &timeCurrent);
-	timeSpan = timeDiff(&timeStart, &timeCurrent);
-	timeCopy(&timeStart, &timeCurrent);
-	physicsCountdown += timeSpan;
-	while(physicsCountdown >= physicsRate) {
-	    movement(&game);
-	    physicsCountdown -= physicsRate;
-	}
-	render(&game);
-	glXSwapBuffers(dpy, win);
+        while(XPending(dpy)) {
+            XEvent e;
+            XNextEvent(dpy, &e);
+            check_mouse(&e, &game);
+            check_resize(&game, &e);
+            done = check_keys(&e);
+        }
+        clock_gettime(CLOCK_REALTIME, &timeCurrent);
+        timeSpan = timeDiff(&timeStart, &timeCurrent);
+        timeCopy(&timeStart, &timeCurrent);
+        physicsCountdown += timeSpan;
+        while(physicsCountdown >= physicsRate) {
+            movement(&game);
+            physicsCountdown -= physicsRate;
+        }
+        render(&game);
+        glXSwapBuffers(dpy, win);
     }
     cleanupXWindows();
     cleanup_fonts();
@@ -61,24 +60,25 @@ void initXWindows(void) {
     GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
     int w=WINDOW_WIDTH, h=WINDOW_HEIGHT;
     dpy = XOpenDisplay(NULL);
-    if (dpy == NULL) {  std::cout << "\n\tcannot connect to X server\n" << std::endl;
-	exit(EXIT_FAILURE);
+    if (dpy == NULL) {  
+        std::cout << "\n\tcannot connect to X server\n" << std::endl;
+        exit(EXIT_FAILURE);
     }
     Window root = DefaultRootWindow(dpy);
     XVisualInfo *vi = glXChooseVisual(dpy, 0, att);
     if(vi == NULL) {
-	std::cout << "\n\tno appropriate visual found\n" << std::endl;
-	exit(EXIT_FAILURE);
+        std::cout << "\n\tno appropriate visual found\n" << std::endl;
+        exit(EXIT_FAILURE);
     }
     Colormap cmap = XCreateColormap(dpy, root, vi->visual, AllocNone);
     XSetWindowAttributes swa;
     swa.colormap = cmap;
     swa.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask |
-	ButtonPress | ButtonReleaseMask |
-	PointerMotionMask |
-	StructureNotifyMask | SubstructureNotifyMask;
+        ButtonPress | ButtonReleaseMask |
+        PointerMotionMask |
+        StructureNotifyMask | SubstructureNotifyMask;
     win = XCreateWindow(dpy, root, 0, 0, w, h, 0, vi->depth,
-	    InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
+            InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
     set_title();
     glc = glXCreateContext(dpy, vi, NULL, GL_TRUE);
     glXMakeCurrent(dpy, win, glc);
@@ -111,18 +111,18 @@ unsigned char *buildAlphaData(Ppmimage *img)
     newdata = new unsigned char[img->width * img->height * 4];
     ptr = newdata;
     for (int i=0; i<img->width * img->height * 3; i+=3) {
-	a = *(data+0);
-	b = *(data+1);
-	c = *(data+2);
-	*(ptr+0) = a;
-	*(ptr+1) = b;
-	*(ptr+2) = c;
-	//
-	//new code, suggested by Chris Smith, Fall 2013
-	*(ptr+3) = (a|b|c);
-	//
-	ptr += 4;
-	data += 3;
+        a = *(data+0);
+        b = *(data+1);
+        c = *(data+2);
+        *(ptr+0) = a;
+        *(ptr+1) = b;
+        *(ptr+2) = c;
+        //
+        //new code, suggested by Chris Smith, Fall 2013
+        *(ptr+3) = (a|b|c);
+        //
+        ptr += 4;
+        data += 3;
     }
     return newdata;
 }
@@ -135,7 +135,8 @@ void init_opengl(Game *game)
     glMatrixMode(GL_PROJECTION); 
     glLoadIdentity();
     //Set 2D mode (no perspective)
-    glOrtho(0, WINDOW_WIDTH, (game->altitude - WINDOW_HEIGHT), game->altitude, -1, 1);
+    glOrtho(0, WINDOW_WIDTH, (game->altitude - WINDOW_HEIGHT), 
+        game->altitude, -1, 1);
     //glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);
     glMatrixMode(GL_MODELVIEW); 
     glLoadIdentity();
@@ -157,7 +158,7 @@ void init_opengl(Game *game)
     skyImage = ppm6GetImage("./images/Sunset.ppm");
     mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
     characterImage = ppm6GetImage("./images/character2.ppm");
-    
+
     //create opengl texture elements
     glGenTextures(1, &skyTexture);
     glGenTextures(1, &characterTexture);
@@ -168,14 +169,14 @@ void init_opengl(Game *game)
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, 3, skyImage->width, skyImage->height,
-	    0, GL_RGB, GL_UNSIGNED_BYTE, skyImage->data);
-    
+            0, GL_RGB, GL_UNSIGNED_BYTE, skyImage->data);
+
     //Mountain
     glBindTexture(GL_TEXTURE_2D, mountainTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, 3, mountainImage->width, mountainImage->height,
-	    0, GL_RGB, GL_UNSIGNED_BYTE, mountainImage->data);  
+            0, GL_RGB, GL_UNSIGNED_BYTE, mountainImage->data);  
 
     //
     //character
@@ -183,8 +184,8 @@ void init_opengl(Game *game)
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, 3, characterImage->width,
-	    characterImage->height, 0, GL_RGB, GL_UNSIGNED_BYTE,
-	    characterImage->data);
+            characterImage->height, 0, GL_RGB, GL_UNSIGNED_BYTE,
+            characterImage->data);
 
     //
     //character silhouette
@@ -193,27 +194,29 @@ void init_opengl(Game *game)
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
     unsigned char *silhouetteData = buildAlphaData(characterImage);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, characterImage->width, 
-	    characterImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
+            characterImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
     delete [] silhouetteData;
 
+    //
+    //mountain silhouette
     glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     unsigned char *silhouetteData2 = buildAlphaData(mountainImage);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mountainImage->width,
-	    mountainImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData2);
+            mountainImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData2);
     delete [] silhouetteData2;
-   
+
 }
 
 void check_resize(Game *game, XEvent *e)
 {
     if(e->type != ConfigureNotify)
-	return;
+        return;
 
     XConfigureEvent xce = e->xconfigure;
     if(xce.width != xres || xce.height != yres) {
-	reshape_window(game, xce.width, xce.height);
+        reshape_window(game, xce.width, xce.height);
     }
 }
 
@@ -235,26 +238,26 @@ void check_mouse(XEvent *e, Game *game)
     static int n = 0;
 
     if (e->type == ButtonRelease) {
-	return;
+        return;
     }
     if (e->type == ButtonPress) {
-	if (e->xbutton.button==1) {
-	    //Left button was pressed
-	    if(start_flag)
-		makeCharacter(game);
-	    return;
-	}
-	if (e->xbutton.button==3) {
-	    //Right button was pressed
-	    return;
-	}
+        if (e->xbutton.button==1) {
+            //Left button was pressed
+            if(start_flag)
+                makeCharacter(game);
+            return;
+        }
+        if (e->xbutton.button==3) {
+            //Right button was pressed
+            return;
+        }
     }
     //Did the mouse move?
     if (savex != e->xbutton.x || savey != e->xbutton.y) {
-	savex = e->xbutton.x;
-	savey = e->xbutton.y;
-	if (++n < 10)
-	    return;
+        savex = e->xbutton.x;
+        savey = e->xbutton.y;
+        if (++n < 10)
+            return;
     }
 }
 
@@ -269,34 +272,34 @@ int check_keys(XEvent *e)
     int key = XLookupKeysym(&e->xkey, 0);
     //Log("key: %i\n", key);
     if (e->type == KeyRelease) {
-	keys[key]=0;
-	if (key == XK_Shift_L || key == XK_Shift_R)
-	    shift=0;
-	return 0;
+        keys[key]=0;
+        if (key == XK_Shift_L || key == XK_Shift_R)
+            shift=0;
+        return 0;
     }
     if (e->type == KeyPress) {
-	keys[key]=1;
-	if (key == XK_Shift_L || key == XK_Shift_R) {
-	    shift=1;
-	    return 0;
-	}
+        keys[key]=1;
+        if (key == XK_Shift_L || key == XK_Shift_R) {
+            shift=1;
+            return 0;
+        }
     } else {
-	return 0;
+        return 0;
     }
     if (shift){}
     switch(key) {
-	case XK_Escape:
-	    return 1;
-	case XK_f:
-	    break;
-	case XK_s:
-	    break;
-	case XK_Down:
-	    break;
-	case XK_equal:
-	    break;
-	case XK_minus:
-	    break;
+        case XK_Escape:
+            return 1;
+        case XK_f:
+            break;
+        case XK_s:
+            break;
+        case XK_Down:
+            break;
+        case XK_equal:
+            break;
+        case XK_minus:
+            break;
     }
     return 0;
 }
@@ -307,7 +310,7 @@ void movement(Game *game)
     Character *p;
 
     if (game->n <= 0)
-	return;
+        return;
 
     p = &game->character;
     p->s.center.x += p->velocity.x;
@@ -318,31 +321,31 @@ void movement(Game *game)
     //check for collision with objects here...
     //Shape *s;
     if (keys[XK_Right]) {
-	p->velocity.x += 2;
+        p->velocity.x += 2;
     }
     if (keys[XK_Left]) {
-	p->velocity.x += -2;
+        p->velocity.x += -2;
     }
     if (keys[XK_Up]) {
-	p->velocity.y += 2;
+        p->velocity.y += 2;
     }
     if (keys[XK_Down]) {
-	p->velocity.y -= 2;
+        p->velocity.y -= 2;
     }
 
     //border collision detection
     //
     if (p->s.center.x <= 50) {
-	p->velocity.x = 3;
+        p->velocity.x = 3;
     }
     if (p->s.center.x >= (xres - 50)) {
-	p->velocity.x = -3;
+        p->velocity.x = -3;
     }
     if (p->s.center.y >= (game->altitude - 50)) {
-	p->velocity.y = -3;
+        p->velocity.y = -3;
     }
     if (p->s.center.y <= (game->altitude - (yres - 50))) {
-	p->velocity.y = 3;
+        p->velocity.y = 3;
     }
 
 }
@@ -350,121 +353,113 @@ void movement(Game *game)
 void render(Game *game)
 {
     if(!start_flag) {
-	float w, h;
-	glClear(GL_COLOR_BUFFER_BIT);
-	//Pop default matrix onto current matrix
-	glMatrixMode(GL_MODELVIEW);
-	//Save default matrix again
-	glPushMatrix();
-	glTranslatef(0.f, gCameraY, 0.f);
-	Vec *c = &game->character.s.center;
-	w = 49;
-	h = 79;
-	glColor3f(1.0, 1.0, 1.0);
-	if (sky) {
-	    glBindTexture(GL_TEXTURE_2D, skyTexture);
-	    glBegin(GL_QUADS);
-	    int ybottom = game->altitude - yres;
-	    glTexCoord2f(0.0f, 1.0f); glVertex2i(0, ybottom);
-	    glTexCoord2f(0.0f, 0.0f); glVertex2i(0, game->altitude);
-	    glTexCoord2f(1.0f, 0.0f); glVertex2i(xres, game->altitude);
-	    glTexCoord2f(1.0f, 1.0f); glVertex2i(xres, ybottom);
-	    glEnd();
+        float w, h;
+        glClear(GL_COLOR_BUFFER_BIT);
+        //Pop default matrix onto current matrix
+        glMatrixMode(GL_MODELVIEW);
+        //Save default matrix again
+        glPushMatrix();
+        glTranslatef(0.f, gCameraY, 0.f);
+        Vec *c = &game->character.s.center;
+        w = 49;
+        h = 79;
+        glColor3f(1.0, 1.0, 1.0);
+        if (sky) {
+           renderSky(game); 
+        }
 
-	}
+        glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.0f);
+        glColor4ub(255, 255, 255, 255);
+        glBegin(GL_QUADS);
+        int ybottom = game->altitude - yres;	
+        glTexCoord2f(0.0f, 1.0f); glVertex2i(0, ybottom);
+        glTexCoord2f(0.0f, 0.0f); glVertex2i(0, game->altitude);
+        glTexCoord2f(1.0f, 0.0f); glVertex2i(xres, game->altitude);
+        glTexCoord2f(1.0f, 1.0f); glVertex2i(xres, ybottom);
+        glEnd();
 
-	glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.0f);
-	glColor4ub(255, 255, 255, 255);
-	glBegin(GL_QUADS);
-	int ybottom = game->altitude - yres;	
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(0, ybottom);
-	glTexCoord2f(0.0f, 0.0f); glVertex2i(0, game->altitude);
-	glTexCoord2f(1.0f, 0.0f); glVertex2i(xres, game->altitude);
-	glTexCoord2f(1.0f, 1.0f); glVertex2i(xres, ybottom);
-	glEnd();
+        //glBindTexture(GL_TEXTURE_2D, characterTexture);
+        glBindTexture(GL_TEXTURE_2D, silhouetteTexture);
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.0f);
+        glColor4ub(255,255,255,255);
+        glBegin(GL_QUADS);
+        if (game->character.velocity.x < 0) {
+            glTexCoord2f(0.0f, 1.0f); glVertex2i(c->x-w, c->y-h);
+            glTexCoord2f(0.0f, 0.0f); glVertex2i(c->x-w, c->y+h);
+            glTexCoord2f(0.5f, 0.0f); glVertex2i(c->x+w, c->y+h);
+            glTexCoord2f(0.5f, 1.0f); glVertex2i(c->x+w, c->y-h);
+        }
+        if (game->character.velocity.x >= 0) {
+            glTexCoord2f(0.5f, 1.0f); glVertex2i(c->x-w, c->y-h);
+            glTexCoord2f(0.5f, 0.0f); glVertex2i(c->x-w, c->y+h);
+            glTexCoord2f(1.0f, 0.0f); glVertex2i(c->x+w, c->y+h);
+            glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
+        }	
+        glEnd();
+        int i = STARTING_ALTITUDE;
+        while (i > 0) {
+            if ((game->altitude < (i + 400)) && (game->altitude > (i - 400))) {
+                Rect r;
+                char cstr[10];
+                r.left = xres - 50;
+                r.bot = i - yres/2;
+                r.center = xres - 50;
+                r.width = 500;
+                r.height = 100;
+                sprintf (cstr, "%d", i);
+                strcat (cstr, "ft");
+                ggprint16(&r, 16, 0xdd4814, "%s", cstr);
+            }
+            i = i - 100;
+        }
 
-	//glBindTexture(GL_TEXTURE_2D, characterTexture);
-	glBindTexture(GL_TEXTURE_2D, silhouetteTexture);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.0f);
-	glColor4ub(255,255,255,255);
-	glBegin(GL_QUADS);
-	if (game->character.velocity.x < 0) {
-		glTexCoord2f(0.0f, 1.0f); glVertex2i(c->x-w, c->y-h);
-		glTexCoord2f(0.0f, 0.0f); glVertex2i(c->x-w, c->y+h);
-		glTexCoord2f(0.5f, 0.0f); glVertex2i(c->x+w, c->y+h);
-		glTexCoord2f(0.5f, 1.0f); glVertex2i(c->x+w, c->y-h);
-	}
-	if (game->character.velocity.x >= 0) {
-		glTexCoord2f(0.5f, 1.0f); glVertex2i(c->x-w, c->y-h);
-		glTexCoord2f(0.5f, 0.0f); glVertex2i(c->x-w, c->y+h);
-		glTexCoord2f(1.0f, 0.0f); glVertex2i(c->x+w, c->y+h);
-		glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
-	}	
-	glEnd();
-	int i = STARTING_ALTITUDE;
-	while (i > 0) {
-	    if ((game->altitude < (i + 400)) && (game->altitude > (i - 400))) {
-		Rect r;
-		char cstr[10];
-		r.left = xres - 50;
-		r.bot = i - yres/2;
-		r.center = xres - 50;
-		r.width = 500;
-		r.height = 100;
-		sprintf (cstr, "%d", i);
-		strcat (cstr, "ft");
-		ggprint16(&r, 16, 0xdd4814, "%s", cstr);
-	    }
-	    i = i - 100;
-	}
-
-	glPopMatrix();
+        glPopMatrix();
     }
 
     if(start_flag) {
-	glClear(GL_COLOR_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glColor3f(1.0, 1.0, 1.0);
-	if (sky) {
-	    glBindTexture(GL_TEXTURE_2D, skyTexture);
-	    glBegin(GL_QUADS);
-	    int ybottom = game->altitude - yres;
-	    glTexCoord2f(0.0f, 1.0f); glVertex2i(0, ybottom);
-	    glTexCoord2f(0.0f, 0.0f); glVertex2i(0, game->altitude);
-	    glTexCoord2f(1.0f, 0.0f); glVertex2i(xres, game->altitude);
-	    glTexCoord2f(1.0f, 1.0f); glVertex2i(xres, ybottom);
-	    glEnd();
-	}
-	glPopMatrix();
+        glClear(GL_COLOR_BUFFER_BIT);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glColor3f(1.0, 1.0, 1.0);
+        if (sky) {
+            glBindTexture(GL_TEXTURE_2D, skyTexture);
+            glBegin(GL_QUADS);
+            int ybottom = game->altitude - yres;
+            glTexCoord2f(0.0f, 1.0f); glVertex2i(0, ybottom);
+            glTexCoord2f(0.0f, 0.0f); glVertex2i(0, game->altitude);
+            glTexCoord2f(1.0f, 0.0f); glVertex2i(xres, game->altitude);
+            glTexCoord2f(1.0f, 1.0f); glVertex2i(xres, ybottom);
+            glEnd();
+        }
+        glPopMatrix();
 
-	Rect start;
-	Rect click;
+        Rect start;
+        Rect click;
 
-	start.centerx = xres/2;
-	start.centery = game->altitude - 200;
-	start.bot = game->altitude - 200;
-	start.width = 500;
-	start.height = 100;
-	start.center = xres/2 + 200;
-	start.left = start.centerx;
-	start.right = start.centerx;
-	start.top = game->altitude - 200;
+        start.centerx = xres/2;
+        start.centery = game->altitude - 200;
+        start.bot = game->altitude - 200;
+        start.width = 500;
+        start.height = 100;
+        start.center = xres/2 + 200;
+        start.left = start.centerx;
+        start.right = start.centerx;
+        start.top = game->altitude - 200;
 
-	click.centerx = xres/2;
-	click.centery = game->altitude - 400;
-	click.bot = game->altitude - 400;
-	click.width = 500;
-	click.height = 100;
-	click.center = xres/2;
-	click.left = click.centerx;
-	click.right = click.centerx;
-	click.top = game->altitude - 400;
+        click.centerx = xres/2;
+        click.centery = game->altitude - 400;
+        click.bot = game->altitude - 400;
+        click.width = 500;
+        click.height = 100;
+        click.center = xres/2;
+        click.left = click.centerx;
+        click.right = click.centerx;
+        click.top = game->altitude - 400;
 
-	ggprint16(&start, 1000, 0x00fff000, "PARASHOOT!");
-	ggprint16(&click, 1000, 0x00fff000, "Click to start");
+        ggprint16(&start, 1000, 0x00fff000, "PARASHOOT!");
+        ggprint16(&click, 1000, 0x00fff000, "Click to start");
     }
 }
