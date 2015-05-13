@@ -315,33 +315,7 @@ void render(Game *game)
 		glColor3f(1.0, 1.0, 1.0);
 		if (sky)
 			renderSky(game);
-
 		glPopMatrix();
-
-		Rect start;
-		Rect click;
-
-		start.centerx = xres/2;
-		start.centery = game->altitude - 200;
-		start.bot = game->altitude - 200;
-		start.width = 500;
-		start.height = 100;
-		start.center = xres/2 + 200;
-		start.left = start.centerx;
-		start.right = start.centerx;
-		start.top = game->altitude - 200;
-
-		click.centerx = xres/2;
-		click.centery = game->altitude - 400;
-		click.bot = game->altitude - 400;
-		click.width = 500;
-		click.height = 100;
-		click.center = xres/2;
-		click.left = click.centerx;
-		click.right = click.centerx;
-		click.top = game->altitude - 400;
-
-		ggprint16(&start, 1000, 0x00fff000, "PARASHOOT!");
-		ggprint16(&click, 1000, 0x00fff000, "Click to start");
+	    renderStartMenu(game);	
 	}
 }

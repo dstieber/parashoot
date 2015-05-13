@@ -18,4 +18,5 @@ void renderSky(Game *game);
 void initCharacter(void);
 void renderCharacter(Game *game);
 void displayAltitude(Game *game);
+void renderStartMenu(Game *game);
 #endif
