@@ -1,4 +1,8 @@
-// Michael Harp
+/* Program : Homework 3 / Lab6
+ * Author  : Michael Harp
+ * Purpose : Render mountain, initialize keys, check keys functions
+ */
+
 #include "michaelH.h"
 
 void renderMountain(Game *game) {

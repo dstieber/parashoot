@@ -1,4 +1,7 @@
-// Michael Harp
+/* Program : Homework 3 / Lab6
+ * Author  : Michael Harp
+ * Purpose : Render mountain, initialize keys, check keys functions
+ */
 #ifndef _MICHAELH_H_
 #define _MICHAELH_H_
 
