@@ -159,7 +159,7 @@ void init_opengl(Game *game)
 	initCharacter();
 	mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
 	InitBlueBird();
-
+	InitBlueBird2();
 	//create opengl texture elements
 
 	//Mountain
@@ -299,7 +299,6 @@ void render(Game *game)
 		renderCharacter(game);	
 		BlueBirdRender(game);	
 		BlueBirdRender2(game);
-		glEnd();
 		displayAltitude(game);
 		glPopMatrix();
 	}
