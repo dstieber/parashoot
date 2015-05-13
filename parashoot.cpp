@@ -196,7 +196,7 @@ void check_resize(Game *game, XEvent *e)
 
 void makeCharacter(Game *game)
 {
-    Character *p = &game->character;
+    Character *p = &game->body;
     p->s.center.x = xres/2;
     p->s.center.y = (game->altitude - (yres/2));
     p->velocity.y = 0;
@@ -240,12 +240,12 @@ void check_mouse(XEvent *e, Game *game)
 
 void movement(Game *game)
 {
-    Character *p;
+    Shape *p;
 
     if (game->n <= 0)
         return;
 
-    p = &game->character;
+    p = &game->body;
     p->s.center.x += p->velocity.x;
     p->s.center.y += p->velocity.y;
     p->s.center.y -= GRAVITY;
@@ -258,9 +258,14 @@ void movement(Game *game)
     //Shape *s;
     if (keys[XK_Right]) {
         p->velocity.x += 2;
+	game->rarm1.rotInc += 0.4f;
+	game->larm1.rotInc += 0.4f;
+	game->rleg1.rotInc += 0.4f;
+	game->lleg1.rotInc += 0.4f;
     }
     if (keys[XK_Left]) {
         p->velocity.x += -2;
+	game->rarm1.rotInc += 
     }
     if (keys[XK_Up]) {
         p->velocity.y += 2;
