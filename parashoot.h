@@ -21,13 +21,9 @@ bool start_flag = true;
 //Camera position
 GLfloat gCameraY = 0.0f;
 
-Ppmimage *skyImage = NULL;
-Ppmimage *characterImage = NULL;
 Ppmimage *mountainImage = NULL;
-GLuint skyTexture;
 GLuint mountainTexture;
 GLuint characterTexture;
-GLuint silhouetteTexture;
 GLuint msilhouetteTexture;
 int sky = 1;
 int character = 1;
