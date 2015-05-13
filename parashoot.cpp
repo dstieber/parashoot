@@ -161,6 +161,7 @@ void init_opengl(Game *game)
     characterImage = ppm6GetImage("./images/character2.ppm");
     InitBlueBird();
     InitBlueBird2();
+    InitMissile();
 
     //create opengl texture elements
     glGenTextures(1, &skyTexture);
@@ -234,6 +235,7 @@ void makeCharacter(Game *game)
     start_flag = false;
 MakeBlueBird(game);
 MakeBlueBird2(game);
+MakeMissile(game);
 }
 
 void check_mouse(XEvent *e, Game *game)
@@ -281,6 +283,7 @@ void movement(Game *game)
     gCameraY += (float)GRAVITY;
     BlueBirdMovement(game);
     BlueBirdMovement2(game);
+    MissileMovement(game);
     //check for collision with objects here...
     //Shape *s;
     if (keys[XK_Right]) {
@@ -368,6 +371,7 @@ void render(Game *game)
         }
 	BlueBirdRender(game);
 	BlueBirdRender2(game);	
+	MissileRender(game);
         glEnd();
         int i = STARTING_ALTITUDE;
         while (i > 0) {
