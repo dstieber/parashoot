@@ -8,6 +8,32 @@
 Ppmimage *MissileImage = NULL;
 GLuint MSsilhouetteTexture;
 
+Ppmimage *mountainImage = NULL;
+GLuint msilhouetteTexture;
+GLuint mountainTexture;
+
+void InitMountain() {
+
+    mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
+
+    glBindTexture(GL_TEXTURE_2D, mountainTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, mountainImage->width,
+    mountainImage->height,0, GL_RGB, GL_UNSIGNED_BYTE, mountainImage->data);  
+
+	//
+	//mountain silhouette
+	glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	unsigned char *silhouetteData2 = buildAlphaData(mountainImage);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mountainImage->width,
+			mountainImage->height, 0, GL_RGBA, 
+            GL_UNSIGNED_BYTE, silhouetteData2);
+	delete [] silhouetteData2;
+}
+
 void renderMountain(Game *game) {
     glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
     glEnable(GL_ALPHA_TEST);

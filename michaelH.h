@@ -17,6 +17,7 @@ extern unsigned char *buildAlphaData(Ppmimage *img);
 void renderMountain(Game *game);
 
 void InitMountain();
+
 void InitMissile();
 void MakeMissile(Game *game);
 void MissileMovement(Game *game);

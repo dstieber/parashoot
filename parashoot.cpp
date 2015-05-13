@@ -157,14 +157,14 @@ void init_opengl(Game *game)
 	//
 	initSky();
 	initCharacter();
-	mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
+	//mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
 	InitBlueBird();
 	InitBlueBird2();
     InitMissile();
     //create opengl texture elements
-
+    InitMountain();
 	//Mountain
-	glBindTexture(GL_TEXTURE_2D, mountainTexture);
+/*	glBindTexture(GL_TEXTURE_2D, mountainTexture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, mountainImage->width,
@@ -180,6 +180,7 @@ void init_opengl(Game *game)
 			mountainImage->height, 0, GL_RGBA, 
             GL_UNSIGNED_BYTE, silhouetteData2);
 	delete [] silhouetteData2;
+	*/
 
 }
 
