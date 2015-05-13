@@ -1,7 +1,7 @@
 #include "danielS.h"
 #include "jonP.h"
 #include "michaelH.h"
-#include "alexB.h"
+#include "alexA.h"
 #include "types.h"
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 800
