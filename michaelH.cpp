@@ -8,6 +8,81 @@
 Ppmimage *MissileImage = NULL;
 GLuint MSsilhouetteTexture;
 
+Ppmimage *mountainImage = NULL;
+GLuint MsilhouetteTexture;
+
+Ppmimage *Cloud2Image = NULL;
+GLuint CsilhouetteTexture;
+
+void InitCloud2() {
+    Cloud2Image = ppm6GetImage("./images/Cloud2.ppm");
+    glGenTextures(1, &CsilhouetteTexture);
+    
+    //Cloud 2
+    glBindTexture(GL_TEXTURE_2D, CsilhouetteTexture);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    unsigned char *CsilhouetteData = buildAlphaData(Cloud2Image);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Cloud2Image->width,
+	    Cloud2Image->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+	    CsilhouetteData);
+    delete [] CsilhouetteData;
+}
+
+void renderCloud2(Game *game) {
+
+    int w = 120;  //482
+    int h = 60;  //222 
+
+    Vec *c = &game->Cloud2.s.center;
+
+    glBindTexture(GL_TEXTURE_2D, CsilhouetteTexture);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
+    glColor4ub(255, 255, 255, 255);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f); glVertex2i(c->x-w, c->y-h);
+    glTexCoord2f(0.0f, 0.0f); glVertex2i(c->x-w, c->y+h);
+    glTexCoord2f(1.0f, 0.0f); glVertex2i(c->x+w, c->y+h);
+    glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
+    glEnd();
+}
+
+void MakeCloud2(Game *game) {
+    Character *cd;
+    cd = &game->Cloud2;
+
+    cd->s.center.x = 400;
+    cd->s.center.y = (game->altitude - 400);
+    cd->velocity.x = 0;
+    cd->velocity.y = 0;
+}
+
+void Cloud2Movement(Game *game) {
+	Character *cd;
+	cd = &game->Cloud2;
+	cd->s.center.x += cd->velocity.x;
+	cd->s.center.y += cd->velocity.y;
+	cd->s.center.y -= GRAVITY;
+}
+
+void InitMountain() {
+    mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
+    glGenTextures(1, &MsilhouetteTexture);
+    
+    //Mountain
+    glBindTexture(GL_TEXTURE_2D, MsilhouetteTexture);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    unsigned char *MsilhouetteData = buildAlphaData(mountainImage);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mountainImage->width,
+	    mountainImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+	    MsilhouetteData);
+    delete [] MsilhouetteData;
+}
+
 void renderMountain(Game *game) {
     glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
     glEnable(GL_ALPHA_TEST);
@@ -22,11 +97,10 @@ void renderMountain(Game *game) {
     glEnd();
 }
 
-void InitMissile()
-{
+void InitMissile() {
     MissileImage = ppm6GetImage("./images/MissileFinished.ppm");
     glGenTextures(1, &MSsilhouetteTexture);
-    //
+    
     //Missile
     glBindTexture(GL_TEXTURE_2D, MSsilhouetteTexture);
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
@@ -37,7 +111,6 @@ void InitMissile()
 	    MissileImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
 	    MSsilhouetteData);
     delete [] MSsilhouetteData;
-
 }
 
 void MakeMissile(Game *game) {
@@ -59,10 +132,9 @@ void MissileMovement(Game *game) {
 	m->s.center.y -= GRAVITY;
 }
 
-void MissileRender(Game *game)
-{
-    int w = 42;
-    int h = 40;
+void MissileRender(Game *game) {
+    int w = 40;
+    int h = 84;
 
     if(game->altitude < 11500 && game->altitude > 10000)
     {
@@ -90,8 +162,7 @@ void init_keys() {
     memset(keys, 0, 65536);
 }
 
-int check_keys(XEvent *e)
-{
+int check_keys(XEvent *e) {
     //keyboard input?
     static int shift=0;
     int key = XLookupKeysym(&e->xkey, 0);
@@ -128,4 +199,3 @@ int check_keys(XEvent *e)
     }
     return 0;
 }
-

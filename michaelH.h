@@ -14,13 +14,18 @@ extern int xres, yres;
 extern GLuint mountainTexture, msilhouetteTexture;
 extern unsigned char *buildAlphaData(Ppmimage *img);
 
+void InitMountain();
 void renderMountain(Game *game);
 
-void InitMountain();
 void InitMissile();
 void MakeMissile(Game *game);
 void MissileMovement(Game *game);
 void MissileRender(Game *game);
+
+void InitCloud2();
+void MakeCloud2(Game *game);
+void Cloud2Movement(Game *game);
+void renderCloud2(Game *game);
 
 void init_keys();
 int check_keys(XEvent *e);

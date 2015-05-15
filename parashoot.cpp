@@ -157,30 +157,12 @@ void init_opengl(Game *game)
 	//
 	initSky();
 	initCharacter();
-	mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
+	InitCloud2();
+	InitMountain();
 	InitBlueBird();
 	InitBlueBird2();
     InitMissile();
     //create opengl texture elements
-
-	//Mountain
-	glBindTexture(GL_TEXTURE_2D, mountainTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, mountainImage->width,
-    mountainImage->height,0, GL_RGB, GL_UNSIGNED_BYTE, mountainImage->data);  
-
-	//
-	//mountain silhouette
-	glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	unsigned char *silhouetteData2 = buildAlphaData(mountainImage);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mountainImage->width,
-			mountainImage->height, 0, GL_RGBA, 
-            GL_UNSIGNED_BYTE, silhouetteData2);
-	delete [] silhouetteData2;
-
 }
 
 void check_resize(Game *game, XEvent *e)
@@ -206,6 +188,7 @@ void makeCharacter(Game *game)
 	MakeBlueBird(game);
 	MakeBlueBird2(game);
 	MakeMissile(game);
+	MakeCloud2(game);
 }
 
 void check_mouse(XEvent *e, Game *game)
@@ -254,6 +237,7 @@ void movement(Game *game)
     BlueBirdMovement(game);
     BlueBirdMovement2(game);
     MissileMovement(game);
+    Cloud2Movement(game);
     //check for collision with objects here...
     //Shape *s;
     if (keys[XK_Right]) {
@@ -300,7 +284,8 @@ void render(Game *game)
 			renderSky(game); 
 		}
 		renderMountain(game);
-		renderCharacter(game);	
+		renderCharacter(game);
+	        renderCloud2(game);	
 		BlueBirdRender(game);	
 		BlueBirdRender2(game);
 		MissileRender(game);
