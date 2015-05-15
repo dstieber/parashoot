@@ -176,5 +176,5 @@ void create_sounds() {
 }
 
 void play() {
-    fmod_playsound(0);
+    //fmod_playsound(0);
 }

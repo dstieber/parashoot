@@ -1,39 +1,39 @@
 #include "parashoot.h"
 int main(void)
 {
-    int done=0;
-    srand(time(NULL));
-    initXWindows();
-    init_opengl(&game);
-    create_sounds();
-    play();
-    init_keys();
-    clock_gettime(CLOCK_REALTIME, &timePause);
-    clock_gettime(CLOCK_REALTIME, &timeStart);
+	int done=0;
+	srand(time(NULL));
+	initXWindows();
+	init_opengl(&game);
+	create_sounds();
+	play();
+	init_keys();
+	clock_gettime(CLOCK_REALTIME, &timePause);
+	clock_gettime(CLOCK_REALTIME, &timeStart);
 
-    //start animation
-    while(!done) {
-        while(XPending(dpy)) {
-            //XEvent e;
-            XNextEvent(dpy, &e);
-            check_mouse(&e, &game);
-            check_resize(&game, &e);
-            done = check_keys(&e);
-        }
-        clock_gettime(CLOCK_REALTIME, &timeCurrent);
-        timeSpan = timeDiff(&timeStart, &timeCurrent);
-        timeCopy(&timeStart, &timeCurrent);
-        physicsCountdown += timeSpan;
-        while(physicsCountdown >= physicsRate) {
-            movement(&game);
-            physicsCountdown -= physicsRate;
-        }
-        render(&game);
-        glXSwapBuffers(dpy, win);
-    }
-    cleanupXWindows();
-    cleanup_fonts();
-    return 0;
+	//start animation
+	while(!done) {
+		while(XPending(dpy)) {
+			//XEvent e;
+			XNextEvent(dpy, &e);
+			check_mouse(&e, &game);
+			check_resize(&game, &e);
+			done = check_keys(&e);
+		}
+		clock_gettime(CLOCK_REALTIME, &timeCurrent);
+		timeSpan = timeDiff(&timeStart, &timeCurrent);
+		timeCopy(&timeStart, &timeCurrent);
+		physicsCountdown += timeSpan;
+		while(physicsCountdown >= physicsRate) {
+			movement(&game);
+			physicsCountdown -= physicsRate;
+		}
+		render(&game);
+		glXSwapBuffers(dpy, win);
+	}
+	cleanupXWindows();
+	cleanup_fonts();
+	return 0;
 }
 
 void set_title(void)
@@ -157,30 +157,12 @@ void init_opengl(Game *game)
 	//
 	initSky();
 	initCharacter();
-	//mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
+	InitCloud2();
+	InitMountain();
 	InitBlueBird();
 	InitBlueBird2();
-    InitMissile();
-    //create opengl texture elements
-    InitMountain();
-	//Mountain
-/*	glBindTexture(GL_TEXTURE_2D, mountainTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, mountainImage->width,
-    mountainImage->height,0, GL_RGB, GL_UNSIGNED_BYTE, mountainImage->data);  
-
-	//
-	//mountain silhouette
-	glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	unsigned char *silhouetteData2 = buildAlphaData(mountainImage);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mountainImage->width,
-			mountainImage->height, 0, GL_RGBA, 
-            GL_UNSIGNED_BYTE, silhouetteData2);
-	delete [] silhouetteData2;
-	*/
+	InitMissile();
+	//create opengl texture elements
 
 }
 
@@ -197,16 +179,17 @@ void check_resize(Game *game, XEvent *e)
 
 void makeCharacter(Game *game)
 {
-    Character *p = &game->character;
-    p->s.center.x = xres/2;
-    p->s.center.y = (game->altitude - (yres/2));
-    p->velocity.y = 0;
-    p->velocity.x = 0;
-    game->n++;
-    start_flag = false;
+	Character *p = &game->character;
+	p->s.center.x = xres/2;
+	p->s.center.y = (game->altitude - (yres/2));
+	p->velocity.y = 0;
+	p->velocity.x = 0;
+	game->n++;
+	start_flag = false;
 	MakeBlueBird(game);
 	MakeBlueBird2(game);
 	MakeMissile(game);
+	MakeCloud2(game);
 }
 
 void check_mouse(XEvent *e, Game *game)
@@ -241,49 +224,50 @@ void check_mouse(XEvent *e, Game *game)
 
 void movement(Game *game)
 {
-    Character *p;
+	Character *p;
 
-    if (game->n <= 0)
-        return;
+	if (game->n <= 0)
+		return;
 
-    p = &game->character;
-    p->s.center.x += p->velocity.x;
-    p->s.center.y += p->velocity.y;
-    p->s.center.y -= GRAVITY;
-    game->altitude -= GRAVITY;
-    gCameraY += (float)GRAVITY;
-    BlueBirdMovement(game);
-    BlueBirdMovement2(game);
-    MissileMovement(game);
-    //check for collision with objects here...
-    //Shape *s;
-    if (keys[XK_Right]) {
-        p->velocity.x += 2;
-    }
-    if (keys[XK_Left]) {
-        p->velocity.x += -2;
-    }
-    if (keys[XK_Up]) {
-        p->velocity.y += 2;
-    }
-    if (keys[XK_Down]) {
-        p->velocity.y -= 2;
-    }
+	p = &game->character;
+	p->s.center.x += p->velocity.x;
+	p->s.center.y += p->velocity.y;
+	p->s.center.y -= GRAVITY;
+	game->altitude -= GRAVITY;
+	gCameraY += (float)GRAVITY;
+	BlueBirdMovement(game);
+	BlueBirdMovement2(game);
+	MissileMovement(game);
+	Cloud2Movement(game);
+	//check for collision with objects here...
+	//Shape *s;
+	if (keys[XK_Right]) {
+		p->velocity.x += 2;
+	}
+	if (keys[XK_Left]) {
+		p->velocity.x += -2;
+	}
+	if (keys[XK_Up]) {
+		p->velocity.y += 2;
+	}
+	if (keys[XK_Down]) {
+		p->velocity.y -= 2;
+	}
 
-    //border collision detection
-    //
-    if (p->s.center.x <= 50) {
-        p->velocity.x = 3;
-    }
-    if (p->s.center.x >= (xres - 50)) {
-        p->velocity.x = -3;
-    }
-    if (p->s.center.y >= (game->altitude - 50)) {
-        p->velocity.y = -3;
-    }
-    if (p->s.center.y <= (game->altitude - (yres - 50))) {
-        p->velocity.y = 3;
-    }
+	//border collision detection
+	//
+	if (p->s.center.x <= 50) {
+		p->velocity.x = 3;
+	}
+	if (p->s.center.x >= (xres - 50)) {
+		p->velocity.x = -3;
+	}
+	if (p->s.center.y >= (game->altitude - 50)) {
+		p->velocity.y = -3;
+	}
+	if (p->s.center.y <= (game->altitude - (yres - 50))) {
+		p->velocity.y = 3;
+	}
 }
 
 
@@ -300,8 +284,9 @@ void render(Game *game)
 		if (sky) {
 			renderSky(game); 
 		}
+		renderCloud2(game);
 		renderMountain(game);
-		renderCharacter(game);	
+		renderCharacter(game);
 		BlueBirdRender(game);	
 		BlueBirdRender2(game);
 		MissileRender(game);
@@ -317,6 +302,6 @@ void render(Game *game)
 		if (sky)
 			renderSky(game);
 		glPopMatrix();
-	    renderStartMenu(game);	
+		renderStartMenu(game);	
 	}
 }

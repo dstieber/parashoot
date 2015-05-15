@@ -43,6 +43,7 @@ struct Game {
     Character BlueBird;
     Character BlueBird2;
     Character Missile;
+    Character Cloud2;
     int n;
     float altitude;
     Game() {
