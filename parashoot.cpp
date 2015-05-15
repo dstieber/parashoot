@@ -283,9 +283,9 @@ void render(Game *game)
 		if (sky) {
 			renderSky(game); 
 		}
+		renderCloud2(game);
 		renderMountain(game);
 		renderCharacter(game);
-	        renderCloud2(game);	
 		BlueBirdRender(game);	
 		BlueBirdRender2(game);
 		MissileRender(game);

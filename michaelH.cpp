@@ -9,7 +9,7 @@ Ppmimage *MissileImage = NULL;
 GLuint MSsilhouetteTexture;
 
 Ppmimage *mountainImage = NULL;
-GLuint MsilhouetteTexture;
+GLuint msilhouetteTexture;
 
 Ppmimage *Cloud2Image = NULL;
 GLuint CsilhouetteTexture;
@@ -54,7 +54,7 @@ void MakeCloud2(Game *game) {
     cd = &game->Cloud2;
 
     cd->s.center.x = 400;
-    cd->s.center.y = (game->altitude - 400);
+    cd->s.center.y = (game->altitude - 200);
     cd->velocity.x = 0;
     cd->velocity.y = 0;
 }
@@ -69,18 +69,18 @@ void Cloud2Movement(Game *game) {
 
 void InitMountain() {
     mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
-    glGenTextures(1, &MsilhouetteTexture);
+    glGenTextures(1, &msilhouetteTexture);
     
     //Mountain
-    glBindTexture(GL_TEXTURE_2D, MsilhouetteTexture);
+    glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
     glPixelStorei(GL_UNPACK_ALIGNMENT,1);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char *MsilhouetteData = buildAlphaData(mountainImage);
+    unsigned char *msilhouetteData = buildAlphaData(mountainImage);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mountainImage->width,
 	    mountainImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-	    MsilhouetteData);
-    delete [] MsilhouetteData;
+	    msilhouetteData);
+    delete [] msilhouetteData;
 }
 
 void renderMountain(Game *game) {
