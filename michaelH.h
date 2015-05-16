@@ -15,6 +15,8 @@ extern GLuint mountainTexture, msilhouetteTexture;
 extern unsigned char *buildAlphaData(Ppmimage *img);
 
 void InitMountain();
+void MakeMountain(Game *game);
+void MountainMovement(Game *game);
 void renderMountain(Game *game);
 
 void InitMissile();
@@ -22,10 +24,20 @@ void MakeMissile(Game *game);
 void MissileMovement(Game *game);
 void MissileRender(Game *game);
 
+void InitCloud();
+void MakeCloud(Game *game);
+void CloudMovement(Game *game);
+void renderCloud(Game *game);
+
 void InitCloud2();
 void MakeCloud2(Game *game);
 void Cloud2Movement(Game *game);
 void renderCloud2(Game *game);
+
+void InitPlane();
+void MakePlane(Game *game);
+void PlaneMovement(Game *game);
+void renderPlane(Game *game);
 
 void init_keys();
 int check_keys(XEvent *e);

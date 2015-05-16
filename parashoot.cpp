@@ -84,8 +84,6 @@ void initXWindows(void) {
 	glXMakeCurrent(dpy, win, glc);
 }
 
-
-
 void reshape_window(Game *game, int width, int height)
 {
 	Character *p = &game->character;
@@ -99,7 +97,6 @@ void reshape_window(Game *game, int width, int height)
 	glOrtho(0, width, (game->altitude - height), game->altitude, -1, 1);
 	set_title();
 }
-
 
 unsigned char *buildAlphaData(Ppmimage *img)
 {
@@ -157,11 +154,13 @@ void init_opengl(Game *game)
 	//
 	initSky();
 	initCharacter();
+        InitCloud();
 	InitCloud2();
 	InitMountain();
 	InitBlueBird();
 	InitBlueBird2();
 	InitMissile();
+	InitPlane();
 	//create opengl texture elements
 
 }
@@ -186,10 +185,13 @@ void makeCharacter(Game *game)
 	p->velocity.x = 0;
 	game->n++;
 	start_flag = false;
+	MakeMountain(game);
 	MakeBlueBird(game);
 	MakeBlueBird2(game);
 	MakeMissile(game);
+	MakeCloud(game);
 	MakeCloud2(game);
+	MakePlane(game);
 }
 
 void check_mouse(XEvent *e, Game *game)
@@ -235,10 +237,13 @@ void movement(Game *game)
 	p->s.center.y -= GRAVITY;
 	game->altitude -= GRAVITY;
 	gCameraY += (float)GRAVITY;
+        MountainMovement(game);
 	BlueBirdMovement(game);
 	BlueBirdMovement2(game);
 	MissileMovement(game);
+	CloudMovement(game);
 	Cloud2Movement(game);
+	PlaneMovement(game);
 	//check for collision with objects here...
 	//Shape *s;
 	if (keys[XK_Right]) {
@@ -284,8 +289,11 @@ void render(Game *game)
 		if (sky) {
 			renderSky(game); 
 		}
+		//renderCloud(game);
 		renderCloud2(game);
+		renderPlane(game);
 		renderMountain(game);
+		renderCloud(game);
 		renderCharacter(game);
 		BlueBirdRender(game);	
 		BlueBirdRender2(game);

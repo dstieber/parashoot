@@ -14,7 +14,7 @@ GLuint silhouetteTexture;
 
 void initSky(void) 
 {
-    skyImage = ppm6GetImage("./images/Sunset.ppm");
+    skyImage = ppm6GetImage("./images/Sky.ppm");		//Sunset.ppm
     glGenTextures(1, &skyTexture);
     glBindTexture(GL_TEXTURE_2D, skyTexture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);

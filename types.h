@@ -37,13 +37,23 @@ struct Character {
     Vec velocity;
 };
 
+struct Object {
+    Shape s;
+    Vec velocity;
+};
+
 struct Game {
     Shape box;
     Character character;
+
     Character BlueBird;
     Character BlueBird2;
-    Character Missile;
-    Character Cloud2;
+    Object Missile;
+    Object Cloud2;
+    Object Cloud1;
+    Object Mountain;
+    Object Plane;
+
     int n;
     float altitude;
     Game() {
