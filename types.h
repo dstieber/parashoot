@@ -35,6 +35,7 @@ struct Shape {
     float width, height;
     float radius;
     Vec center;
+    Vector c;
     float velocityx, velocityy;
     Flt rot, rotInc;
     Matrix m;
@@ -47,15 +48,17 @@ struct Character {
 };
 
 struct Game {
-    Shape box, body, rarm1, rarm2, larm1, larm2, rleg1, rleg2,
+    Character box, body, rarm1, rarm2, larm1, larm2, rleg1, rleg2,
 		lleg1, lleg2;
     Character character;
     Character BlueBird;
     Character BlueBird2;
     Character Missile;
     int n;
+    int health;
     float altitude;
     Game() {
+	health = 100;
 	altitude = (float)STARTING_ALTITUDE;
 	n = 0;
     }

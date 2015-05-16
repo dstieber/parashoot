@@ -1,6 +1,6 @@
-// ALexzander Burden
-#ifndef _ALEXB_H_
-#define _ALEXB_H_
+// ALexzander Avila
+#ifndef _ALEXA_H_
+#define _ALEXA_H_
 
 #include <iostream>
 #include <cstdlib>

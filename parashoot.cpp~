@@ -243,9 +243,7 @@ void check_mouse(XEvent *e, Game *game)
 void movement(Game *game)
 {
     Character *p;
-    Character *mis = &game->Missile;
-    Character *b = &game->BlueBird;
-    Character *b2 = &game->BlueBird2;
+
     if (game->n <= 0)
         return;
 
@@ -262,15 +260,15 @@ void movement(Game *game)
     //Shape *s;
     if (keys[XK_Right]) {
         p->s.velocityx += 2;
-	game->rarm1.s.rotInc += -0.4f;
-	game->larm1.s.rotInc += -0.4f;
+	game->rarm1.s.rotInc += 0.4f;
+	game->larm1.s.rotInc += 0.4f;
 	game->rleg1.s.rotInc += 0.4f;
 	game->lleg1.s.rotInc += 0.4f;
     }
     if (keys[XK_Left]) {
         p->s.velocityx += -2;
-	game->rarm1.s.rotInc += 0.4f;
-	game->larm1.s.rotInc += 0.4f;
+	game->rarm1.s.rotInc += -0.4f;
+	game->larm1.s.rotInc += -0.4f;
 	game->rleg1.s.rotInc += -0.4f;
 	game->lleg1.s.rotInc += -0.4f;
     }
@@ -293,7 +291,7 @@ void movement(Game *game)
 	game->larm1.s.rot += game->larm1.s.rotInc;
 	game->rleg1.s.rot += game->rleg1.s.rotInc;
 	game->lleg1.s.rot += game->lleg1.s.rotInc;
-	game->body.s.rot += game->body.s.rotInc;
+
 	const Flt d2r = 1.0/360*3.14159265*2.0; //degrees to radians
 
 	yy_transform(game->rleg1.s.rotInc*d2r, game->rleg1.s.m);
@@ -315,51 +313,6 @@ void movement(Game *game)
     if (p->s.c[1] <= (game->altitude - (yres - 50))) {
         p->s.velocityy = 3;
     }
-	//limb restriction
-	if(game->rarm1.s.rot > 150 || game->rarm1.s.rot < -50)
-	{
-		game->rarm1.s.rotInc = -game->rarm1.s.rotInc; 
-	}
-	if(game->larm1.s.rot > 400 || game->larm1.s.rot < 200)
-	{
-		game->larm1.s.rotInc = -game->larm1.s.rotInc;
-	}
-	if(game->rleg1.s.rot > 169 || game->rleg1.s.rot < 89)
-	{
-		game->rleg1.s.rotInc = -game->rleg1.s.rotInc;
-	}
-	if(game->lleg1.s.rot > 264 || game->lleg1.s.rot < 184)
-	{
-		game->lleg1.s.rotInc = -game->lleg1.s.rotInc;
-	}
-	//missile collision
-	if(mis->s.center.x >= p->s.c[0] - p->s.width &&
-	   mis->s.center.x <= p->s.c[0] + p->s.width &&
-	   mis->s.center.y <= p->s.c[1] + p->s.height &&
-	   mis->s.center.y >= p->s.c[1] - p->s.height)
-	{
-		game->health = game->health - 25;
-		mis->s.center.x = 0;
-		mis->s.center.y = 0;
-}
-	//bird collision
-	if(b->s.center.x >= p->s.c[0] - p->s.width &&
-	   b->s.center.x <= p->s.c[0] + p->s.width &&
-	   b->s.center.y < p->s.c[1] + p->s.height &&
-	   b->s.center.y > p->s.c[1] - p->s.height)
-	{
-		game->health = game->health - 10;
-		b->s.center.y += 100;		
-    }
-	if(b2->s.center.x >= p->s.c[0] - p->s.width &&
-	   b2->s.center.x <= p->s.c[0] + p->s.width &&
-	   b2->s.center.y < p->s.c[1] + p->s.height &&
-	   b2->s.center.y > p->s.c[1] - p->s.height)
-	{
-		game->health = game->health - 10;
-		b2->s.center.y += 100;		
-    }
-
 }
 
 
@@ -377,7 +330,11 @@ void render(Game *game)
 			renderSky(game); 
 		}
 		renderMountain(game);
-		renderCharacter(game);	
+		//renderCharacter(game);	
+
+
+
+
 		BlueBirdRender(game);	
 		BlueBirdRender2(game);
 		MissileRender(game);
