@@ -37,7 +37,7 @@ void renderSky(Game *game)
 
 void initCharacter(void) 
 {
-    characterImage = ppm6GetImage("./images/character2.ppm");
+    characterImage = ppm6GetImage("./images/character1.ppm");
     glGenTextures(1, &silhouetteTexture);
     glBindTexture(GL_TEXTURE_2D, silhouetteTexture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
