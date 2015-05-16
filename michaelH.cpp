@@ -343,12 +343,12 @@ void renderPlane(Game *game) {
     glTexCoord2f(1.0f, 0.5f); glVertex2i(p->x+w, p->y+h);  
     glTexCoord2f(1.0f, 1.0f); glVertex2i(p->x+w, p->y-h);  
     */
-    /*	// Left view of plane
+    	// Left view of plane
     glTexCoord2f(0.0f, 0.5f); glVertex2i(p->x-w, p->y-h);  
     glTexCoord2f(0.0f, 0.0f); glVertex2i(p->x-w, p->y+h);  
     glTexCoord2f(1.0f, 0.0f); glVertex2i(p->x+w, p->y+h);  
     glTexCoord2f(1.0f, 0.5f); glVertex2i(p->x+w, p->y-h);  
-    */
+    
 
     glEnd();
 }

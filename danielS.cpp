@@ -79,7 +79,7 @@ void displayAltitude(Game *game)
 {
     int i = STARTING_ALTITUDE;
     while (i > 0) {
-        if ((game->altitude < (i + 400)) && (game->altitude > (i - 400))) {
+        if ((game->altitude < (i + yres/2)) && (game->altitude > (i - yres/2))) {
             Rect r;
             char cstr[10];
             r.left = xres - 50;
