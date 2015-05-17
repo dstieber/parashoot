@@ -19,4 +19,7 @@ void initCharacter(void);
 void renderCharacter(Game *game);
 void displayAltitude(Game *game);
 void renderStartMenu(Game *game);
+void randomGenerator(Game *game);
+extern void BlueBirdRender(Game *game);
+extern void MakeBlueBird(Game *game);
 #endif

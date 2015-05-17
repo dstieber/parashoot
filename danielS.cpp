@@ -115,3 +115,15 @@ void renderStartMenu(Game *game)
     ggprint16(&start, 1000, 0x00fff000, "PARASHOOT!");
     ggprint16(&click, 1000, 0x00fff000, "Click to start");
 }
+
+void randomGenerator(Game *game) 
+{
+	srand (time(NULL));
+
+	if (rand()%10 < 9) 
+	{
+		MakeBlueBird(game);
+		BlueBirdRender(game);
+	}
+
+}
