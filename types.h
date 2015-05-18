@@ -48,7 +48,7 @@ struct Character {
 };
 
 struct Game {
-    Character box, body, rarm1, rarm2, larm1, larm2, rleg1, rleg2,
+    Character head, body, rarm1, rarm2, larm1, larm2, rleg1, rleg2,
 		lleg1, lleg2;
     Character character;
     Character BlueBird;

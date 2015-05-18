@@ -4,21 +4,32 @@
 void DefineRagdoll(Game *game)
 {
 	Character *c;
+
 	//define body shape
 	c = &game->body;
-	c->s.width = 28;
-	c->s.height = 66;
+	c->s.width = 34;
+	c->s.height = 73;
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = c->s.height/2;
 	//place body
 	c->s.c[0] += 300.0;
 	c->s.c[1] += 50;
-	c->s.color[1] = 90;
-	c->s.color[1] = 0;
-	c->s.color[2] = 90;
 	c->s.rotInc = 0.0f;
-	c->s.rot = 1.0f;
+	c->s.rot = 30.0f;
 	identity33(c->s.m);
+	//head
+	c = &game->head;
+	c->s.width = game->body.s.width-10;
+	c->s.height = 32;
+	c->s.c[0] = c->s.width/2;
+	c->s.c[1] = c->s.height/2;
+	//place on body
+	c->s.c[0] += 0;
+	c->s.c[1] += 0;
+	c->s.rotInc = 0.0f;
+	c->s.rot = 0.0f;
+	identity33(c->s.m);
+
 	//define upper right arm
 	c = &game->rarm1;
 	c->s.width = 10;
@@ -26,13 +37,10 @@ void DefineRagdoll(Game *game)
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place on body
-	c->s.c[0] += 15;
-	c->s.c[1] += 20;
-	c->s.color[0] = 0;
-	c->s.color[1] = 0;
-	c->s.color[2] = 0;
-	c->s.rotInc = 0.0f;
-	c->s.rot = 45.0f;
+	c->s.c[0] += 3;
+	c->s.c[1] += -12;
+	//c->s.rotInc = -GRAVITY;
+	c->s.rot = 30.0f;
 	identity33(c->s.m);
 	//define lower right arm
 	c = &game->rarm2;
@@ -43,12 +51,10 @@ void DefineRagdoll(Game *game)
 	//place on upper arm
 	c->s.c[0] += -5;
 	c->s.c[1] += 30;
-	c->s.color[0] = 45;
-	c->s.color[1] = 90;
-	c->s.color[2] = 45;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 315.0f;
 	identity33(c->s.m);
+
 	//define upper left arm
 	c = &game->larm1;
 	c->s.width = 10;
@@ -56,13 +62,10 @@ void DefineRagdoll(Game *game)
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place on body
-	c->s.c[0] += -25;
-	c->s.c[1] += 20;
-	c->s.color[0] = 0;
-	c->s.color[1] = 0;
-	c->s.color[2] = 0;
-	c->s.rotInc = 0.0f;
-	c->s.rot = 315.0f;
+	c->s.c[0] += -15;
+	c->s.c[1] += -40;
+	//c->s.rotInc = -GRAVITY;
+	c->s.rot = 210.0f;
 	identity33(c->s.m);
 	//define lower left arm
 	c = &game->larm2;
@@ -73,12 +76,10 @@ void DefineRagdoll(Game *game)
 	//place on upper arm
 	c->s.c[0] += -3;
 	c->s.c[1] += 30;
-	c->s.color[0] = 45;
-	c->s.color[1] = 90;
-	c->s.color[2] = 45;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 45.0f;
 	identity33(c->s.m);
+	
 	//define right quad
 	c = &game->rleg1;
 	c->s.width = 10;
@@ -86,29 +87,24 @@ void DefineRagdoll(Game *game)
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place quad on body
-	c->s.c[0] += 13;
-	c->s.c[1] += -20;
-	c->s.color[0] = 90;
-	c->s.color[1] = 45;
-	c->s.color[2] = 45;
-	c->s.rotInc = 0.0f;
-	c->s.rot = 135.0f;
+	c->s.c[0] += 22;
+	c->s.c[1] += -34;
+	//c->s.rotInc = -GRAVITY;
+	c->s.rot = 100.0f;
 	identity33(c->s.m);
 	//define right shin
 	c = &game->rleg2;
-	c->s.width = 10;
+	c->s.width = 17;
 	c->s.height = 40;
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place shin on quad
-	c->s.c[0] += 20;
+	c->s.c[0] += 18;
 	c->s.c[1] += 65;
-	c->s.color[0] = 45;
-	c->s.color[1] = 90;
-	c->s.color[2] = 45;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 225.0f;
 	identity33(c->s.m);
+
 	//define left quad
 	c = &game->lleg1;
 	c->s.width = 10;
@@ -116,26 +112,20 @@ void DefineRagdoll(Game *game)
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place on body
-	c->s.c[0] += -20;
-	c->s.c[1] += -20;
-	c->s.color[0] = 90;
-	c->s.color[1] = 90;
-	c->s.color[2] = 45;
-	c->s.rotInc = 0.0f;
-	c->s.rot = 225.0f;
+	c->s.c[0] += 10;
+	c->s.c[1] += -50;
+	//c->s.rotInc = -GRAVITY;
+	c->s.rot = 180.0f;
 	identity33(c->s.m);
 	//define left shin
 	c = &game->lleg2;
-	c->s.width = 10;
+	c->s.width = 17;
 	c->s.height = 40;
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place shin on quad
 	c->s.c[0] += -30;
 	c->s.c[1] += 70;
-	c->s.color[0] = 45;
-	c->s.color[1] = 90;
-	c->s.color[2] = 45;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 135.0f;
 	identity33(c->s.m);

@@ -262,31 +262,31 @@ void movement(Game *game)
     //Shape *s;
     if (keys[XK_Right]) {
         p->s.velocityx += 2;
-	game->rarm1.s.rotInc += -0.4f;
-	game->larm1.s.rotInc += -0.4f;
-	game->rleg1.s.rotInc += 0.4f;
-	game->lleg1.s.rotInc += 0.4f;
+	//game->rarm1.s.rotInc += -0.4f;
+	//game->larm1.s.rotInc += -0.4f;
+	//game->rleg1.s.rotInc += 0.4f;
+	//game->lleg1.s.rotInc += 0.4f;
     }
     if (keys[XK_Left]) {
         p->s.velocityx += -2;
-	game->rarm1.s.rotInc += 0.4f;
-	game->larm1.s.rotInc += 0.4f;
-	game->rleg1.s.rotInc += -0.4f;
-	game->lleg1.s.rotInc += -0.4f;
+	//game->rarm1.s.rotInc += 0.4f;
+	//game->larm1.s.rotInc += 0.4f;
+	//game->rleg1.s.rotInc += -0.4f;
+	//game->lleg1.s.rotInc += -0.4f;
     }
     if (keys[XK_Up]) {
         p->s.velocityy += 2;
-	game->rarm1.s.rotInc += 0.4f;
-	game->larm1.s.rotInc += -0.4f;
-	game->rleg1.s.rotInc += 0.4f;
-	game->lleg1.s.rotInc += -0.4f;
+	//game->rarm1.s.rotInc += 0.4f;
+	//game->larm1.s.rotInc += -0.4f;
+	//game->rleg1.s.rotInc += 0.4f;
+	//game->lleg1.s.rotInc += -0.4f;
     }
     if (keys[XK_Down]) {
         p->s.velocityy -= 2;
-	game->rarm1.s.rotInc += -0.4f;
-	game->larm1.s.rotInc += 0.4f;
-	game->rleg1.s.rotInc += -0.4f;
-	game->lleg1.s.rotInc += 0.4f;
+	//game->rarm1.s.rotInc += -0.4f;
+	//game->larm1.s.rotInc += 0.4f;
+	//game->rleg1.s.rotInc += -0.4f;
+	//game->lleg1.s.rotInc += 0.4f;
     }
 
 	game->rarm1.s.rot += game->rarm1.s.rotInc;
@@ -294,8 +294,8 @@ void movement(Game *game)
 	game->rleg1.s.rot += game->rleg1.s.rotInc;
 	game->lleg1.s.rot += game->lleg1.s.rotInc;
 	game->body.s.rot += game->body.s.rotInc;
-	const Flt d2r = 1.0/360*3.14159265*2.0; //degrees to radians
 
+	const Flt d2r = 1.0/360*3.14159265*2.0; //degrees to radians
 	yy_transform(game->rleg1.s.rotInc*d2r, game->rleg1.s.m);
 	yy_transform(game->lleg1.s.rotInc*d2r, game->lleg1.s.m);
 	yy_transform(game->rarm1.s.rotInc*d2r, game->rarm1.s.m);
@@ -316,11 +316,11 @@ void movement(Game *game)
         p->s.velocityy = 3;
     }
 	//limb restriction
-	if(game->rarm1.s.rot > 150 || game->rarm1.s.rot < -50)
+	if(game->rarm1.s.rot > 150 || game->rarm1.s.rot < 10)
 	{
 		game->rarm1.s.rotInc = -game->rarm1.s.rotInc; 
 	}
-	if(game->larm1.s.rot > 400 || game->larm1.s.rot < 200)
+	if(game->larm1.s.rot > 340 || game->larm1.s.rot < 200)
 	{
 		game->larm1.s.rotInc = -game->larm1.s.rotInc;
 	}
