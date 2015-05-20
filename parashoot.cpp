@@ -262,15 +262,15 @@ void movement(Game *game)
     //Shape *s;
     if (keys[XK_Right]) {
         p->s.velocityx += 2;
-	game->rarm1.s.rotInc += -GRAVITY/8;
-	game->larm1.s.rotInc += GRAVITY/8;
+	game->rarm1.s.rotInc += GRAVITY/8;
+	game->larm1.s.rotInc += -GRAVITY/8;
 	game->rleg1.s.rotInc += GRAVITY/8;
 	game->lleg1.s.rotInc += -GRAVITY/8;
     }
     if (keys[XK_Left]) {
         p->s.velocityx += -2;
-	game->rarm1.s.rotInc += GRAVITY/8;
-	game->larm1.s.rotInc += -GRAVITY/8;
+	game->rarm1.s.rotInc += -GRAVITY/8;
+	game->larm1.s.rotInc += GRAVITY/8;
 	game->rleg1.s.rotInc += -GRAVITY/8;
 	game->lleg1.s.rotInc += GRAVITY/8;
     }
