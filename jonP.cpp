@@ -11,6 +11,7 @@ GLuint BsilhouetteTexture;
 Ppmimage *BlueBirdImage2 = NULL;
 GLuint BsilhouetteTexture2;
 
+
 void InitBlueBird()
 {
 
@@ -52,8 +53,8 @@ void InitBlueBird2()
 void MakeBlueBird(Game *game) 
 {
     Character *b;
-    b = &game->BlueBird;
 
+    b = &game->BlueBird;
     b->s.center.x = xres/2-400;
     b->s.center.y = (game->altitude- (yres/2)+10);
     b->velocity.x =0;
@@ -63,12 +64,13 @@ void MakeBlueBird(Game *game)
 void MakeBlueBird2(Game *game) 
 {
     Character *b;
-    b = &game->BlueBird2;
 
+    b = &game->BlueBird2[game->n];
     b->s.center.x = xres/2+400;
     b->s.center.y = (game->altitude- (yres/2)+50);
     b->velocity.x =0;
     b->velocity.y = 0;
+    game->n++;
 }
 void BlueBirdMovement(Game *game)
 {
@@ -83,10 +85,12 @@ void BlueBirdMovement(Game *game)
 void BlueBirdMovement2(Game *game)
 {
     Character *b;
-    b= &game->BlueBird2;
+    for(int i=0; i < game->n; i++) {
+    b= &game->BlueBird2[i];
     b->s.center.x += b->velocity.x;
     b->s.center.y += b->velocity.y;
     b->s.center.y -= GRAVITY;
+    }
 
 }
 
@@ -117,19 +121,18 @@ void BlueBirdRender(Game *game)
 	bv->velocity.x = 9;
     }
 }
-
 void BlueBirdRender2(Game *game)
 {
     int wB= 17;
     int hB= 13;
 
+    for(int i=0; i < game->n; i++) {
     /*
        if (birdFires) {
        if (firstTime) { 
        float currentAltitude = game->altitude;
        firstTime = 0;
        }
-       while ((currentAltitude + yres) > currentAltitude > (currentAltitude - yres))
        {
     //render
 
@@ -138,12 +141,15 @@ void BlueBirdRender2(Game *game)
     }
     */
 
-    if(game->altitude < 11600 && game->altitude > 10000)
+   // if(game->altitude < 11600 && game->altitude > 10000)
+   	if(rand()%100 <1) {
+	    std::cout << (rand()%100);
+       if ((game->altitude + yres) > game->altitude && game->altitude > (game->altitude - yres))
     {
 	Character *bv;
 	Vec *b;
-	b = &game->BlueBird2.s.center;
-	bv = &game->BlueBird2;
+	b = &game->BlueBird2[i].s.center;
+	bv = &game->BlueBird2[i];
 
 	glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture2);
 	glEnable(GL_ALPHA_TEST);
@@ -157,6 +163,8 @@ void BlueBirdRender2(Game *game)
 	glEnd();
 
 	bv->velocity.x = -9;
+    }
+    }
     }
 
 }

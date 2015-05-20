@@ -22,6 +22,8 @@ extern "C" {
 
 #define GRAVITY 3.0
 #define STARTING_ALTITUDE 12000
+#define MAX 50
+
 struct Vec {
     float x, y, z;
 };
@@ -47,7 +49,7 @@ struct Game {
     Character character;
 
     Character BlueBird;
-    Character BlueBird2;
+    Character *BlueBird2;
     Object Missile;
     Object Cloud2;
     Object Cloud1;
@@ -55,9 +57,11 @@ struct Game {
     Object Plane;
 
     int n;
+    ~Game() { delete [] BlueBird2; }
     float altitude;
     Game() {
 	altitude = (float)STARTING_ALTITUDE;
+	BlueBird2 = new Character[MAX];
 	n = 0;
     }
 };
