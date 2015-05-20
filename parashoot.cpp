@@ -262,38 +262,37 @@ void movement(Game *game)
     //Shape *s;
     if (keys[XK_Right]) {
         p->s.velocityx += 2;
-	//game->rarm1.s.rotInc += -0.4f;
-	//game->larm1.s.rotInc += -0.4f;
-	//game->rleg1.s.rotInc += 0.4f;
-	//game->lleg1.s.rotInc += 0.4f;
+	game->rarm1.s.rotInc += -GRAVITY/8;
+	game->larm1.s.rotInc += GRAVITY/8;
+	game->rleg1.s.rotInc += GRAVITY/8;
+	game->lleg1.s.rotInc += -GRAVITY/8;
     }
     if (keys[XK_Left]) {
         p->s.velocityx += -2;
-	//game->rarm1.s.rotInc += 0.4f;
-	//game->larm1.s.rotInc += 0.4f;
-	//game->rleg1.s.rotInc += -0.4f;
-	//game->lleg1.s.rotInc += -0.4f;
+	game->rarm1.s.rotInc += GRAVITY/8;
+	game->larm1.s.rotInc += -GRAVITY/8;
+	game->rleg1.s.rotInc += -GRAVITY/8;
+	game->lleg1.s.rotInc += GRAVITY/8;
     }
     if (keys[XK_Up]) {
         p->s.velocityy += 2;
-	//game->rarm1.s.rotInc += 0.4f;
-	//game->larm1.s.rotInc += -0.4f;
-	//game->rleg1.s.rotInc += 0.4f;
-	//game->lleg1.s.rotInc += -0.4f;
+	game->rarm1.s.rotInc += GRAVITY/8;
+	game->larm1.s.rotInc += -GRAVITY/8;
+	game->rleg1.s.rotInc += GRAVITY/8;
+	game->lleg1.s.rotInc += -GRAVITY/8;
     }
     if (keys[XK_Down]) {
         p->s.velocityy -= 2;
-	//game->rarm1.s.rotInc += -0.4f;
-	//game->larm1.s.rotInc += 0.4f;
-	//game->rleg1.s.rotInc += -0.4f;
-	//game->lleg1.s.rotInc += 0.4f;
+	game->rarm1.s.rotInc += -GRAVITY/4;
+	game->larm1.s.rotInc += GRAVITY/4;
+	game->rleg1.s.rotInc += -GRAVITY/4;
+	game->lleg1.s.rotInc += GRAVITY/4;
     }
 
 	game->rarm1.s.rot += game->rarm1.s.rotInc;
 	game->larm1.s.rot += game->larm1.s.rotInc;
 	game->rleg1.s.rot += game->rleg1.s.rotInc;
 	game->lleg1.s.rot += game->lleg1.s.rotInc;
-	game->body.s.rot += game->body.s.rotInc;
 
 	const Flt d2r = 1.0/360*3.14159265*2.0; //degrees to radians
 	yy_transform(game->rleg1.s.rotInc*d2r, game->rleg1.s.m);
@@ -318,19 +317,27 @@ void movement(Game *game)
 	//limb restriction
 	if(game->rarm1.s.rot > 150 || game->rarm1.s.rot < 10)
 	{
-		game->rarm1.s.rotInc = -game->rarm1.s.rotInc; 
+		game->rarm1.s.rotInc = 0;//-game->rarm1.s.rotInc; 
+		game->rarm2.s.rot = 15;
 	}
-	if(game->larm1.s.rot > 340 || game->larm1.s.rot < 200)
+	if(game->larm1.s.rot > 310 || game->larm1.s.rot < 190)
 	{
-		game->larm1.s.rotInc = -game->larm1.s.rotInc;
+		game->larm1.s.rotInc = 0;//-game->larm1.s.rotInc;
+		game->larm2.s.rot = 15;
 	}
-	if(game->rleg1.s.rot > 169 || game->rleg1.s.rot < 89)
+	if(game->rleg1.s.rot > 160 || game->rleg1.s.rot < 120)
 	{
-		game->rleg1.s.rotInc = -game->rleg1.s.rotInc;
+		game->rleg1.s.rotInc = 0;//-game->rleg1.s.rotInc;
+		game->rleg2.s.c[0] = -5;
+		game->rleg2.s.c[1] = 77;
+		game->rleg2.s.rot = 180;
 	}
-	if(game->lleg1.s.rot > 264 || game->lleg1.s.rot < 184)
+	if(game->lleg1.s.rot > 220 || game->lleg1.s.rot < 180)
 	{
-		game->lleg1.s.rotInc = -game->lleg1.s.rotInc;
+		game->lleg1.s.rotInc = 0;//-game->lleg1.s.rotInc;
+		game->lleg2.s.c[0] = 4;
+		game->lleg2.s.c[1] = 80;
+		game->lleg2.s.rot = 177;
 	}
 	//missile collision
 	if(mis->s.center.x >= p->s.c[0] - p->s.width &&

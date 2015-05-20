@@ -50,7 +50,7 @@ void renderSky(Game *game)
 
 void initCharacter(void) 
 {
-    characterImage = ppm6GetImage("./images/character2.ppm");
+    /*characterImage = ppm6GetImage("./images/character2.ppm");
     glGenTextures(1, &silhouetteTexture);
     glBindTexture(GL_TEXTURE_2D, silhouetteTexture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
@@ -58,16 +58,17 @@ void initCharacter(void)
     unsigned char *silhouetteData = buildAlphaData(characterImage);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, characterImage->width, 
 	    characterImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
-    delete [] silhouetteData;
+    delete [] silhouetteData;*/
 
     //body Texture
     BodyImage = ppm6GetImage("./images/Body.ppm");
-    glGenTextures(1, &BodyTexture);
-    glBindTexture(GL_TEXTURE_2D, BodyTexture);
+    glGenTextures(1, &silhouetteTexture);
+    glBindTexture(GL_TEXTURE_2D, silhouetteTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char *BodyData = buildAlphaData(BodyImage);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, BodyImage->width, BodyImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, BodyData);
+    unsigned char *silhouetteData = buildAlphaData(BodyImage);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, BodyImage->width, BodyImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
+    delete [] silhouetteData;
 
     //head
     HeadImage = ppm6GetImage("./images/Head.ppm");
@@ -131,11 +132,11 @@ void renderCharacter(Game *game)
     //body
     glPushMatrix();
 
+    Character *s1 = &game->body;
+    glBindTexture(GL_TEXTURE_2D, silhouetteTexture);
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.0f);
     glColor4ub(255,255,255,255);
-    Character *s1 = &game->body;
-    glBindTexture(GL_TEXTURE_2D, BodyTexture);
     glTranslatef(s1->s.c[0], s1->s.c[1], 0.0f);
     glRotatef(-s1->s.rot, 0.0f, 0.0f, 1.0f);
     w = s1->s.width;

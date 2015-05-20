@@ -19,15 +19,15 @@ void DefineRagdoll(Game *game)
 	identity33(c->s.m);
 	//head
 	c = &game->head;
-	c->s.width = game->body.s.width-10;
-	c->s.height = 32;
+	c->s.width = 20;
+	c->s.height = 30;
 	c->s.c[0] = c->s.width/2;
-	c->s.c[1] = c->s.height/2;
+	c->s.c[1] = 0;
 	//place on body
-	c->s.c[0] += 0;
-	c->s.c[1] += 0;
+	c->s.c[0] += -10;
+	c->s.c[1] += -35;
 	c->s.rotInc = 0.0f;
-	c->s.rot = 0.0f;
+	c->s.rot = 330.0f;
 	identity33(c->s.m);
 
 	//define upper right arm
@@ -37,14 +37,14 @@ void DefineRagdoll(Game *game)
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place on body
-	c->s.c[0] += 3;
-	c->s.c[1] += -12;
-	//c->s.rotInc = -GRAVITY;
-	c->s.rot = 30.0f;
+	c->s.c[0] += 23;
+	c->s.c[1] += 28;
+	c->s.rotInc = -GRAVITY;
+	c->s.rot = 75.0f;
 	identity33(c->s.m);
 	//define lower right arm
 	c = &game->rarm2;
-	c->s.width = 10;
+	c->s.width = 12;
 	c->s.height = 40;
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
@@ -62,19 +62,19 @@ void DefineRagdoll(Game *game)
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place on body
-	c->s.c[0] += -15;
-	c->s.c[1] += -40;
-	//c->s.rotInc = -GRAVITY;
-	c->s.rot = 210.0f;
+	c->s.c[0] += -7;
+	c->s.c[1] += 20;
+	c->s.rotInc = GRAVITY;
+	c->s.rot = 255.0f;
 	identity33(c->s.m);
 	//define lower left arm
 	c = &game->larm2;
-	c->s.width = 10;
+	c->s.width = 12;
 	c->s.height = 40;
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place on upper arm
-	c->s.c[0] += -3;
+	c->s.c[0] += -7;
 	c->s.c[1] += 30;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 45.0f;
@@ -87,10 +87,10 @@ void DefineRagdoll(Game *game)
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place quad on body
-	c->s.c[0] += 22;
-	c->s.c[1] += -34;
-	//c->s.rotInc = -GRAVITY;
-	c->s.rot = 100.0f;
+	c->s.c[0] += 18;
+	c->s.c[1] += 5;
+	c->s.rotInc = -GRAVITY;
+	c->s.rot = 150.0f;
 	identity33(c->s.m);
 	//define right shin
 	c = &game->rleg2;
@@ -112,9 +112,9 @@ void DefineRagdoll(Game *game)
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place on body
-	c->s.c[0] += 10;
-	c->s.c[1] += -50;
-	//c->s.rotInc = -GRAVITY;
+	c->s.c[0] += 5;
+	c->s.c[1] += 5;
+	c->s.rotInc = GRAVITY;
 	c->s.rot = 180.0f;
 	identity33(c->s.m);
 	//define left shin
