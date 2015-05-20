@@ -145,7 +145,10 @@ void BlueBirdRender2(Game *game)
    	if(rand()%100 <1) {
 	    std::cout << (rand()%100);
        if ((game->altitude + yres) > game->altitude && game->altitude > (game->altitude - yres))
-    {
+    
+       {
+	MakeBlueBird2(game);
+	BlueBirdMovement(game);
 	Character *bv;
 	Vec *b;
 	b = &game->BlueBird2[i].s.center;
