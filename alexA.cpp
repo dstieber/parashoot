@@ -44,7 +44,7 @@ void DefineRagdoll(Game *game)
 	identity33(c->s.m);
 	//define lower right arm
 	c = &game->rarm2;
-	c->s.width = 12;
+	c->s.width = 10;
 	c->s.height = 40;
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
@@ -69,12 +69,12 @@ void DefineRagdoll(Game *game)
 	identity33(c->s.m);
 	//define lower left arm
 	c = &game->larm2;
-	c->s.width = 12;
+	c->s.width = 10;
 	c->s.height = 40;
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place on upper arm
-	c->s.c[0] += -7;
+	c->s.c[0] += -5;
 	c->s.c[1] += 30;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 45.0f;
@@ -94,15 +94,15 @@ void DefineRagdoll(Game *game)
 	identity33(c->s.m);
 	//define right shin
 	c = &game->rleg2;
-	c->s.width = 17;
+	c->s.width = 15;
 	c->s.height = 40;
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place shin on quad
-	c->s.c[0] += 18;
-	c->s.c[1] += 65;
+	c->s.c[0] += -13;
+	c->s.c[1] += 40;
 	c->s.rotInc = 0.0f;
-	c->s.rot = 225.0f;
+	c->s.rot = 15.0f;
 	identity33(c->s.m);
 
 	//define left quad
@@ -119,15 +119,15 @@ void DefineRagdoll(Game *game)
 	identity33(c->s.m);
 	//define left shin
 	c = &game->lleg2;
-	c->s.width = 17;
+	c->s.width = 15;
 	c->s.height = 40;
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place shin on quad
-	c->s.c[0] += -30;
-	c->s.c[1] += 70;
+	c->s.c[0] += -3;
+	c->s.c[1] += 40;
 	c->s.rotInc = 0.0f;
-	c->s.rot = 135.0f;
+	c->s.rot = -15.0f;
 	identity33(c->s.m);
 }
 void identity33(Matrix mat)

@@ -238,10 +238,10 @@ void renderCharacter(Game *game)
     w = s7->s.width;
     h = s7->s.height;
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
-    glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, h);
-    glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
-    glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
+    glTexCoord2f(1.0f, 0.0f); glVertex2i(-w, 0);
+    glTexCoord2f(1.0f, 1.0f); glVertex2i(-w, h);
+    glTexCoord2f(0.0f, 1.0f); glVertex2i(w, h);
+    glTexCoord2f(0.0f, 0.0f); glVertex2i(w, 0);
     glEnd();
     glPopMatrix();
     //draw left quad
@@ -266,10 +266,10 @@ void renderCharacter(Game *game)
     w = s9->s.width;
     h = s9->s.height;
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
-    glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, h);
-    glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
-    glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
+    glTexCoord2f(1.0f, 0.0f); glVertex2i(-w, 0);
+    glTexCoord2f(1.0f, 1.0f); glVertex2i(-w, h);
+    glTexCoord2f(0.0f, 1.0f); glVertex2i(w, h);
+    glTexCoord2f(0.0f, 0.0f); glVertex2i(w, 0);
     glEnd();
     glPopMatrix();
 

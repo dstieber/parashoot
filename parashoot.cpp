@@ -1,5 +1,6 @@
 #include "parashoot.h"
 #include "alexA.h"
+
 int main(void)
 {
     int done=0;
@@ -265,14 +266,25 @@ void movement(Game *game)
 	game->rarm1.s.rotInc += -GRAVITY/8;
 	game->larm1.s.rotInc += GRAVITY/8;
 	game->rleg1.s.rotInc += GRAVITY/8;
-	game->lleg1.s.rotInc += -GRAVITY/8;
+	game->lleg1.s.rotInc += GRAVITY/8;
+
+	game->rarm2.s.rotInc += -GRAVITY/16;
+	game->larm2.s.rotInc += -GRAVITY/16;
+	game->rleg2.s.rotInc += GRAVITY/16;
+	game->lleg2.s.rotInc += -GRAVITY/16;
     }
     if (keys[XK_Left]) {
         p->s.velocityx += -2;
-	game->rarm1.s.rotInc += GRAVITY/8;
-	game->larm1.s.rotInc += -GRAVITY/8;
+	game->rarm1.s.rotInc += -GRAVITY/8;
+	game->larm1.s.rotInc += GRAVITY/8;
 	game->rleg1.s.rotInc += -GRAVITY/8;
-	game->lleg1.s.rotInc += GRAVITY/8;
+	game->lleg1.s.rotInc += -GRAVITY/8;
+
+	game->rarm2.s.rotInc += GRAVITY/16;
+	game->larm2.s.rotInc += GRAVITY/16;
+	game->rleg2.s.rotInc += -GRAVITY/16;
+	game->lleg2.s.rotInc += GRAVITY/16;
+
     }
     if (keys[XK_Up]) {
         p->s.velocityy += 2;
@@ -280,19 +292,104 @@ void movement(Game *game)
 	game->larm1.s.rotInc += -GRAVITY/8;
 	game->rleg1.s.rotInc += GRAVITY/8;
 	game->lleg1.s.rotInc += -GRAVITY/8;
+
+	game->rarm2.s.rotInc += GRAVITY/16;
+	game->larm2.s.rotInc += -GRAVITY/16;
+	game->rleg2.s.rotInc += -GRAVITY/16;
+	game->lleg2.s.rotInc += GRAVITY/16;
     }
     if (keys[XK_Down]) {
         p->s.velocityy -= 2;
 	game->rarm1.s.rotInc += -GRAVITY/4;
 	game->larm1.s.rotInc += GRAVITY/4;
-	game->rleg1.s.rotInc += -GRAVITY/4;
+	game->rleg1.s.rotInc += GRAVITY/4;
 	game->lleg1.s.rotInc += GRAVITY/4;
+
+	//game->rarm2.s.rotInc += GRAVITY/8;
+	game->larm2.s.rotInc += -GRAVITY/8;
+	game->rleg2.s.rotInc += GRAVITY/8;
+	game->lleg2.s.rotInc += -GRAVITY/8;
     }
+	//right arm restriction
+	if(game->rarm1.s.rot > 151)
+	{
+		game->rarm1.s.rot = 150;
+	}
+	if(game->rarm1.s.rot < 19)
+	{
+		game->rarm1.s.rot = 20;
+	}
+
+	if(game->rarm2.s.rot < 289)
+	{
+		game->rarm2.s.rot = 290;
+	}
+	if(game->rarm2.s.rot > 361)
+	{
+		game->rarm2.s.rot = 360;
+	}
+	//left arm restriction
+	if(game->larm1.s.rot > 311)
+	{
+		game->larm1.s.rot = 310;
+	}
+	if(game->larm1.s.rot < 189)
+	{
+		game->larm1.s.rot = 190;
+	}
+
+	if(game->larm2.s.rot < -1)
+	{
+		game->larm2.s.rot = 0;
+	}
+	if(game->larm2.s.rot > 56)
+	{
+		game->larm2.s.rot = 55;
+	} 
+	//right leg restriction
+	if(game->rleg1.s.rot > 161)
+	{
+		game->rleg1.s.rot = 160;
+	}
+	if(game->rleg1.s.rot < 119)
+	{
+		game->rleg1.s.rot = 120;
+	}
+	if(game->rleg2.s.rot < 9)
+	{
+		game->rleg2.s.rot = 10;
+	}
+	if(game->rleg2.s.rot > 61)
+	{
+		game->rleg2.s.rot = 60;
+	}
+	//left leg restriction
+	if(game->lleg1.s.rot < 180)
+	{
+		game->lleg1.s.rot = 181;
+	}
+	if(game->lleg1.s.rot > 220)
+	{
+		game->lleg1.s.rot = 219;
+	}
+	if(game->lleg2.s.rot > 1)
+	{
+		game->lleg2.s.rot = 0;
+	}
+	if(game->lleg2.s.rot < -51)
+	{
+		game->lleg2.s.rot = -50;
+	}
 
 	game->rarm1.s.rot += game->rarm1.s.rotInc;
 	game->larm1.s.rot += game->larm1.s.rotInc;
 	game->rleg1.s.rot += game->rleg1.s.rotInc;
 	game->lleg1.s.rot += game->lleg1.s.rotInc;
+
+	game->rarm2.s.rot += game->rarm2.s.rotInc;
+	game->larm2.s.rot += game->larm2.s.rotInc;
+	game->rleg2.s.rot += game->rleg2.s.rotInc;
+	game->lleg2.s.rot += game->lleg2.s.rotInc;
 
 	const Flt d2r = 1.0/360*3.14159265*2.0; //degrees to radians
 	yy_transform(game->rleg1.s.rotInc*d2r, game->rleg1.s.m);
@@ -315,30 +412,39 @@ void movement(Game *game)
         p->s.velocityy = 3;
     }
 	//limb restriction
-	if(game->rarm1.s.rot > 150 || game->rarm1.s.rot < 10)
+	if(game->rarm1.s.rot > 151 || game->rarm1.s.rot < 19)
 	{
-		game->rarm1.s.rotInc = 0;//-game->rarm1.s.rotInc; 
-		game->rarm2.s.rot = 15;
+		game->rarm1.s.rotInc = 0; 
 	}
-	if(game->larm1.s.rot > 310 || game->larm1.s.rot < 190)
+	if(game->rarm2.s.rot > 361 || game->rarm2.s.rot < 289)
 	{
-		game->larm1.s.rotInc = 0;//-game->larm1.s.rotInc;
-		game->larm2.s.rot = 15;
+		game->rarm2.s.rotInc = 0;
+	}
+	if(game->larm1.s.rot > 311 || game->larm1.s.rot < 189)
+	{
+		game->larm1.s.rotInc = 0;
+	}
+	if(game->larm2.s.rot > 56 || game->larm2.s.rot < -1)
+	{
+		game->larm2.s.rotInc = 0;
 	}
 	if(game->rleg1.s.rot > 160 || game->rleg1.s.rot < 120)
 	{
-		game->rleg1.s.rotInc = 0;//-game->rleg1.s.rotInc;
-		game->rleg2.s.c[0] = -5;
-		game->rleg2.s.c[1] = 77;
-		game->rleg2.s.rot = 180;
+		game->rleg1.s.rotInc = 0;
+	}
+	if(game->rleg2.s.rot > 61 || game->rleg2.s.rot < 9)
+	{
+		game->rleg2.s.rotInc = 0;
 	}
 	if(game->lleg1.s.rot > 220 || game->lleg1.s.rot < 180)
 	{
-		game->lleg1.s.rotInc = 0;//-game->lleg1.s.rotInc;
-		game->lleg2.s.c[0] = 4;
-		game->lleg2.s.c[1] = 80;
-		game->lleg2.s.rot = 177;
+		game->lleg1.s.rotInc = 0;
 	}
+	if(game->lleg2.s.rot > 1 || game->lleg2.s.rot < -51)
+	{
+		game->lleg2.s.rotInc = 0;
+	}
+
 	//missile collision
 	if(mis->s.center.x >= p->s.c[0] - p->s.width &&
 	   mis->s.center.x <= p->s.c[0] + p->s.width &&
