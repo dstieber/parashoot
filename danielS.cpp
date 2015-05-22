@@ -156,22 +156,10 @@ void renderCharacter(Game *game)
       w = s->s.width;
       h = s->s.height;
       glBegin(GL_QUADS);
-      if(s1->s.velocityx <= 0)
-{
-      s->s.c[0] = (s->s.width/2) - 5;
       glTexCoord2f(0.0f, 1.0f); glVertex2f(-(float)w, h);
       glTexCoord2f(0.0f, 0.0f); glVertex2f(-(float)w, h+40);
       glTexCoord2f(0.5f, 0.0f); glVertex2f( (float)w, h+40);
       glTexCoord2f(0.5f, 1.0f); glVertex2f( (float)w, h);
-}
-      if(s1->s.velocityx > 0)
-{
-      s->s.c[0] = (s->s.width/2) + 5;
-      glTexCoord2f(0.5f, 1.0f); glVertex2f(-(float)w, h);
-      glTexCoord2f(0.5f, 0.0f); glVertex2f(-(float)w, h+40);
-      glTexCoord2f(1.0f, 0.0f); glVertex2f( (float)w, h+40);
-      glTexCoord2f(1.0f, 1.0f); glVertex2f( (float)w, h);
-}
       glEnd();
     //draw right arm
     glPushMatrix();
@@ -255,22 +243,10 @@ void renderCharacter(Game *game)
     w = s7->s.width;
     h = s7->s.height;
     glBegin(GL_QUADS);
-    if(s1->s.velocityx >= 0)
-{
-	s7->s.c[0] = (s7->s.width/2)-13;
     glTexCoord2f(1.0f, 0.0f); glVertex2i(-w, 0);
     glTexCoord2f(1.0f, 1.0f); glVertex2i(-w, h);
     glTexCoord2f(0.0f, 1.0f); glVertex2i(w, h);
     glTexCoord2f(0.0f, 0.0f); glVertex2i(w, 0);
-}
-    if(s1->s.velocityx < 0)
-{
-	s7->s.c[0] = (s7->s.width/2)-3;
-	glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, 0);
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, h);
-	glTexCoord2f(1.0f, 1.0f); glVertex2i(w, h);
-	glTexCoord2f(1.0f, 0.0f); glVertex2i(w, 0);
-}
     glEnd();
     glPopMatrix();
     //draw left quad
@@ -296,22 +272,10 @@ void renderCharacter(Game *game)
     w = s9->s.width;
     h = s9->s.height;
     glBegin(GL_QUADS);
-    if(s1->s.velocityx <= 0)
-{
-    s9->s.c[0] = (s9->s.width/2) - 3;
     glTexCoord2f(1.0f, 0.0f); glVertex2i(-w, 0);
     glTexCoord2f(1.0f, 1.0f); glVertex2i(-w, h);
     glTexCoord2f(0.0f, 1.0f); glVertex2i(w, h);
     glTexCoord2f(0.0f, 0.0f); glVertex2i(w, 0);
-}
-    if(s1->s.velocityx > 0)
-{
-    s9->s.c[0] = (s9->s.width/2) - 13;
-    glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, 0);
-    glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, h);
-    glTexCoord2f(1.0f, 1.0f); glVertex2i(w, h);
-    glTexCoord2f(1.0f, 0.0f); glVertex2i(w, 0);
-}
     glEnd();
     glPopMatrix();
 
