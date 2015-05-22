@@ -305,11 +305,36 @@ void movement(Game *game)
 	game->rleg1.s.rotInc += GRAVITY/4;
 	game->lleg1.s.rotInc += GRAVITY/4;
 
-	//game->rarm2.s.rotInc += GRAVITY/8;
+	game->rarm2.s.rotInc += GRAVITY/8;
 	game->larm2.s.rotInc += -GRAVITY/8;
 	game->rleg2.s.rotInc += GRAVITY/8;
 	game->lleg2.s.rotInc += -GRAVITY/8;
     }
+    if(p->s.velocityy < 0)
+{
+	game->rarm1.s.rotInc += -GRAVITY/32;
+	game->larm1.s.rotInc += GRAVITY/32;
+	game->rleg1.s.rotInc += GRAVITY/32;
+	game->lleg1.s.rotInc += GRAVITY/32;
+
+	game->rarm2.s.rotInc += GRAVITY/8;
+	game->larm2.s.rotInc += -GRAVITY/8;
+	game->rleg2.s.rotInc += GRAVITY/8;
+	game->lleg2.s.rotInc += -GRAVITY/8;
+}
+    if(p->s.velocityy > 0)
+{
+	game->rarm1.s.rotInc += GRAVITY/32;
+	game->larm1.s.rotInc += -GRAVITY/32;
+	game->rleg1.s.rotInc += -GRAVITY/32;
+	game->lleg1.s.rotInc += -GRAVITY/32;
+
+	game->rarm2.s.rotInc += -GRAVITY/8;
+	game->larm2.s.rotInc += GRAVITY/8;
+	game->rleg2.s.rotInc += -GRAVITY/8;
+	game->lleg2.s.rotInc += GRAVITY/8;
+}
+	
 	//right arm restriction
 	if(game->rarm1.s.rot > 151)
 	{
@@ -451,7 +476,6 @@ void movement(Game *game)
 	   mis->s.center.y <= p->s.c[1] + p->s.height &&
 	   mis->s.center.y >= p->s.c[1] - p->s.height)
 	{
-		game->health = game->health - 25;
 		mis->s.center.x = 0;
 		mis->s.center.y = 0;
 }

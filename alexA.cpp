@@ -24,8 +24,8 @@ void DefineRagdoll(Game *game)
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place on body
-	c->s.c[0] += -10;
-	c->s.c[1] += -35;
+	c->s.c[0] += -5;
+	c->s.c[1] += -30;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 330.0f;
 	identity33(c->s.m);
@@ -37,7 +37,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[0] = c->s.width/2;
 	c->s.c[1] = 0;
 	//place on body
-	c->s.c[0] += 23;
+	c->s.c[0] += 17;
 	c->s.c[1] += 28;
 	c->s.rotInc = -GRAVITY;
 	c->s.rot = 75.0f;
@@ -100,7 +100,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] = 0;
 	//place shin on quad
 	c->s.c[0] += -13;
-	c->s.c[1] += 40;
+	c->s.c[1] += 35;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 15.0f;
 	identity33(c->s.m);
@@ -125,7 +125,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] = 0;
 	//place shin on quad
 	c->s.c[0] += -3;
-	c->s.c[1] += 40;
+	c->s.c[1] += 35;
 	c->s.rotInc = 0.0f;
 	c->s.rot = -15.0f;
 	identity33(c->s.m);

@@ -17,6 +17,11 @@ Ppmimage *LimbImage = NULL;
 Ppmimage *HeadImage = NULL;
 GLuint skyTexture;
 GLuint silhouetteTexture;
+GLuint RarmsilhouetteTexture;
+GLuint LarmsilhouetteTexture;
+GLuint RlegsilhouetteTexture;
+GLuint LlegsilhouetteTexture;
+GLuint HeadsilhouetteTexture;
 GLuint RarmTexture;
 GLuint BodyTexture;
 GLuint LarmTexture;
@@ -50,16 +55,6 @@ void renderSky(Game *game)
 
 void initCharacter(void) 
 {
-    /*characterImage = ppm6GetImage("./images/character2.ppm");
-    glGenTextures(1, &silhouetteTexture);
-    glBindTexture(GL_TEXTURE_2D, silhouetteTexture);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-    unsigned char *silhouetteData = buildAlphaData(characterImage);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, characterImage->width, 
-	    characterImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, silhouetteData);
-    delete [] silhouetteData;*/
-
     //body Texture
     BodyImage = ppm6GetImage("./images/Body.ppm");
     glGenTextures(1, &silhouetteTexture);
@@ -72,48 +67,53 @@ void initCharacter(void)
 
     //head
     HeadImage = ppm6GetImage("./images/Head.ppm");
-    glGenTextures(1, &HeadTexture);
-    glBindTexture(GL_TEXTURE_2D, HeadTexture);
+    glGenTextures(1, &HeadsilhouetteTexture);
+    glBindTexture(GL_TEXTURE_2D, HeadsilhouetteTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char *HeadData = buildAlphaData(HeadImage);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, HeadImage->width, HeadImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, HeadData);
+    unsigned char *HeadsilhouetteData = buildAlphaData(HeadImage);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, HeadImage->width, HeadImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, HeadsilhouetteData);
+    delete [] HeadsilhouetteData;
 
     //Right arm
     RarmImage = ppm6GetImage("./images/Arm1.ppm");
-    glGenTextures(1, &RarmTexture);
-    glBindTexture(GL_TEXTURE_2D, RarmTexture);
+    glGenTextures(1, &RarmsilhouetteTexture);
+    glBindTexture(GL_TEXTURE_2D, RarmsilhouetteTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char *RarmData = buildAlphaData(RarmImage);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, RarmImage->width, RarmImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, RarmData);
+    unsigned char *RarmsilhouetteData = buildAlphaData(RarmImage);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, RarmImage->width, RarmImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, RarmsilhouetteData);
+    delete [] RarmsilhouetteData;
 
     //Left arm
     LarmImage = ppm6GetImage("./images/Larm1.ppm");
-    glGenTextures(1, &LarmTexture);
-    glBindTexture(GL_TEXTURE_2D, LarmTexture);
+    glGenTextures(1, &LarmsilhouetteTexture);
+    glBindTexture(GL_TEXTURE_2D, LarmsilhouetteTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char *LarmData = buildAlphaData(LarmImage);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, LarmImage->width, LarmImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, LarmData);
+    unsigned char *LarmsilhouetteData = buildAlphaData(LarmImage);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, LarmImage->width, LarmImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, LarmsilhouetteData);
+    delete [] LarmsilhouetteData;
 
     //Right leg
     RlegImage = ppm6GetImage("./images/Rleg.ppm");
-    glGenTextures(1, &RlegTexture);
-    glBindTexture(GL_TEXTURE_2D, RlegTexture);
+    glGenTextures(1, &RlegsilhouetteTexture);
+    glBindTexture(GL_TEXTURE_2D, RlegsilhouetteTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char *RlegData = buildAlphaData(RlegImage);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, RlegImage->width, RlegImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, RlegData);
+    unsigned char *RlegsilhouetteData = buildAlphaData(RlegImage);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, RlegImage->width, RlegImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, RlegsilhouetteData);
+    delete [] RlegsilhouetteData;
 
     //Left leg
     LlegImage = ppm6GetImage("./images/Lleg.ppm");
-    glGenTextures(1, &LlegTexture);
-    glBindTexture(GL_TEXTURE_2D, LlegTexture);
+    glGenTextures(1, &LlegsilhouetteTexture);
+    glBindTexture(GL_TEXTURE_2D, LlegsilhouetteTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char *LlegData = buildAlphaData(LlegImage);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, LlegImage->width, LlegImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, LlegData);
+    unsigned char *LlegsilhouetteData = buildAlphaData(LlegImage);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, LlegImage->width, LlegImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, LlegsilhouetteData);
+    delete [] LlegsilhouetteData;
 
     //Limbs
     LimbImage = ppm6GetImage("./images/Limb.ppm");
@@ -149,16 +149,29 @@ void renderCharacter(Game *game)
     glEnd();
     //head
       Character *s = &game->head;
-      glBindTexture(GL_TEXTURE_2D, HeadTexture);
+      glBindTexture(GL_TEXTURE_2D, HeadsilhouetteTexture);
       glTranslatef(s->s.c[0], s->s.c[1], 0.0f);
       glRotatef(-s->s.rot, 0.0f, 0.0f, 1.0f);
+      glColor4ub(255,255,255,255);
       w = s->s.width;
       h = s->s.height;
       glBegin(GL_QUADS);
-      glTexCoord2f(0.0f, 1.0f); glVertex2f(-(float)w, h+5);
-      glTexCoord2f(0.0f, 0.0f); glVertex2f(-(float)w, h+30);
-      glTexCoord2f(0.5f, 0.0f); glVertex2f( (float)w, h+30);
-      glTexCoord2f(0.5f, 1.0f); glVertex2f( (float)w, h+5);
+      if(s1->s.velocityx <= 0)
+{
+      s->s.c[0] = (s->s.width/2) - 5;
+      glTexCoord2f(0.0f, 1.0f); glVertex2f(-(float)w, h);
+      glTexCoord2f(0.0f, 0.0f); glVertex2f(-(float)w, h+40);
+      glTexCoord2f(0.5f, 0.0f); glVertex2f( (float)w, h+40);
+      glTexCoord2f(0.5f, 1.0f); glVertex2f( (float)w, h);
+}
+      if(s1->s.velocityx > 0)
+{
+      s->s.c[0] = (s->s.width/2) + 5;
+      glTexCoord2f(0.5f, 1.0f); glVertex2f(-(float)w, h);
+      glTexCoord2f(0.5f, 0.0f); glVertex2f(-(float)w, h+40);
+      glTexCoord2f(1.0f, 0.0f); glVertex2f( (float)w, h+40);
+      glTexCoord2f(1.0f, 1.0f); glVertex2f( (float)w, h);
+}
       glEnd();
     //draw right arm
     glPushMatrix();
@@ -175,10 +188,11 @@ void renderCharacter(Game *game)
     glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
     glEnd();
     //draw right lower arm
-    glBindTexture(GL_TEXTURE_2D, RarmTexture);
+    glBindTexture(GL_TEXTURE_2D, RarmsilhouetteTexture);
     Character *s3 = &game->rarm2;
     glTranslatef(s3->s.c[0], s3->s.c[1], 0.0f);
     glRotatef(-s3->s.rot, 0.0f, 0.0f, 1.0f);
+    glColor4ub(255,255,255,255);
     w = s3->s.width;
     h = s3->s.height;
     glBegin(GL_QUADS);
@@ -204,9 +218,10 @@ void renderCharacter(Game *game)
     glEnd();
     //draw lower left arm
     Character *s5 = &game->larm2;
-    glBindTexture(GL_TEXTURE_2D, LarmTexture);
+    glBindTexture(GL_TEXTURE_2D, LarmsilhouetteTexture);
     glTranslatef(s5->s.c[0], s5->s.c[1], 0.0f);
     glRotatef(-s5->s.rot, 0.0f, 0.0f, 1.0f);
+    glColor4ub(255,255,255,255);
     w = s5->s.width;
     h = s5->s.height;
     glBegin(GL_QUADS);
@@ -229,19 +244,33 @@ void renderCharacter(Game *game)
     glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, h);
     glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
     glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
+
     glEnd();
     //draw right shin
     Character *s7 = &game->rleg2;
-    glBindTexture(GL_TEXTURE_2D, RlegTexture);
+    glBindTexture(GL_TEXTURE_2D, RlegsilhouetteTexture);
     glTranslatef(s7->s.c[0], s7->s.c[1], 0.0f);
     glRotatef(-s7->s.rot, 0.0f, 0.0f, 1.0f);
+    glColor4ub(255,255,255,255);
     w = s7->s.width;
     h = s7->s.height;
     glBegin(GL_QUADS);
+    if(s1->s.velocityx >= 0)
+{
+	s7->s.c[0] = (s7->s.width/2)-13;
     glTexCoord2f(1.0f, 0.0f); glVertex2i(-w, 0);
     glTexCoord2f(1.0f, 1.0f); glVertex2i(-w, h);
     glTexCoord2f(0.0f, 1.0f); glVertex2i(w, h);
     glTexCoord2f(0.0f, 0.0f); glVertex2i(w, 0);
+}
+    if(s1->s.velocityx < 0)
+{
+	s7->s.c[0] = (s7->s.width/2)-3;
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, 0);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, h);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(w, h);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(w, 0);
+}
     glEnd();
     glPopMatrix();
     //draw left quad
@@ -260,27 +289,33 @@ void renderCharacter(Game *game)
     glEnd();
     //draw left shin
     Character *s9 = &game->lleg2;
-    glBindTexture(GL_TEXTURE_2D, LlegTexture);
+    glBindTexture(GL_TEXTURE_2D, LlegsilhouetteTexture);
     glTranslatef(s9->s.c[0], s9->s.c[1], 0.0f);
     glRotatef(-s9->s.rot, 0.0f, 0.0f, 1.0f);
+    glColor4ub(255,255,255,255);
     w = s9->s.width;
     h = s9->s.height;
     glBegin(GL_QUADS);
+    if(s1->s.velocityx <= 0)
+{
+    s9->s.c[0] = (s9->s.width/2) - 3;
     glTexCoord2f(1.0f, 0.0f); glVertex2i(-w, 0);
     glTexCoord2f(1.0f, 1.0f); glVertex2i(-w, h);
     glTexCoord2f(0.0f, 1.0f); glVertex2i(w, h);
     glTexCoord2f(0.0f, 0.0f); glVertex2i(w, 0);
+}
+    if(s1->s.velocityx > 0)
+{
+    s9->s.c[0] = (s9->s.width/2) - 13;
+    glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, 0);
+    glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, h);
+    glTexCoord2f(1.0f, 1.0f); glVertex2i(w, h);
+    glTexCoord2f(1.0f, 0.0f); glVertex2i(w, 0);
+}
     glEnd();
     glPopMatrix();
 
     glPopMatrix();
-
-    if(game->health <= 75)
-    {
-	//s2->s.rot += 50.0f;
-	//s2->s.c[0] += 10;
-	//s2->s.c[1] += -5;
-    }
 
 }
 
@@ -289,9 +324,8 @@ void displayAltitude(Game *game)
     int i = STARTING_ALTITUDE;
     while (i > 0) {
 	if ((game->altitude < (i + 400)) && (game->altitude > (i - 400))) {
-	    Rect r, h;
+	    Rect r;
 	    char cstr[10];
-	    char hp[10];
 	    r.left = xres - 50;
 	    r.bot = i - yres/2;
 	    r.center = xres - 50;
@@ -300,13 +334,6 @@ void displayAltitude(Game *game)
 	    sprintf (cstr, "%d", i);
 	    strcat (cstr, "ft");
 	    ggprint16(&r, 16, 0xdd4814, "%s", cstr);
-	    h.left = 50;
-	    h.bot = i - yres/2;
-	    h.center = xres/2;
-	    h.width = 100;
-	    h.height = 50;
-	    sprintf(hp, "%d", game->health);
-	    ggprint16(&h, 16, 0xdd4814, "%s", hp);
 	}
 	i = i - 100;
     }
