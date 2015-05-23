@@ -157,8 +157,6 @@ void init_opengl(Game *game)
         InitCloud();
 	InitCloud2();
 	InitMountain();
-	InitBlueBird();
-	InitBlueBird2();
 	InitBirdTemplate();
 	InitMissileTemplate();
 	InitPlane();
@@ -188,7 +186,6 @@ void makeCharacter(Game *game)
 	start_flag = false;
 	MakeMountain(game);
 	MakeBlueBird(game);
-	MakeBlueBird2(game);
 	MakeMissile(game);
 	MakeCloud(game);
 	MakeCloud2(game);
@@ -240,7 +237,6 @@ void movement(Game *game)
 	gCameraY += (float)GRAVITY;
         MountainMovement(game);
 	BlueBirdMovement(game);
-	BlueBirdMovement2(game);
 	MissileMovement(game);
 	CloudMovement(game);
 	Cloud2Movement(game);
@@ -306,8 +302,9 @@ void render(Game *game)
 		renderBlueMissile(game);
 		renderRedMissile(game);
 		renderYellowMissile(game);
-	*/
 		renderGreenMissile(game);
+	*/
+		renderBlueBird2(game);
 		displayAltitude(game);
 		glPopMatrix();
 	}

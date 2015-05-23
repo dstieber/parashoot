@@ -148,7 +148,7 @@ void renderGreenMissile(Game *game) {
 }
 
 void InitBirdTemplate() {
-    BirdTemplate = ppm6GetImage("./images/BirdsTemplate2.ppm");
+    BirdTemplate = ppm6GetImage("./images/BirdsTemplate.ppm");
     glGenTextures(1, &BirdTsilhouetteTexture);
 
     //Cloud 2
@@ -177,10 +177,10 @@ void renderOrangeBird(Game *game) {
     glAlphaFunc(GL_GREATER, 0.0f);
     glColor4ub(255, 255, 255, 255);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.50f);   glVertex2i(o->x-w, o->y-h);
-    glTexCoord2f(0.0f, 0.25f);  glVertex2i(o->x-w, o->y+h);
-    glTexCoord2f(0.25f, 0.25f); glVertex2i(o->x+w, o->y+h);
-    glTexCoord2f(0.25f, 0.50f);  glVertex2i(o->x+w, o->y-h);
+    glTexCoord2f(0.0f, 0.40f);   glVertex2i(o->x-w, o->y-h);
+    glTexCoord2f(0.0f, 0.20f);  glVertex2i(o->x-w, o->y+h);
+    glTexCoord2f(0.25f, 0.20f); glVertex2i(o->x+w, o->y+h);
+    glTexCoord2f(0.25f, 0.40f);  glVertex2i(o->x+w, o->y-h);
     glEnd();
     ov->velocity.x = 9;
 }
@@ -200,10 +200,10 @@ void renderRedBird(Game *game) {
     glAlphaFunc(GL_GREATER, 0.0f);
     glColor4ub(255, 255, 255, 255);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.75f);   glVertex2i(r->x-wR, r->y-hR);
-    glTexCoord2f(0.0f, 0.50f);  glVertex2i(r->x-wR, r->y+hR);
-    glTexCoord2f(0.25f, 0.50f); glVertex2i(r->x+wR, r->y+hR);
-    glTexCoord2f(0.25f, 0.75f);  glVertex2i(r->x+wR, r->y-hR);
+    glTexCoord2f(0.0f, 0.60f);   glVertex2i(r->x-wR, r->y-hR);
+    glTexCoord2f(0.0f, 0.40f);  glVertex2i(r->x-wR, r->y+hR);
+    glTexCoord2f(0.25f, 0.40f); glVertex2i(r->x+wR, r->y+hR);
+    glTexCoord2f(0.25f, 0.60f);  glVertex2i(r->x+wR, r->y-hR);
     glEnd();
     rv->velocity.x = 9;
     }
@@ -224,10 +224,10 @@ void renderGreenBird(Game *game) {
     glAlphaFunc(GL_GREATER, 0.0f);
     glColor4ub(255, 255, 255, 255);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 0.25f);   glVertex2i(g->x-wG, g->y-hG);
+    glTexCoord2f(0.0f, 0.20f);   glVertex2i(g->x-wG, g->y-hG);
     glTexCoord2f(0.0f, 0.0f);  glVertex2i(g->x-wG, g->y+hG);
     glTexCoord2f(0.25f, 0.0f); glVertex2i(g->x+wG, g->y+hG);
-    glTexCoord2f(0.25f, 0.25f);  glVertex2i(g->x+wG, g->y-hG);
+    glTexCoord2f(0.25f, 0.20f);  glVertex2i(g->x+wG, g->y-hG);
     glEnd();
     gv->velocity.x = 9;
     }
@@ -237,6 +237,7 @@ void renderPurpleBird(Game *game) {
     int wP = 17;
     int hP = 13;
 
+    if (game->altitude < 11500 && game->altitude > 1000) {
     Character *pv;
     Vec *p;
     p = &game->BlueBird.s.center;
@@ -247,12 +248,13 @@ void renderPurpleBird(Game *game) {
     glAlphaFunc(GL_GREATER, 0.0f);
     glColor4ub(255, 255, 255, 255);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 1.0f);   glVertex2i(p->x-wP, p->y-hP);
-    glTexCoord2f(0.0f, 0.75f);  glVertex2i(p->x-wP, p->y+hP);
-    glTexCoord2f(0.25f, 0.75f); glVertex2i(p->x+wP, p->y+hP);
-    glTexCoord2f(0.25f, 1.0f);  glVertex2i(p->x+wP, p->y-hP);
+    glTexCoord2f(0.0f, 0.80f);   glVertex2i(p->x-wP, p->y-hP);
+    glTexCoord2f(0.0f, 0.60f);  glVertex2i(p->x-wP, p->y+hP);
+    glTexCoord2f(0.25f, 0.60f); glVertex2i(p->x+wP, p->y+hP);
+    glTexCoord2f(0.25f, 0.80f);  glVertex2i(p->x+wP, p->y-hP);
     glEnd();
     pv->velocity.x = 9;
+    }
 }
 
 void InitCloud() {

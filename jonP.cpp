@@ -5,50 +5,6 @@ Purpose: The Purpose of this lab is to seperate game files
 */ 
 #include "jonP.h"
 
-Ppmimage *BlueBirdImage = NULL;
-GLuint BsilhouetteTexture;
-
-Ppmimage *BlueBirdImage2 = NULL;
-GLuint BsilhouetteTexture2;
-
-void InitBlueBird()
-{
-
-    BlueBirdImage = ppm6GetImage("./images/BlueBird.ppm");
-    glGenTextures(1, &BsilhouetteTexture);
-    //
-    //BlueBird
-    glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
-    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char *BsilhouetteData = buildAlphaData(BlueBirdImage);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, BlueBirdImage->width,
-	    BlueBirdImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-	    BsilhouetteData);
-    delete [] BsilhouetteData;
-
-}
-void InitBlueBird2()
-{
-    BlueBirdImage2 = ppm6GetImage("./images/BlueBird2.ppm");
-    glGenTextures(1, &BsilhouetteTexture2);
-    //
-    //BlueBird
-    glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture2);
-    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char *BsilhouetteData2 = buildAlphaData(BlueBirdImage2);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, BlueBirdImage2->width,
-	    BlueBirdImage2->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-	    BsilhouetteData2);
-    delete [] BsilhouetteData2;
-
-
-
-}
-
 void MakeBlueBird(Game *game) 
 {
     Character *b;
@@ -60,16 +16,6 @@ void MakeBlueBird(Game *game)
     b->velocity.y = 0;
 }
 
-void MakeBlueBird2(Game *game) 
-{
-    Character *b;
-    b = &game->BlueBird2;
-
-    b->s.center.x = xres/2+400;
-    b->s.center.y = (game->altitude- (yres/2)+50);
-    b->velocity.x =0;
-    b->velocity.y = 0;
-}
 void BlueBirdMovement(Game *game)
 {
     Character *b;
@@ -80,18 +26,7 @@ void BlueBirdMovement(Game *game)
 
 }
 
-void BlueBirdMovement2(Game *game)
-{
-    Character *b;
-    b= &game->BlueBird2;
-    b->s.center.x += b->velocity.x;
-    b->s.center.y += b->velocity.y;
-    b->s.center.y -= GRAVITY;
-
-}
-
-
-void BlueBirdRender(Game *game)
+void renderBlueBird(Game *game)
 {
     int wB= 17;
     int hB= 13;
@@ -103,22 +38,22 @@ void BlueBirdRender(Game *game)
 	b = &game->BlueBird.s.center;
 	bv = &game->BlueBird;
 
-	glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
+	glBindTexture(GL_TEXTURE_2D, BirdTsilhouetteTexture);
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.0f);
 	glColor4ub(255, 255, 255, 255);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0.0f, 1.0f); glVertex2i(b->x-wB, b->y-hB);
-	glTexCoord2f(0.0f, 0.0f); glVertex2i(b->x-wB, b->y+hB);
-	glTexCoord2f(0.5f, 0.0f); glVertex2i(b->x+wB, b->y+hB);
-	glTexCoord2f(0.5f, 1.0f); glVertex2i(b->x+wB, b->y-hB);
+	glTexCoord2f(0.0f, 0.80f); glVertex2i(b->x-wB, b->y+hB);
+	glTexCoord2f(0.25f, 0.80f); glVertex2i(b->x+wB, b->y+hB);
+	glTexCoord2f(0.25f, 1.0f); glVertex2i(b->x+wB, b->y-hB);
 	glEnd();
 
 	bv->velocity.x = 9;
     }
 }
 
-void BlueBirdRender2(Game *game)
+void renderBlueBird2(Game *game)
 {
     int wB= 17;
     int hB= 13;
@@ -142,21 +77,21 @@ void BlueBirdRender2(Game *game)
     {
 	Character *bv;
 	Vec *b;
-	b = &game->BlueBird2.s.center;
-	bv = &game->BlueBird2;
+	b = &game->BlueBird.s.center;
+	bv = &game->BlueBird;
 
-	glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture2);
+	glBindTexture(GL_TEXTURE_2D, BirdTsilhouetteTexture);
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.0f);
 	glColor4ub(255, 255, 255, 255);
 	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(b->x-wB, b->y-hB);
-	glTexCoord2f(0.0f, 0.0f); glVertex2i(b->x-wB, b->y+hB);
-	glTexCoord2f(0.5f, 0.0f); glVertex2i(b->x+wB, b->y+hB);
-	glTexCoord2f(0.5f, 1.0f); glVertex2i(b->x+wB, b->y-hB);
+	glTexCoord2f(0.75f, 1.0f); glVertex2i(b->x-wB, b->y-hB);
+	glTexCoord2f(0.75f, 0.8f); glVertex2i(b->x-wB, b->y+hB);
+	glTexCoord2f(1.0f, 0.8f); glVertex2i(b->x+wB, b->y+hB);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(b->x+wB, b->y-hB);
 	glEnd();
 
-	bv->velocity.x = -9;
+	bv->velocity.x = 9;
     }
 
 }
