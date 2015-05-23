@@ -14,7 +14,7 @@ GLuint silhouetteTexture;
 
 void initSky(void) 
 {
-    skyImage = ppm6GetImage("./images/Sky.ppm");		//Sunset.ppm
+    skyImage = ppm6GetImage("./images/Sky.ppm");
     glGenTextures(1, &skyTexture);
     glBindTexture(GL_TEXTURE_2D, skyTexture);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
@@ -118,12 +118,58 @@ void renderStartMenu(Game *game)
 
 void randomGenerator(Game *game) 
 {
-	srand (time(NULL));
+    srand (time(NULL));
 
-	if (rand()%10 < 9) 
-	{
-		MakeBlueBird(game);
-		BlueBirdRender(game);
-	}
+    if (rand()%10 < 9) 
+    {
+        MakeBlueBird(game);
+        BlueBirdRender(game);
+    }
 
+}
+
+void deleteBlueBird(Game *game, Bird *node)
+{
+    if (game->bhead != NULL) {
+        if (node->prev == NULL) {
+            if (node->next == NULL) {
+                game->bhead = NULL;
+            } else {
+                node->next->prev = NULL;
+                game->bhead = node->next;
+            }
+        } else {
+            if (node->next == NULL) {
+                node->prev->next = NULL;
+            } else {
+                node->prev->next = node->next;
+                node->next->prev = node->prev;
+            }
+        }
+        delete node;
+        node = NULL;
+    }
+}
+
+void deleteMissile(Game *game, Missile *node)
+{
+    if (game->mhead != NULL) {
+        if (node->prev == NULL) {
+            if (node->next == NULL) {
+                game->mhead = NULL;
+            } else {
+                node->next->prev = NULL;
+                game->mhead = node->next;
+            }
+        } else {
+            if (node->next == NULL) {
+                node->prev->next = NULL;
+            } else {
+                node->prev->next = node->next;
+                node->next->prev = node->prev;
+            }
+        }
+        delete node;
+        node = NULL;
+    }
 }

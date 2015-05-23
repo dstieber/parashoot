@@ -158,7 +158,7 @@ void init_opengl(Game *game)
 	InitCloud2();
 	InitMountain();
 	InitBlueBird();
-	InitBlueBird2();
+	//InitBlueBird2();
 	InitMissile();
 	InitPlane();
 	//create opengl texture elements
@@ -186,8 +186,8 @@ void makeCharacter(Game *game)
 	game->n++;
 	start_flag = false;
 	MakeMountain(game);
-	MakeBlueBird(game);
-	MakeBlueBird2(game);
+	//MakeBlueBird(game);
+	//MakeBlueBird2(game);
 	MakeMissile(game);
 	MakeCloud(game);
 	MakeCloud2(game);
@@ -237,9 +237,14 @@ void movement(Game *game)
 	p->s.center.y -= GRAVITY;
 	game->altitude -= GRAVITY;
 	gCameraY += (float)GRAVITY;
-        MountainMovement(game);
+    MountainMovement(game);
+
+    if (rand()%10 < 1) 
+    {
+        MakeBlueBird(game);
+    }
 	BlueBirdMovement(game);
-	BlueBirdMovement2(game);
+	//BlueBirdMovement2(game);
 	MissileMovement(game);
 	CloudMovement(game);
 	Cloud2Movement(game);
@@ -296,9 +301,9 @@ void render(Game *game)
 		renderCloud(game);
 		renderCharacter(game);
 		BlueBirdRender(game);	
-		BlueBirdRender2(game);
+		//BlueBirdRender2(game);
 		MissileRender(game);
-		randomGenerator(game);
+		//randomGenerator(game);
 		displayAltitude(game);
 		glPopMatrix();
 	}

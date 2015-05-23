@@ -30,4 +30,5 @@ void BlueBirdMovement(Game *game);
 void BlueBirdMovement2(Game *game);
 void BlueBirdRender(Game *game);
 void BlueBirdRender2(Game *game);
+extern void deleteBlueBird(Game *game, Bird *node);
 #endif

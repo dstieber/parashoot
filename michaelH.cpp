@@ -245,8 +245,8 @@ void InitMissile() {
 }
 
 void MakeMissile(Game *game) {
-    Object *m;
-    m = &game->Missile;
+    Missile *m;
+    m = &game->missile;
 
     m->s.center.x = 400;
     m->s.center.y = (game->altitude - (yres/2) - 600);
@@ -255,8 +255,8 @@ void MakeMissile(Game *game) {
 }
 
 void MissileMovement(Game *game) {
-    Object *m;
-    m = &game->Missile;
+    Missile *m;
+    m = &game->missile;
     m->s.center.x += m->velocity.x;
     m->s.center.y += m->velocity.y;
     m->s.center.y -= GRAVITY;
@@ -268,10 +268,10 @@ void MissileRender(Game *game) {
 
     if(game->altitude < 11500 && game->altitude > 10000)
     {
-	Object *mv;
+	Missile *mv;
 	Vec *m;
-	m = &game->Missile.s.center;
-	mv = &game->Missile;
+	m = &game->missile.s.center;
+	mv = &game->missile;
 
 	glBindTexture(GL_TEXTURE_2D, MSsilhouetteTexture);
 	glEnable(GL_ALPHA_TEST);

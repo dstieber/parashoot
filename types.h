@@ -42,22 +42,50 @@ struct Object {
     Vec velocity;
 };
 
-struct Game {
-    Shape box;
-    Character character;
+struct Bird {
+    Shape s;
+    Vec velocity;
+    struct Bird *prev;
+    struct Bird *next;
+    Bird() {
+        prev = NULL;
+        next = NULL;
+    }
+};
 
+struct Missile {
+    Shape s;
+    Vec velocity;
+    struct Missile *prev;
+    struct Missile *next;
+    Missile() {
+        prev = NULL;
+        next = NULL;
+    }
+};
+
+struct Game {
+    //Shape box;
+    Character character;
     Character BlueBird;
     Character BlueBird2;
-    Object Missile;
+    Missile missile;
     Object Cloud2;
     Object Cloud1;
     Object Mountain;
     Object Plane;
-
+    Bird *bhead; //pointer to head of bird linked list
+    Missile *mhead; //pointer to head of missile linked list
     int n;
+    int nbirds;
+    int nmissiles;
     float altitude;
     Game() {
 	altitude = (float)STARTING_ALTITUDE;
+    bhead = NULL;
+    mhead = NULL;
+    nbirds = 0;
+    nmissiles = 0;
 	n = 0;
     }
 };
