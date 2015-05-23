@@ -159,6 +159,7 @@ void init_opengl(Game *game)
 	InitMountain();
 	InitBlueBird();
 	InitBlueBird2();
+	InitBirdTemplate();
 	InitMissile();
 	InitPlane();
 	//create opengl texture elements
@@ -291,13 +292,17 @@ void render(Game *game)
 		}
 		//renderCloud(game);
 		renderCloud2(game);
-		renderPlane(game);
+		//renderPlane(game);
 		renderMountain(game);
 		renderCloud(game);
 		renderCharacter(game);
-		BlueBirdRender(game);	
-		BlueBirdRender2(game);
-		MissileRender(game);
+		//BlueBirdRender(game);	
+		//BlueBirdRender2(game);
+		//renderGreenBird(game);
+		//renderurpleBird(game);
+		//renderRedBird(game);
+		//renderOrangeBird(game);
+		//MissileRender(game);
 		displayAltitude(game);
 		glPopMatrix();
 	}

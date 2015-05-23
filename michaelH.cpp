@@ -20,6 +20,119 @@ GLuint CsilhouetteTexture;
 Ppmimage *PlaneImage = NULL;
 GLuint PsilhouetteTexture;
 
+Ppmimage *BirdTemplate = NULL;
+GLuint BirdTsilhouetteTexture;
+
+void InitBirdTemplate() {
+    BirdTemplate = ppm6GetImage("./images/BirdsTemplate2.ppm");
+    glGenTextures(1, &BirdTsilhouetteTexture);
+
+    //Cloud 2
+    glBindTexture(GL_TEXTURE_2D, BirdTsilhouetteTexture);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    unsigned char *BirdTsilhouetteData = buildAlphaData(BirdTemplate);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, BirdTemplate->width,
+	    BirdTemplate->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+	    BirdTsilhouetteData);
+    delete [] BirdTsilhouetteData;
+}
+
+void renderOrangeBird(Game *game) {
+    int w = 17;
+    int h = 13;
+
+    if (game->altitude > 11500 && game->altitude > 10000) {
+    Character *ov;
+    Vec *o;
+    o = &game->BlueBird.s.center;
+    ov = &game->BlueBird;
+
+    glBindTexture(GL_TEXTURE_2D, BirdTsilhouetteTexture);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
+    glColor4ub(255, 255, 255, 255);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.50f);   glVertex2i(o->x-w, o->y-h);
+    glTexCoord2f(0.0f, 0.25f);  glVertex2i(o->x-w, o->y+h);
+    glTexCoord2f(0.25f, 0.25f); glVertex2i(o->x+w, o->y+h);
+    glTexCoord2f(0.25f, 0.50f);  glVertex2i(o->x+w, o->y-h);
+    glEnd();
+    ov->velocity.x = 9;
+    }
+}
+
+void renderRedBird(Game *game) {
+    int wR = 17;
+    int hR = 13;
+
+    if (game->altitude < 11500 && game->altitude > 10000) {
+    Character *rv;
+    Vec *r;
+    r = &game->BlueBird.s.center;
+    rv = &game->BlueBird;
+
+    glBindTexture(GL_TEXTURE_2D, BirdTsilhouetteTexture);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
+    glColor4ub(255, 255, 255, 255);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.75f);   glVertex2i(r->x-wR, r->y-hR);
+    glTexCoord2f(0.0f, 0.50f);  glVertex2i(r->x-wR, r->y+hR);
+    glTexCoord2f(0.25f, 0.50f); glVertex2i(r->x+wR, r->y+hR);
+    glTexCoord2f(0.25f, 0.75f);  glVertex2i(r->x+wR, r->y-hR);
+    glEnd();
+    rv->velocity.x = 9;
+    }
+}
+
+void renderGreenBird(Game *game) {
+    int wG = 17;
+    int hG = 13;
+
+    if (game->altitude < 11500 && game->altitude > 10000) {
+    Character *gv;
+    Vec *g;
+    g = &game->BlueBird.s.center;
+    gv = &game->BlueBird;
+
+    glBindTexture(GL_TEXTURE_2D, BirdTsilhouetteTexture);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
+    glColor4ub(255, 255, 255, 255);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 0.25f);   glVertex2i(g->x-wG, g->y-hG);
+    glTexCoord2f(0.0f, 0.0f);  glVertex2i(g->x-wG, g->y+hG);
+    glTexCoord2f(0.25f, 0.0f); glVertex2i(g->x+wG, g->y+hG);
+    glTexCoord2f(0.25f, 0.25f);  glVertex2i(g->x+wG, g->y-hG);
+    glEnd();
+    gv->velocity.x = 9;
+    }
+}
+
+void renderPurpleBird(Game *game) {
+    int wP = 17;
+    int hP = 13;
+
+    Character *pv;
+    Vec *p;
+    p = &game->BlueBird.s.center;
+    pv = &game->BlueBird;
+
+    glBindTexture(GL_TEXTURE_2D, BirdTsilhouetteTexture);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.0f);
+    glColor4ub(255, 255, 255, 255);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f);   glVertex2i(p->x-wP, p->y-hP);
+    glTexCoord2f(0.0f, 0.75f);  glVertex2i(p->x-wP, p->y+hP);
+    glTexCoord2f(0.25f, 0.75f); glVertex2i(p->x+wP, p->y+hP);
+    glTexCoord2f(0.25f, 1.0f);  glVertex2i(p->x+wP, p->y-hP);
+    glEnd();
+    pv->velocity.x = 9;
+}
+
 void InitCloud() {
     CloudImage = ppm6GetImage("./images/Cloud1.ppm");
     glGenTextures(1, &C1silhouetteTexture);
@@ -55,22 +168,28 @@ void renderCloud(Game *game) {
     glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
     glEnd();
 
-    if (cv->velocity.x == 0 && cv->velocity.y == 0) {
-	cv->velocity.y = .15;
-	cv->velocity.x = rand()%2;
-    }
+    if (game->altitude < 9000) {
+	cv->velocity.y = 0;
 
-    if (c->x <= 50) {
-	cv->velocity.x = rand()%2;
-    }
-    if (c->x >= (xres-50)) {
-	cv->velocity.x = -rand()%2;
-    }
+	if (c->x <= 50) {
+	    cv->velocity.x = rand()%2;
+	}
+	if (c->x >= (xres-50)) {
+	    cv->velocity.x = rand()%2;
+	}
+    } else {
+    	if (cv->velocity.x == 0) {
+	    cv->velocity.y = .15;
+	    cv->velocity.x = rand()%2;
+    	}
 
-    if (c->y >= (game->altitude - 50)) {	
-    }
-    if (c->y <= (game->altitude - (yres - 50))) {  
-    }
+	if (c->x <= 50) {
+	    cv->velocity.x = rand()%2;
+    	}
+        if (c->x >= (xres-50)) {
+ 	    cv->velocity.x = -rand()%2;
+        }
+    }	
 }
 
 void MakeCloud(Game *game) {
@@ -110,7 +229,6 @@ void InitCloud2() {
 
 #define rnd() (float)rand()/(float)RAND_MAX
 void renderCloud2(Game *game) {
-
     int w = 120;  //482
     int h = 60;  //222 
 
@@ -128,22 +246,27 @@ void renderCloud2(Game *game) {
     glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
     glEnd();
 
-    if (cv->velocity.x == 0 && cv->velocity.y == 0) {
-	cv->velocity.y = .15;
-	cv->velocity.x = rand()%2;
-    }
+    if (game->altitude < 9000) {
+	cv->velocity.y = 0;
 
+	if (c->x <= 50) {
+	    cv->velocity.x = rand()%2;
+	}
+	if (c->x >= (xres-50)) {
+	    cv->velocity.x = rand()%2;
+	}
+    } else {
+    	if (cv->velocity.x == 0) {
+	    cv->velocity.y = .15;
+	    cv->velocity.x = rand()%2;
+    	}
 
-    if (c->x <= 50) {
-	cv->velocity.x = rand()%2;
-    }
-    if (c->x >= (xres-50)) {
-	cv->velocity.x = -rand()%2;
-    }
-
-    if (c->y >= (game->altitude - 50)) {	
-    }
-    if (c->y <= (game->altitude - (yres - 50))) {   
+	if (c->x <= 50) {
+	    cv->velocity.x = rand()%2;
+    	}
+        if (c->x >= (xres-50)) {
+ 	    cv->velocity.x = -rand()%2;
+        } 
     }
 }
 

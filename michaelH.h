@@ -39,6 +39,12 @@ void MakePlane(Game *game);
 void PlaneMovement(Game *game);
 void renderPlane(Game *game);
 
+void InitBirdTemplate();
+void renderPurpleBird(Game *game);
+void renderGreenBird(Game *game);
+void renderRedBird(Game *game);
+void renderOrangeBird(Game *game);
+
 void init_keys();
 int check_keys(XEvent *e);
 
