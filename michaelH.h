@@ -45,6 +45,11 @@ void renderGreenBird(Game *game);
 void renderRedBird(Game *game);
 void renderOrangeBird(Game *game);
 
+void InitMissileTemplate();
+void renderBlueMissile(Game *game);
+void renderRedMissile(Game *game);
+void renderYellowMissile(Game *game);
+
 void init_keys();
 int check_keys(XEvent *e);
 

@@ -160,6 +160,7 @@ void init_opengl(Game *game)
 	InitBlueBird();
 	InitBlueBird2();
 	InitBirdTemplate();
+	InitMissileTemplate();
 	InitMissile();
 	InitPlane();
 	//create opengl texture elements
@@ -296,6 +297,7 @@ void render(Game *game)
 		renderMountain(game);
 		renderCloud(game);
 		renderCharacter(game);
+	/*
 		BlueBirdRender(game);	
 		BlueBirdRender2(game);
 		renderGreenBird(game);
@@ -303,6 +305,10 @@ void render(Game *game)
 		renderRedBird(game);
 		renderOrangeBird(game);
 		MissileRender(game);
+		renderBlueMissile(game);
+		renderRedMissile(game);
+	*/
+		renderYellowMissile(game);
 		displayAltitude(game);
 		glPopMatrix();
 	}

@@ -23,6 +23,104 @@ GLuint PsilhouetteTexture;
 Ppmimage *BirdTemplate = NULL;
 GLuint BirdTsilhouetteTexture;
 
+Ppmimage *MissileTemplate = NULL;
+GLuint MissileTsilhouetteTexture;
+
+
+void InitMissileTemplate() {
+    MissileTemplate = ppm6GetImage("./images/MissileTemplate.ppm");
+    glGenTextures(1, &MissileTsilhouetteTexture);
+
+    //Cloud 2
+    glBindTexture(GL_TEXTURE_2D, MissileTsilhouetteTexture);
+    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    unsigned char *MissileTsilhouetteData = buildAlphaData(MissileTemplate);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, MissileTemplate->width,
+	    MissileTemplate->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+	    MissileTsilhouetteData);
+    delete [] MissileTsilhouetteData;
+}
+
+void renderBlueMissile(Game *game) {
+    int w = 40;
+    int h = 84;
+
+    if(game->altitude < 11500 && game->altitude > 10000)
+    {
+	Object *mv;
+	Vec *m;
+	m = &game->Missile.s.center;
+	mv = &game->Missile;
+
+	glBindTexture(GL_TEXTURE_2D, MissileTsilhouetteTexture);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
+	glColor4ub(255, 255, 255, 255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(m->x-w, m->y-h);
+	glTexCoord2f(0.0f, 0.5f); glVertex2i(m->x-w, m->y+h);
+	glTexCoord2f(0.25f, 0.5f); glVertex2i(m->x+w, m->y+h);
+	glTexCoord2f(0.25f, 1.0f); glVertex2i(m->x+w, m->y-h);
+	glEnd();
+
+	mv->velocity.y = 15;
+    }
+}
+
+void renderRedMissile(Game *game) {
+    int w = 40;
+    int h = 84;
+
+    if(game->altitude < 11500 && game->altitude > 10000)
+    {
+	Object *mv;
+	Vec *m;
+	m = &game->Missile.s.center;
+	mv = &game->Missile;
+
+	glBindTexture(GL_TEXTURE_2D, MissileTsilhouetteTexture);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
+	glColor4ub(255, 255, 255, 255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.5f, 1.0f); glVertex2i(m->x-w, m->y-h);
+	glTexCoord2f(0.5f, 0.5f); glVertex2i(m->x-w, m->y+h);
+	glTexCoord2f(0.75f, 0.5f); glVertex2i(m->x+w, m->y+h);
+	glTexCoord2f(0.75f, 1.0f); glVertex2i(m->x+w, m->y-h);
+	glEnd();
+
+	mv->velocity.y = 15;
+    }
+}
+
+void renderYellowMissile(Game *game) {
+    int w = 40;
+    int h = 84;
+
+    if(game->altitude < 11500 && game->altitude > 10000)
+    {
+	Object *mv;
+	Vec *m;
+	m = &game->Missile.s.center;
+	mv = &game->Missile;
+
+	glBindTexture(GL_TEXTURE_2D, MissileTsilhouetteTexture);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
+	glColor4ub(255, 255, 255, 255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.5f, 0.5f); glVertex2i(m->x-w, m->y-h);
+	glTexCoord2f(0.5f, 0.0f); glVertex2i(m->x-w, m->y+h);
+	glTexCoord2f(0.75f, 0.0f); glVertex2i(m->x+w, m->y+h);
+	glTexCoord2f(0.75f, 0.5f); glVertex2i(m->x+w, m->y-h);
+	glEnd();
+
+	mv->velocity.y = 15;
+    }
+}
+
 void InitBirdTemplate() {
     BirdTemplate = ppm6GetImage("./images/BirdsTemplate2.ppm");
     glGenTextures(1, &BirdTsilhouetteTexture);
