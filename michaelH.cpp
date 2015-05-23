@@ -121,6 +121,32 @@ void renderYellowMissile(Game *game) {
     }
 }
 
+void renderGreenMissile(Game *game) {
+    int w = 40;
+    int h = 84;
+
+    if(game->altitude < 11500 && game->altitude > 10000)
+    {
+	Object *mv;
+	Vec *m;
+	m = &game->Missile.s.center;
+	mv = &game->Missile;
+
+	glBindTexture(GL_TEXTURE_2D, MissileTsilhouetteTexture);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
+	glColor4ub(255, 255, 255, 255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.5f); glVertex2i(m->x-w, m->y-h);
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(m->x-w, m->y+h);
+	glTexCoord2f(0.25f, 0.0f); glVertex2i(m->x+w, m->y+h);
+	glTexCoord2f(0.25f, 0.5f); glVertex2i(m->x+w, m->y-h);
+	glEnd();
+
+	mv->velocity.y = 15;
+    }
+}
+
 void InitBirdTemplate() {
     BirdTemplate = ppm6GetImage("./images/BirdsTemplate2.ppm");
     glGenTextures(1, &BirdTsilhouetteTexture);
@@ -442,22 +468,6 @@ void renderMountain(Game *game) {
     }
 }
 
-void InitMissile() {
-    MissileImage = ppm6GetImage("./images/MissileFinished.ppm");
-    glGenTextures(1, &MSsilhouetteTexture);
-
-    //Missile
-    glBindTexture(GL_TEXTURE_2D, MSsilhouetteTexture);
-    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    unsigned char *MSsilhouetteData = buildAlphaData(MissileImage);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, MissileImage->width,
-	    MissileImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-	    MSsilhouetteData);
-    delete [] MSsilhouetteData;
-}
-
 void MakeMissile(Game *game) {
     Object *m;
     m = &game->Missile;
@@ -474,32 +484,6 @@ void MissileMovement(Game *game) {
     m->s.center.x += m->velocity.x;
     m->s.center.y += m->velocity.y;
     m->s.center.y -= GRAVITY;
-}
-
-void MissileRender(Game *game) {
-    int w = 40;
-    int h = 84;
-
-    if(game->altitude < 11500 && game->altitude > 10000)
-    {
-	Object *mv;
-	Vec *m;
-	m = &game->Missile.s.center;
-	mv = &game->Missile;
-
-	glBindTexture(GL_TEXTURE_2D, MSsilhouetteTexture);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.0f);
-	glColor4ub(255, 255, 255, 255);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(m->x-w, m->y-h);
-	glTexCoord2f(0.0f, 0.0f); glVertex2i(m->x-w, m->y+h);
-	glTexCoord2f(0.5f, 0.0f); glVertex2i(m->x+w, m->y+h);
-	glTexCoord2f(0.5f, 1.0f); glVertex2i(m->x+w, m->y-h);
-	glEnd();
-
-	mv->velocity.y = 15;
-    }
 }
 
 void InitPlane() {

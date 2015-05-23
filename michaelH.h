@@ -19,10 +19,10 @@ void MakeMountain(Game *game);
 void MountainMovement(Game *game);
 void renderMountain(Game *game);
 
-void InitMissile();
+//void InitMissile();
 void MakeMissile(Game *game);
 void MissileMovement(Game *game);
-void MissileRender(Game *game);
+//void MissileRender(Game *game);
 
 void InitCloud();
 void MakeCloud(Game *game);
@@ -49,6 +49,7 @@ void InitMissileTemplate();
 void renderBlueMissile(Game *game);
 void renderRedMissile(Game *game);
 void renderYellowMissile(Game *game);
+void renderGreenMissile(Game *game);
 
 void init_keys();
 int check_keys(XEvent *e);
