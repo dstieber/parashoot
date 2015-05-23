@@ -296,13 +296,13 @@ void render(Game *game)
 		renderMountain(game);
 		renderCloud(game);
 		renderCharacter(game);
-		//BlueBirdRender(game);	
-		//BlueBirdRender2(game);
-		//renderGreenBird(game);
-		//renderurpleBird(game);
-		//renderRedBird(game);
-		//renderOrangeBird(game);
-		//MissileRender(game);
+		BlueBirdRender(game);	
+		BlueBirdRender2(game);
+		renderGreenBird(game);
+		renderPurpleBird(game);
+		renderRedBird(game);
+		renderOrangeBird(game);
+		MissileRender(game);
 		displayAltitude(game);
 		glPopMatrix();
 	}

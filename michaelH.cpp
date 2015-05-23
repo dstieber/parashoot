@@ -43,7 +43,6 @@ void renderOrangeBird(Game *game) {
     int w = 17;
     int h = 13;
 
-    if (game->altitude > 11500 && game->altitude > 10000) {
     Character *ov;
     Vec *o;
     o = &game->BlueBird.s.center;
@@ -60,7 +59,6 @@ void renderOrangeBird(Game *game) {
     glTexCoord2f(0.25f, 0.50f);  glVertex2i(o->x+w, o->y-h);
     glEnd();
     ov->velocity.x = 9;
-    }
 }
 
 void renderRedBird(Game *game) {
@@ -168,14 +166,14 @@ void renderCloud(Game *game) {
     glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
     glEnd();
 
-    if (game->altitude < 9000) {
+    if (game->altitude < 7000) {
 	cv->velocity.y = 0;
 
 	if (c->x <= 50) {
 	    cv->velocity.x = rand()%2;
 	}
 	if (c->x >= (xres-50)) {
-	    cv->velocity.x = rand()%2;
+	    cv->velocity.x = -rand()%2;
 	}
     } else {
     	if (cv->velocity.x == 0) {
@@ -246,14 +244,14 @@ void renderCloud2(Game *game) {
     glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
     glEnd();
 
-    if (game->altitude < 9000) {
+    if (game->altitude < 7000) {
 	cv->velocity.y = 0;
 
 	if (c->x <= 50) {
 	    cv->velocity.x = rand()%2;
 	}
 	if (c->x >= (xres-50)) {
-	    cv->velocity.x = rand()%2;
+	    cv->velocity.x = -rand()%2;
 	}
     } else {
     	if (cv->velocity.x == 0) {
@@ -337,14 +335,9 @@ void renderMountain(Game *game) {
     glTexCoord2f(0.0f, 0.0f); glVertex2i(m->x-w, m->y+h -400);
     glTexCoord2f(1.0f, 0.0f); glVertex2i(m->x+w, m->y+h -400);
     glTexCoord2f(1.0f, 1.0f); glVertex2i(m->x+w, m->y-h -400);
-    /*int ybottom = game->altitude - yres;	
-      glTexCoord2f(0.0f, 1.0f); glVertex2i(0, ybottom);
-      glTexCoord2f(0.0f, 0.0f); glVertex2i(0, game->altitude);
-      glTexCoord2f(1.0f, 0.0f); glVertex2i(xres, game->altitude);
-      glTexCoord2f(1.0f, 1.0f); glVertex2i(xres, ybottom);*/
     glEnd();
 
-    if (game->altitude < 500) {
+    if (game->altitude < 7000) {
 	mv->velocity.y = 0;
     } else {
 	mv->velocity.y = .15;	// .25
