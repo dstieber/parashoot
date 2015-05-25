@@ -268,6 +268,13 @@ void movement(Game *game)
 	game->rleg1.s.rotInc += GRAVITY/8;
 	game->lleg1.s.rotInc += GRAVITY/8;
 
+	if(game->body.s.rot < 30.0)
+	{
+		game->body.s.rotInc += 0.7f;
+	}
+	else	
+		game->body.s.rotInc += 0.1f;
+
 	game->rarm2.s.rotInc += -GRAVITY/16;
 	game->larm2.s.rotInc += -GRAVITY/16;
 	game->rleg2.s.rotInc += GRAVITY/16;
@@ -279,6 +286,13 @@ void movement(Game *game)
 	game->larm1.s.rotInc += GRAVITY/8;
 	game->rleg1.s.rotInc += -GRAVITY/8;
 	game->lleg1.s.rotInc += -GRAVITY/8;
+
+	if(game->body.s.rot > 30.0)
+	{
+		game->body.s.rotInc += -0.7f;
+	}
+	else
+		game->body.s.rotInc += -0.1f;
 
 	game->rarm2.s.rotInc += GRAVITY/16;
 	game->larm2.s.rotInc += GRAVITY/16;
@@ -334,7 +348,8 @@ void movement(Game *game)
 	game->rleg2.s.rotInc += -GRAVITY/8;
 	game->lleg2.s.rotInc += GRAVITY/8;
 }
-	
+
+		
 	//right arm restriction
 	if(game->rarm1.s.rot > 151)
 	{
@@ -406,10 +421,21 @@ void movement(Game *game)
 		game->lleg2.s.rot = -50;
 	}
 
+
+	if(game->body.s.rotInc > 7)
+	{
+		game->body.s.rotInc += -5.0f;
+	}
+	if(game->body.s.rotInc < -7)
+	{
+		game->body.s.rotInc += 5.0f;
+	}
 	game->rarm1.s.rot += game->rarm1.s.rotInc;
 	game->larm1.s.rot += game->larm1.s.rotInc;
 	game->rleg1.s.rot += game->rleg1.s.rotInc;
 	game->lleg1.s.rot += game->lleg1.s.rotInc;
+
+	game->body.s.rot += game->body.s.rotInc;
 
 	game->rarm2.s.rot += game->rarm2.s.rotInc;
 	game->larm2.s.rot += game->larm2.s.rotInc;
@@ -471,29 +497,173 @@ void movement(Game *game)
 	}
 
 	//missile collision
-	if(mis->s.center.x >= p->s.c[0] - p->s.width &&
+	if(
+	  (mis->s.center.x >= p->s.c[0] - p->s.width &&
 	   mis->s.center.x <= p->s.c[0] + p->s.width &&
-	   mis->s.center.y <= p->s.c[1] + p->s.height &&
-	   mis->s.center.y >= p->s.c[1] - p->s.height)
-	{
-		mis->s.center.x = 0;
+	   mis->s.center.y < p->s.c[1] + p->s.height &&
+	   mis->s.center.y > p->s.c[1] - p->s.height) 
+	   ||
+	  (mis->s.center.x >= game->head.s.c[0] - game->head.s.width &&
+	   mis->s.center.x <= game->head.s.c[0] + game->head.s.width &&
+	   mis->s.center.y < game->head.s.c[1] + game->head.s.height &&
+	   mis->s.center.y > game->head.s.c[1] - game->head.s.height)
+	   ||
+	  (mis->s.center.x >= game->rarm1.s.c[0] - game->rarm1.s.width &&
+	   mis->s.center.x <= game->rarm1.s.c[0] + game->rarm1.s.width &&
+	   mis->s.center.y < game->rarm1.s.c[1] + game->rarm1.s.height &&
+	   mis->s.center.y > game->rarm1.s.c[1] - game->rarm1.s.height)
+	   ||
+	   (mis->s.center.x >= game->rarm2.s.c[0] - game->rarm2.s.width &&
+	   mis->s.center.x <= game->rarm2.s.c[0] + game->rarm2.s.width &&
+	   mis->s.center.y < game->rarm2.s.c[1] + game->rarm2.s.height &&
+	   mis->s.center.y > game->rarm2.s.c[1] - game->rarm2.s.height)
+	   ||
+	   (mis->s.center.x >= game->rleg1.s.c[0] - game->rleg1.s.width &&
+	   mis->s.center.x <= game->rleg1.s.c[0] + game->rleg1.s.width &&
+	   mis->s.center.y < game->rleg1.s.c[1] + game->rleg1.s.height &&
+	   mis->s.center.y > game->rleg1.s.c[1] - game->rleg1.s.height)
+	   ||
+	  (mis->s.center.x >= game->rleg2.s.c[0] - game->rleg2.s.width &&
+	   mis->s.center.x <= game->rleg2.s.c[0] + game->rleg2.s.width &&
+	   mis->s.center.y < game->rleg2.s.c[1] + game->rleg2.s.height &&
+	   mis->s.center.y > game->rleg2.s.c[1] - game->rleg2.s.height)
+	   || 
+	   (mis->s.center.x >= game->lleg1.s.c[0] - game->lleg1.s.width &&
+	   mis->s.center.x <= game->lleg1.s.c[0] + game->lleg1.s.width &&
+	   mis->s.center.y < game->lleg1.s.c[1] + game->lleg1.s.height &&
+	   mis->s.center.y > game->lleg1.s.c[1] - game->lleg1.s.height)
+ 	   ||
+	  (mis->s.center.x >= game->lleg2.s.c[0] - game->lleg2.s.width &&
+	   mis->s.center.x <= game->lleg2.s.c[0] + game->lleg2.s.width &&
+	   mis->s.center.y < game->lleg2.s.c[1] + game->lleg2.s.height &&
+	   mis->s.center.y > game->lleg2.s.c[1] - game->lleg2.s.height)
+	   ||
+	   (mis->s.center.x >= game->larm1.s.c[0] - game->larm1.s.width &&
+	   mis->s.center.x <= game->larm1.s.c[0] + game->larm1.s.width &&
+	   mis->s.center.y < game->larm1.s.c[1] + game->larm1.s.height &&
+	   mis->s.center.y > game->larm1.s.c[1] - game->larm1.s.height)
+	   ||
+	   (mis->s.center.x >= game->larm2.s.c[0] - game->larm2.s.width &&
+	   mis->s.center.x <= game->larm2.s.c[0] + game->larm2.s.width &&
+	   mis->s.center.y < game->larm2.s.c[1] + game->larm2.s.height &&
+	   mis->s.center.y > game->larm2.s.c[1] - game->larm2.s.height)
+	  )
+{
+	   	mis->s.center.x = 0;
 		mis->s.center.y = 0;
+		p->s.rotInc = GRAVITY;
+		p->s.rotInc = 0;
 }
 	//bird collision
-	if(b->s.center.x >= p->s.c[0] - p->s.width &&
+	if((b->s.center.x >= p->s.c[0] - p->s.width &&
 	   b->s.center.x <= p->s.c[0] + p->s.width &&
 	   b->s.center.y < p->s.c[1] + p->s.height &&
-	   b->s.center.y > p->s.c[1] - p->s.height)
+	   b->s.center.y > p->s.c[1] - p->s.height) 
+	   ||
+	   (b->s.center.x >= game->head.s.c[0] - game->head.s.width &&
+	    b->s.center.x <= game->head.s.c[0] + game->head.s.width &&
+	    b->s.center.y < game->head.s.c[1] + game->head.s.height &&
+	    b->s.center.y > game->head.s.c[1] - game->head.s.height)
+	   ||
+	   (b->s.center.x >= game->rarm1.s.c[0] - game->rarm1.s.width &&
+	   b->s.center.x <= game->rarm1.s.c[0] + game->rarm1.s.width &&
+	   b->s.center.y < game->rarm1.s.c[1] + game->rarm1.s.height &&
+	   b->s.center.y > game->rarm1.s.c[1] - game->rarm1.s.height)
+	   ||
+	   (b->s.center.x >= game->larm1.s.c[0] - game->larm1.s.width &&
+	   b->s.center.x <= game->larm1.s.c[0] + game->larm1.s.width &&
+	   b->s.center.y < game->larm1.s.c[1] + game->larm1.s.height &&
+	   b->s.center.y > game->larm1.s.c[1] - game->larm1.s.height)
+	   ||
+	   (b->s.center.x >= game->rarm2.s.c[0] - game->rarm2.s.width &&
+	   b->s.center.x <= game->rarm2.s.c[0] + game->rarm2.s.width &&
+	   b->s.center.y < game->rarm2.s.c[1] + game->rarm2.s.height &&
+	   b->s.center.y > game->rarm2.s.c[1] - game->rarm2.s.height)
+	   ||
+	   (b->s.center.x >= game->larm2.s.c[0] - game->larm2.s.width &&
+	   b->s.center.x <= game->larm2.s.c[0] + game->larm2.s.width &&
+	   b->s.center.y < game->larm2.s.c[1] + game->larm2.s.height &&
+	   b->s.center.y > game->larm2.s.c[1] - game->larm2.s.height)
+	   ||
+	   (b->s.center.x >= game->rleg1.s.c[0] - game->rleg1.s.width &&
+	   b->s.center.x <= game->rleg1.s.c[0] + game->rleg1.s.width &&
+	   b->s.center.y < game->rleg1.s.c[1] + game->rleg1.s.height &&
+	   b->s.center.y > game->rleg1.s.c[1] - game->rleg1.s.height)
+	   ||
+	   (b->s.center.x >= game->rleg2.s.c[0] - game->rleg2.s.width &&
+	   b->s.center.x <= game->rleg2.s.c[0] + game->rleg2.s.width &&
+	   b->s.center.y < game->rleg2.s.c[1] + game->rleg2.s.height &&
+	   b->s.center.y > game->rleg2.s.c[1] - game->rleg2.s.height)
+	   ||
+	   (b->s.center.x >= game->lleg1.s.c[0] - game->lleg1.s.width &&
+	   b->s.center.x <= game->lleg1.s.c[0] + game->lleg1.s.width &&
+	   b->s.center.y < game->lleg1.s.c[1] + game->lleg1.s.height &&
+	   b->s.center.y > game->lleg1.s.c[1] - game->lleg1.s.height)
+ 	   ||
+	   (b->s.center.x >= game->lleg2.s.c[0] - game->lleg2.s.width &&
+	   b->s.center.x <= game->lleg2.s.c[0] + game->lleg2.s.width &&
+	   b->s.center.y < game->lleg2.s.c[1] + game->lleg2.s.height &&
+	   b->s.center.y > game->lleg2.s.c[1] - game->lleg2.s.height)
+)
 	{
-		game->health = game->health - 10;
+		p->s.rotInc += GRAVITY/4;
+		p->s.velocityx += 6;
 		b->s.center.y += 100;		
     }
-	if(b2->s.center.x >= p->s.c[0] - p->s.width &&
+	if(
+	   (b2->s.center.x >= p->s.c[0] - p->s.width &&
 	   b2->s.center.x <= p->s.c[0] + p->s.width &&
 	   b2->s.center.y < p->s.c[1] + p->s.height &&
-	   b2->s.center.y > p->s.c[1] - p->s.height)
+	   b2->s.center.y > p->s.c[1] - p->s.height) 
+	   ||
+	   (b2->s.center.x >= game->head.s.c[0] - game->head.s.width &&
+	    b2->s.center.x <= game->head.s.c[0] + game->head.s.width &&
+	    b2->s.center.y < game->head.s.c[1] + game->head.s.height &&
+	    b2->s.center.y > game->head.s.c[1] - game->head.s.height)
+	   ||
+	   (b2->s.center.x >= game->rarm1.s.c[0] - game->rarm1.s.width &&
+	   b2->s.center.x <= game->rarm1.s.c[0] + game->rarm1.s.width &&
+	   b2->s.center.y < game->rarm1.s.c[1] + game->rarm1.s.height &&
+	   b2->s.center.y > game->rarm1.s.c[1] - game->rarm1.s.height)
+	   ||
+	   (b2->s.center.x >= game->larm1.s.c[0] - game->larm1.s.width &&
+	   b2->s.center.x <= game->larm1.s.c[0] + game->larm1.s.width &&
+	   b2->s.center.y < game->larm1.s.c[1] + game->larm1.s.height &&
+	   b2->s.center.y > game->larm1.s.c[1] - game->larm1.s.height)
+	   ||
+	   (b2->s.center.x >= game->rarm2.s.c[0] - game->rarm2.s.width &&
+	   b2->s.center.x <= game->rarm2.s.c[0] + game->rarm2.s.width &&
+	   b2->s.center.y < game->rarm2.s.c[1] + game->rarm2.s.height &&
+	   b2->s.center.y > game->rarm2.s.c[1] - game->rarm2.s.height)
+	   ||
+	   (b2->s.center.x >= game->larm2.s.c[0] - game->larm2.s.width &&
+	   b2->s.center.x <= game->larm2.s.c[0] + game->larm2.s.width &&
+	   b2->s.center.y < game->larm2.s.c[1] + game->larm2.s.height &&
+	   b2->s.center.y > game->larm2.s.c[1] - game->larm2.s.height)
+	   ||
+	   (b2->s.center.x >= game->rleg1.s.c[0] - game->rleg1.s.width &&
+	   b2->s.center.x <= game->rleg1.s.c[0] + game->rleg1.s.width &&
+	   b2->s.center.y < game->rleg1.s.c[1] + game->rleg1.s.height &&
+	   b2->s.center.y > game->rleg1.s.c[1] - game->rleg1.s.height)
+	   ||
+	   (b2->s.center.x >= game->rleg2.s.c[0] - game->rleg2.s.width &&
+	   b2->s.center.x <= game->rleg2.s.c[0] + game->rleg2.s.width &&
+	   b2->s.center.y < game->rleg2.s.c[1] + game->rleg2.s.height &&
+	   b2->s.center.y > game->rleg2.s.c[1] - game->rleg2.s.height)
+	   ||
+	   (b2->s.center.x >= game->lleg1.s.c[0] - game->lleg1.s.width &&
+	   b2->s.center.x <= game->lleg1.s.c[0] + game->lleg1.s.width &&
+	   b2->s.center.y < game->lleg1.s.c[1] + game->lleg1.s.height &&
+	   b2->s.center.y > game->lleg1.s.c[1] - game->lleg1.s.height)
+ 	   ||
+	   (b2->s.center.x >= game->lleg2.s.c[0] - game->lleg2.s.width &&
+	   b2->s.center.x <= game->lleg2.s.c[0] + game->lleg2.s.width &&
+	   b2->s.center.y < game->lleg2.s.c[1] + game->lleg2.s.height &&
+	   b2->s.center.y > game->lleg2.s.c[1] - game->lleg2.s.height)
+)
 	{
-		game->health = game->health - 10;
+		p->s.rotInc += -GRAVITY/4;
+		p->s.velocityx += -6;
 		b2->s.center.y += 100;		
     }
 
