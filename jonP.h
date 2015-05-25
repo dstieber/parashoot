@@ -15,11 +15,11 @@ Purpose: The purpose of this lab is to seperate game files
 #include <FMOD/wincompat.h>
 #include "fmod.h"
 #endif
-
 extern Game game;
 extern int xres;
 extern int yres;
 extern unsigned char *buildAlphaData(Ppmimage *img);
+extern bool endf;
 void play();
 void create_sounds();
 void InitBlueBird();
@@ -33,4 +33,5 @@ void BlueBirdMovement2(Game *game);
 void BlueBirdRender(Game *game);
 void BlueBirdRender2(Game *game);
 void LogoRender(Game *game);
+void end(Game *game);
 #endif

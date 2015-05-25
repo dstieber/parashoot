@@ -175,8 +175,8 @@ void BlueBirdRender2(Game *game)
     */
 
    // if(game->altitude < 11600 && game->altitude > 10000)
-   	if(rand()%100 <1) {
-	    std::cout << (rand()%100);
+//   	if(rand()%100 <1) {
+//	    std::cout << (rand()%100);
        if ((game->altitude + yres) > game->altitude && game->altitude > (game->altitude - yres))
     
        {
@@ -203,7 +203,6 @@ void BlueBirdRender2(Game *game)
     }
     }
 
-}
 
 void LogoRender(Game *game)
 {
@@ -241,4 +240,20 @@ void create_sounds() {
 
 void play() {
     //fmod_playsound(0);
+}
+
+void end(Game *game) {
+
+if(endf == true) {
+	Rect end;
+
+	end.bot = game->altitude - yres/2;
+	end.width = 500;
+	end.height = 100;
+	end.center = xres/2;
+	end.left = xres/2;
+
+	ggprint16(&end, 1000, 0x00fff000, "Press 'R' to Restart");
+
+}
 }

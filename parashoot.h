@@ -17,7 +17,7 @@ int xres = WINDOW_WIDTH;
 int yres = WINDOW_HEIGHT;
 bool size_flag = false;
 bool start_flag = true;
-
+bool endf = false;
 //Camera position
 GLfloat gCameraY = 0.0f;
 

@@ -20,7 +20,7 @@ extern "C" {
 #include "fonts.h"
 }
 
-#define GRAVITY 3.0
+#define GRAVITY 30.0
 #define STARTING_ALTITUDE 12000
 #define MAX 50
 

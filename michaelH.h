@@ -13,6 +13,8 @@ extern Game game;
 extern int xres, yres;
 extern GLuint mountainTexture, msilhouetteTexture;
 extern unsigned char *buildAlphaData(Ppmimage *img);
+extern void end(Game *game);
+extern bool endf;
 
 void InitMountain();
 void MakeMountain(Game *game);

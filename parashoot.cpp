@@ -301,6 +301,7 @@ void render(Game *game)
 		BlueBirdRender2(game);
 		MissileRender(game);
 		displayAltitude(game);
+		end(game);
 		glPopMatrix();
 	}
 
