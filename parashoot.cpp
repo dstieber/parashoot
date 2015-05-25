@@ -192,6 +192,7 @@ void makeCharacter(Game *game)
 	MakeCloud(game);
 	MakeCloud2(game);
 	MakePlane(game);
+        MakeLogo(game);
 }
 
 void check_mouse(XEvent *e, Game *game)
@@ -244,6 +245,7 @@ void movement(Game *game)
 	CloudMovement(game);
 	Cloud2Movement(game);
 	PlaneMovement(game);
+	//LogoMovement(game);
 	//check for collision with objects here...
 	//Shape *s;
 	if (keys[XK_Right]) {
@@ -305,11 +307,13 @@ void render(Game *game)
 	if(start_flag) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glMatrixMode(GL_MODELVIEW);
+
 		glPushMatrix();
 		glColor3f(1.0, 1.0, 1.0);
 		if (sky)
 			renderSky(game);
 		glPopMatrix();
 		renderStartMenu(game);	
+		//LogoRender(game);
 	}
 }

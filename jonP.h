@@ -24,10 +24,13 @@ void play();
 void create_sounds();
 void InitBlueBird();
 void InitBlueBird2();
+void InitLogo();
 void MakeBlueBird(Game *game);
 void MakeBlueBird2(Game *game);
+void MakeLogo(Game *game);
 void BlueBirdMovement(Game *game);
 void BlueBirdMovement2(Game *game);
 void BlueBirdRender(Game *game);
 void BlueBirdRender2(Game *game);
+void LogoRender(Game *game);
 #endif

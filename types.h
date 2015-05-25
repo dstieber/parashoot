@@ -55,6 +55,7 @@ struct Game {
     Object Cloud1;
     Object Mountain;
     Object Plane;
+    Object Logo;
 
     int n;
     ~Game() { delete [] BlueBird2; }
