@@ -188,7 +188,7 @@ void makeCharacter(Game *game)
 	MakeMountain(game);
 	//MakeBlueBird(game);
 	//MakeBlueBird2(game);
-	MakeMissile(game);
+	//MakeMissile(game);
 	MakeCloud(game);
 	MakeCloud2(game);
 	MakePlane(game);
@@ -240,9 +240,9 @@ void movement(Game *game)
     MountainMovement(game);
 
     if (rand()%10 < 1) 
-    {
         MakeBlueBird(game);
-    }
+    if (rand()%50 < 1)
+        MakeMissile(game);
 	BlueBirdMovement(game);
 	//BlueBirdMovement2(game);
 	MissileMovement(game);

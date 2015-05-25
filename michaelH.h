@@ -23,6 +23,7 @@ void InitMissile();
 void MakeMissile(Game *game);
 void MissileMovement(Game *game);
 void MissileRender(Game *game);
+extern void deleteMissile(Game *game, Missile *node);
 
 void InitCloud();
 void MakeCloud(Game *game);

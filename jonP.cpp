@@ -13,7 +13,7 @@ GLuint BsilhouetteTexture2;
 
 void InitBlueBird()
 {
-    BlueBirdImage = ppm6GetImage("./images/BlueBird.ppm");
+    BlueBirdImage = ppm6GetImage("./images/BirdsTemplate.ppm");
     glGenTextures(1, &BsilhouetteTexture);
     //
     //BlueBird
@@ -80,6 +80,7 @@ void BlueBirdMovement(Game *game)
         {
             deleteBlueBird(game, b);
             b = b->next;
+            game->nbirds--;
         } else {
             b->s.center.x += b->velocity.x;
             b->s.center.y += b->velocity.y;
@@ -113,9 +114,9 @@ void BlueBirdRender(Game *game)
 	    glColor4ub(255, 255, 255, 255);
 	    glBegin(GL_QUADS);
 	    glTexCoord2f(0.0f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
-	    glTexCoord2f(0.0f, 0.0f); glVertex2i(bv->x-wB, bv->y+hB);
-	    glTexCoord2f(0.5f, 0.0f); glVertex2i(bv->x+wB, bv->y+hB);
-	    glTexCoord2f(0.5f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+	    glTexCoord2f(0.0f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+	    glTexCoord2f(0.25f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+	    glTexCoord2f(0.25f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
 	    glEnd();
         b = b->next;
     }

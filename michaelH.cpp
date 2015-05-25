@@ -41,7 +41,6 @@ void renderCloud(Game *game) {
     int w = 120;  //565
     int h = 60;  //332 
 
-    Object *cv = &game->Cloud1;
     Vec *c = &game->Cloud1.s.center;
 
     glBindTexture(GL_TEXTURE_2D, C1silhouetteTexture);
@@ -54,41 +53,34 @@ void renderCloud(Game *game) {
     glTexCoord2f(1.0f, 0.0f); glVertex2i(c->x+w, c->y+h);
     glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
     glEnd();
-
-    if (cv->velocity.x == 0 && cv->velocity.y == 0) {
-	cv->velocity.y = .15;
-	cv->velocity.x = rand()%2;
-    }
-
-    if (c->x <= 50) {
-	cv->velocity.x = rand()%2;
-    }
-    if (c->x >= (xres-50)) {
-	cv->velocity.x = -rand()%2;
-    }
-
-    if (c->y >= (game->altitude - 50)) {	
-    }
-    if (c->y <= (game->altitude - (yres - 50))) {  
-    }
 }
 
 void MakeCloud(Game *game) {
     Object *cd;
     cd = &game->Cloud1;
 
-    cd->s.center.x = 250;
-    cd->s.center.y = (game->altitude - 750);
-    cd->velocity.x = 0;
-    cd->velocity.y = 0;
+    cd->s.center.x = xres/4;
+    cd->s.center.y = (game->altitude - (yres/2) + yres/10);
+    cd->velocity.x = rand()%2 + 1;
+    cd->velocity.y = -GRAVITY;
 }
 
 void CloudMovement(Game *game) {
     Object *cd;
     cd = &game->Cloud1;
+
+    if (cd->s.center.x <= 50) {
+	    cd->velocity.x = rand()%2;
+    }
+    if (cd->s.center.x >= (xres-50)) {
+	    cd->velocity.x = -rand()%2;
+    }
+    if (game->altitude < 500) {
+        cd->velocity.y = -GRAVITY;
+    }
+
     cd->s.center.x += cd->velocity.x;
     cd->s.center.y += cd->velocity.y;
-    cd->s.center.y -= GRAVITY;
 }
 
 
@@ -114,7 +106,6 @@ void renderCloud2(Game *game) {
     int w = 120;  //482
     int h = 60;  //222 
 
-    Object *cv = &game->Cloud2;
     Vec *c = &game->Cloud2.s.center;    
 
     glBindTexture(GL_TEXTURE_2D, CsilhouetteTexture);
@@ -127,42 +118,34 @@ void renderCloud2(Game *game) {
     glTexCoord2f(1.0f, 0.0f); glVertex2i(c->x+w, c->y+h);
     glTexCoord2f(1.0f, 1.0f); glVertex2i(c->x+w, c->y-h);
     glEnd();
-
-    if (cv->velocity.x == 0 && cv->velocity.y == 0) {
-	cv->velocity.y = .15;
-	cv->velocity.x = rand()%2;
-    }
-
-
-    if (c->x <= 50) {
-	cv->velocity.x = rand()%2;
-    }
-    if (c->x >= (xres-50)) {
-	cv->velocity.x = -rand()%2;
-    }
-
-    if (c->y >= (game->altitude - 50)) {	
-    }
-    if (c->y <= (game->altitude - (yres - 50))) {   
-    }
 }
 
 void MakeCloud2(Game *game) {
     Object *cd;
     cd = &game->Cloud2;
 
-    cd->s.center.x = 400;
-    cd->s.center.y = (game->altitude - 600);
-    cd->velocity.x = 0;
-    cd->velocity.y = 0;
+    cd->s.center.x = xres/2;
+    cd->s.center.y = (game->altitude - (yres/2 + yres/20));
+    cd->velocity.x = -(rand()%2 + 1);
+    cd->velocity.y = -GRAVITY;
 }
 
 void Cloud2Movement(Game *game) {
     Object *cd;
     cd = &game->Cloud2;
+
+    if (cd->s.center.x <= 50) {
+	    cd->velocity.x = rand()%2;
+    }
+    if (cd->s.center.x >= (xres-50)) {
+	    cd->velocity.x = -rand()%2;
+    }
+    if (game->altitude < 500) {
+        cd->velocity.y = -GRAVITY;
+    }
+
     cd->s.center.x += cd->velocity.x;
     cd->s.center.y += cd->velocity.y;
-    cd->s.center.y -= GRAVITY;
 }
 
 void InitMountain() {
@@ -185,16 +168,16 @@ void MakeMountain(Game *game) {
     Object *m = &game->Mountain;
 
     m->s.center.x = xres/2;
-    m->s.center.y = (game->altitude - yres/2);
+    m->s.center.y = (game->altitude - yres);
     m->velocity.x = 0;
-    m->velocity.y = 0;
+    m->velocity.y = -GRAVITY + .15;
 }
 
 void MountainMovement(Game *game) {
     Object *m = &game->Mountain;
-    m->s.center.x += m->velocity.x;
+    if (game->altitude < 500)
+	    m->velocity.y = -GRAVITY;
     m->s.center.y += m->velocity.y;
-    m->s.center.y -= GRAVITY;
 }
 
 void renderMountain(Game *game) {
@@ -202,7 +185,7 @@ void renderMountain(Game *game) {
     int h = 400;
 
     Vec *m = &game->Mountain.s.center;
-    Object *mv = &game->Mountain;
+    //Object *mv = &game->Mountain;
 
     glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
     glEnable(GL_ALPHA_TEST);
@@ -221,15 +204,11 @@ void renderMountain(Game *game) {
       glTexCoord2f(1.0f, 1.0f); glVertex2i(xres, ybottom);*/
     glEnd();
 
-    if (game->altitude < 500) {
-	mv->velocity.y = 0;
-    } else {
-	mv->velocity.y = .15;	// .25
-    }
+    
 }
 
 void InitMissile() {
-    MissileImage = ppm6GetImage("./images/MissileFinished.ppm");
+    MissileImage = ppm6GetImage("./images/MissileTemplate.ppm");
     glGenTextures(1, &MSsilhouetteTexture);
 
     //Missile
@@ -245,46 +224,57 @@ void InitMissile() {
 }
 
 void MakeMissile(Game *game) {
-    Missile *m;
-    m = &game->missile;
+    Missile *m = new Missile;
+    m->next = game->mhead;
+    if (game->mhead != NULL)
+        game->mhead->prev = m;
+    game->mhead = m;
+    game->nmissiles++;
 
-    m->s.center.x = 400;
-    m->s.center.y = (game->altitude - (yres/2) - 600);
+    m->s.center.x = rand()%xres;
+    m->s.center.y = (game->altitude - yres - 84);
     m->velocity.x = 0;
-    m->velocity.y = 0;
+    m->velocity.y = 15;
 }
 
-void MissileMovement(Game *game) {
-    Missile *m;
-    m = &game->missile;
-    m->s.center.x += m->velocity.x;
-    m->s.center.y += m->velocity.y;
-    m->s.center.y -= GRAVITY;
-}
-
-void MissileRender(Game *game) {
-    int w = 40;
-    int h = 84;
-
-    if(game->altitude < 11500 && game->altitude > 10000)
+void MissileMovement(Game *game) 
+{
+    Missile *m = game->mhead;
+    while(m)
     {
-	Missile *mv;
-	Vec *m;
-	m = &game->missile.s.center;
-	mv = &game->missile;
+        if(m->s.center.y > game->altitude + (yres/2))
+        {
+            deleteMissile(game, m);
+            m = m->next;
+            game->nmissiles--;
+        } else {
+            m->s.center.x += m->velocity.x;
+            m->s.center.y += m->velocity.y;
+            m = m->next;
+        }
+    }
+}
 
-	glBindTexture(GL_TEXTURE_2D, MSsilhouetteTexture);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.0f);
-	glColor4ub(255, 255, 255, 255);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(m->x-w, m->y-h);
-	glTexCoord2f(0.0f, 0.0f); glVertex2i(m->x-w, m->y+h);
-	glTexCoord2f(0.5f, 0.0f); glVertex2i(m->x+w, m->y+h);
-	glTexCoord2f(0.5f, 1.0f); glVertex2i(m->x+w, m->y-h);
-	glEnd();
+void MissileRender(Game *game) 
+{
+    Missile *m = game->mhead;
+    while (m) {
+        int w = 40;
+        int h = 84;
 
-	mv->velocity.y = 15;
+	    Vec *mv = &m->s.center;
+
+	    glBindTexture(GL_TEXTURE_2D, MSsilhouetteTexture);
+	    glEnable(GL_ALPHA_TEST);
+	    glAlphaFunc(GL_GREATER, 0.0f);
+	    glColor4ub(255, 255, 255, 255);
+	    glBegin(GL_QUADS);
+	    glTexCoord2f(0.0f, 0.5f); glVertex2i(mv->x-w, mv->y-h);
+	    glTexCoord2f(0.0f, 0.0f); glVertex2i(mv->x-w, mv->y+h);
+	    glTexCoord2f(0.25f, 0.0f); glVertex2i(mv->x+w, mv->y+h);
+	    glTexCoord2f(0.25f, 0.5f); glVertex2i(mv->x+w, mv->y-h);
+	    glEnd();
+        m = m->next;
     }
 }
 
