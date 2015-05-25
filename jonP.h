@@ -23,8 +23,11 @@ extern unsigned char *buildAlphaData(Ppmimage *img);
 extern GLuint BirdTsilhouetteTexture;
 void play();
 void create_sounds();
+void InitBlueBird(void);
 void MakeBlueBird(Game *game);
 void BlueBirdMovement(Game *game);
-void renderBlueBird(Game *game);
-void renderBlueBird2(Game *game);
+void BlueBirdMovement2(Game *game);
+void BlueBirdRender(Game *game);
+void BlueBirdRender2(Game *game);
+extern void deleteBlueBird(Game *game, Bird *node);
 #endif

@@ -19,10 +19,11 @@ void MakeMountain(Game *game);
 void MountainMovement(Game *game);
 void renderMountain(Game *game);
 
-//void InitMissile();
+void InitMissile();
 void MakeMissile(Game *game);
 void MissileMovement(Game *game);
-//void MissileRender(Game *game);
+void MissileRender(Game *game);
+extern void deleteMissile(Game *game, Missile *node);
 
 void InitCloud();
 void MakeCloud(Game *game);
@@ -38,18 +39,6 @@ void InitPlane();
 void MakePlane(Game *game);
 void PlaneMovement(Game *game);
 void renderPlane(Game *game);
-
-void InitBirdTemplate();
-void renderPurpleBird(Game *game);
-void renderGreenBird(Game *game);
-void renderRedBird(Game *game);
-void renderOrangeBird(Game *game);
-
-void InitMissileTemplate();
-void renderBlueMissile(Game *game);
-void renderRedMissile(Game *game);
-void renderYellowMissile(Game *game);
-void renderGreenMissile(Game *game);
 
 void init_keys();
 int check_keys(XEvent *e);
