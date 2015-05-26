@@ -101,7 +101,7 @@ void MakeLogo(Game *game)
 
   l = &game->Logo;
   l->s.center.x = xres/2+2;
-  l->s.center.y = (game->altitude - (yres/2)+30);
+  l->s.center.y = (game->altitude - (yres/2)+150);
 
 }
 
@@ -206,7 +206,7 @@ void BlueBirdRender2(Game *game)
 
 void LogoRender(Game *game)
 {
-    int w= 796;
+    int w= 400;
     int h= 96;
 
 	Vec *l;
