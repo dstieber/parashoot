@@ -27,7 +27,6 @@ GLuint characterTexture;
 GLuint msilhouetteTexture;
 int sky = 1;
 int character = 1;
-int keys[65536];
 
 //Function prototypes
 void initXWindows(void);

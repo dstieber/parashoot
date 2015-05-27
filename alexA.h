@@ -17,6 +17,8 @@ typedef Flt Vector[3];
 typedef Flt Matrix[3][3];
 
 void DefineRagdoll(Game *);
+void RagdollPhysics(Game *);
+void init_keys();
 void identity33(Matrix mat);
 void yy_transform(Flt rotate, Matrix a);
 void trans_vector(Matrix mat, const Vector in, Vector out);
