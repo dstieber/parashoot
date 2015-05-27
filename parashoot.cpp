@@ -241,9 +241,12 @@ void movement(Game *game)
 
     if (rand()%10 < 1) 
         MakeBlueBird(game);
-    if (rand()%50 < 1)
+    if (rand()%80 < 1)
+	MakeRedBird(game);
+    if (rand()%100 < 1)
         MakeMissile(game);
-	BlueBirdMovement(game);
+ 	RedBirdMovement(game);
+    	BlueBirdMovement(game);
 	//BlueBirdMovement2(game);
 	MissileMovement(game);
 	CloudMovement(game);
@@ -299,10 +302,10 @@ void render(Game *game)
 		//renderPlane(game);
 		renderMountain(game);
 		renderCloud(game);
-		renderCharacter(game);
-	
+		renderCharacter(game);	
 		BlueBirdRender(game);	
 		//BlueBirdRender2(game);
+		renderRedBird(game);
 		MissileRender(game);
 		//randomGenerator(game);
 		displayAltitude(game);

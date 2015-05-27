@@ -151,6 +151,29 @@ void deleteBlueBird(Game *game, Bird *node)
     }
 }
 
+void deleteRedBird(Game *game, Bird2 *node)
+{
+    if (game->bhead2 != NULL) {
+        if (node->prev == NULL) {
+            if (node->next == NULL) {
+                game->bhead2 = NULL;
+            } else {
+                node->next->prev = NULL;
+                game->bhead2 = node->next;
+            }
+        } else {
+            if (node->next == NULL) {
+                node->prev->next = NULL;
+            } else {
+                node->prev->next = node->next;
+                node->next->prev = node->prev;
+            }
+        }
+        delete node;
+        node = NULL;
+    }
+}
+
 void deleteMissile(Game *game, Missile *node)
 {
     if (game->mhead != NULL) {

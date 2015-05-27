@@ -50,8 +50,23 @@ void MakeBlueBird(Game *game)
     Bird *b = new Bird;
     b->next = game->bhead;
     if (game->bhead !=NULL)
-        game->bhead->prev = b;
+	game->bhead->prev = b;
     game->bhead = b;
+    game->nbirds++;
+
+    b->s.center.x = 0;
+    b->s.center.y = (game->altitude - rand()%yres);
+    b->velocity.x = rand()%10 + 10;
+    b->velocity.y = -GRAVITY;
+}
+
+void MakeRedBird(Game *game) 
+{
+    Bird2 *b = new Bird2;
+    b->next = game->bhead2;
+    if (game->bhead2 !=NULL)
+	game->bhead2->prev = b;
+    game->bhead2 = b;
     game->nbirds++;
 
     b->s.center.x = 0;
@@ -76,19 +91,36 @@ void BlueBirdMovement(Game *game)
     Bird *b = game->bhead;
     while(b)
     {
-        if (b->s.center.x > xres)
-        {
-            deleteBlueBird(game, b);
-            b = b->next;
-            game->nbirds--;
-        } else {
-            b->s.center.x += b->velocity.x;
-            b->s.center.y += b->velocity.y;
-            b = b->next;
-        }
+	if (b->s.center.x > xres)
+	{
+	    deleteBlueBird(game, b);
+	    b = b->next;
+	    game->nbirds--;
+	} else {
+	    b->s.center.x += b->velocity.x;
+	    b->s.center.y += b->velocity.y;
+	    b = b->next;
+	}
     }
 }
 
+void RedBirdMovement(Game *game)
+{
+    Bird2 *b = game->bhead2;
+    while(b)
+    {
+	if (b->s.center.x > xres)
+	{
+	    deleteRedBird(game, b);
+	    b = b->next;
+	    game->nbirds--;
+	} else {
+	    b->s.center.x += b->velocity.x;
+	    b->s.center.y += b->velocity.y;
+	    b = b->next;
+	}
+    }
+}
 
 void BlueBirdMovement2(Game *game)
 {
@@ -104,25 +136,45 @@ void BlueBirdRender(Game *game)
 {
     Bird *b = game->bhead;
     while (b) {
-        int wB= 17;
-        int hB= 13;
+	int wB= 17;
+	int hB= 13;
+	Vec *bv = &b->s.center;
 
-	    Vec *bv = &b->s.center;
-
-	    glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
-	    glEnable(GL_ALPHA_TEST);
-	    glAlphaFunc(GL_GREATER, 0.0f);
-	    glColor4ub(255, 255, 255, 255);
-	    glBegin(GL_QUADS);
-	    glTexCoord2f(0.0f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
-	    glTexCoord2f(0.0f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
-	    glTexCoord2f(0.25f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
-	    glTexCoord2f(0.25f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
-	    glEnd();
-        b = b->next;
+	glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
+	glColor4ub(255, 255, 255, 255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+	glTexCoord2f(0.0f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+	glTexCoord2f(0.25f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+	glTexCoord2f(0.25f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+	glEnd();
+	b = b->next;
     }
 }
 
+void renderRedBird(Game *game)
+{
+    Bird2 *b = game->bhead2;
+    while (b) {
+	int wB= 17;
+	int hB= 13;
+	Vec *bv = &b->s.center;
+
+	glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
+	glColor4ub(255, 255, 255, 255);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.6f); glVertex2i(bv->x-wB, bv->y-hB);
+	glTexCoord2f(0.0f, 0.4f); glVertex2i(bv->x-wB, bv->y+hB);
+	glTexCoord2f(0.25f, 0.4f); glVertex2i(bv->x+wB, bv->y+hB);
+	glTexCoord2f(0.25f, 0.6f); glVertex2i(bv->x+wB, bv->y-hB);
+	glEnd();
+	b = b->next;
+    }
+}
 
 void BlueBirdRender2(Game *game)
 {

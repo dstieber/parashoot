@@ -53,6 +53,17 @@ struct Bird {
     }
 };
 
+struct Bird2 {
+    Shape s;
+    Vec velocity;
+    struct Bird2 *prev;
+    struct Bird2 *next;
+    Bird2() {
+        prev = NULL;
+        next = NULL;
+    }
+};
+
 struct Missile {
     Shape s;
     Vec velocity;
@@ -75,6 +86,7 @@ struct Game {
     Object Mountain;
     Object Plane;
     Bird *bhead; //pointer to head of bird linked list
+    Bird2 *bhead2;
     Missile *mhead; //pointer to head of missile linked list
     int n;
     int nbirds;

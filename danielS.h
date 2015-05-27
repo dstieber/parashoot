@@ -22,6 +22,9 @@ void renderStartMenu(Game *game);
 void randomGenerator(Game *game);
 extern void BlueBirdRender(Game *game);
 extern void MakeBlueBird(Game *game);
+extern void renderRedBird(Game *game);
+extern void MakeRedBird(Game *game);
 void deleteBlueBird(Game *game, Bird *node);
 void deleteMissile(Game *game, Missile *node);
+void deleteRedBird(Game *game, Bird2 *node);
 #endif
