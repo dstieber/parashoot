@@ -374,8 +374,8 @@ int check_keys(XEvent *e) {
 	    shift=1;
 	    return 0;
 	}
-	if (key == XK_R) {
-	endf = true;
+	if (key == XK_r) {
+	endf = !endf;
      }
 
     } else {

@@ -111,5 +111,5 @@
 	    LogoRender(game);
 
 	//    ggprint16(&start, 1000, 0x00fff000, "PARASHOOT!");
-	    ggprint16(&click, 1000, 0x00fff000, "Click to start");
+	    ggprint16(&click, 1000, 0xffffffff, "Click to start");
 }

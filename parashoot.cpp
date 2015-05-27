@@ -302,6 +302,7 @@ void render(Game *game)
 		MissileRender(game);
 		displayAltitude(game);
 		end(game);
+		grounded(game);
 		glPopMatrix();
 	}
 

@@ -20,7 +20,7 @@ extern "C" {
 #include "fonts.h"
 }
 
-#define GRAVITY 30.0
+#define GRAVITY 200.0
 #define STARTING_ALTITUDE 12000
 #define MAX 50
 
@@ -45,6 +45,7 @@ struct Object {
 };
 
 struct Game {
+
     Shape box;
     Character character;
 

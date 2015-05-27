@@ -20,6 +20,7 @@ extern int xres;
 extern int yres;
 extern unsigned char *buildAlphaData(Ppmimage *img);
 extern bool endf;
+extern void renderCharacter(Game *game);
 void play();
 void create_sounds();
 void InitBlueBird();
@@ -34,4 +35,5 @@ void BlueBirdRender(Game *game);
 void BlueBirdRender2(Game *game);
 void LogoRender(Game *game);
 void end(Game *game);
+void grounded(Game *game);
 #endif
