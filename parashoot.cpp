@@ -2,39 +2,40 @@
 
 int main(void)
 {
-    int done=0;
-    srand(time(NULL));
-    initXWindows();
-    init_opengl(&game);
-    DefineRagdoll(&game);
-    create_sounds();
-    play();
-    clock_gettime(CLOCK_REALTIME, &timePause);
-    clock_gettime(CLOCK_REALTIME, &timeStart);
+	int done=0;
+	srand(time(NULL));
+	initXWindows();
+	init_opengl(&game);
+	DefineRagdoll(&game);
+	init_keys();
+	create_sounds();
+	play();
+	clock_gettime(CLOCK_REALTIME, &timePause);
+	clock_gettime(CLOCK_REALTIME, &timeStart);
 
-    //start animation
-    while(!done) {
-        while(XPending(dpy)) {
-            //XEvent e;
-            XNextEvent(dpy, &e);
-            check_mouse(&e, &game);
-            check_resize(&game, &e);
-            done = check_keys(&e);
-        }
-        clock_gettime(CLOCK_REALTIME, &timeCurrent);
-        timeSpan = timeDiff(&timeStart, &timeCurrent);
-        timeCopy(&timeStart, &timeCurrent);
-        physicsCountdown += timeSpan;
-        while(physicsCountdown >= physicsRate) {
-            movement(&game);
-            physicsCountdown -= physicsRate;
-        }
-        render(&game);
-        glXSwapBuffers(dpy, win);
-    }
-    cleanupXWindows();
-    cleanup_fonts();
-    return 0;
+	//start animation
+	while(!done) {
+		while(XPending(dpy)) {
+			//XEvent e;
+			XNextEvent(dpy, &e);
+			check_mouse(&e, &game);
+			check_resize(&game, &e);
+			done = check_keys(&e);
+		}
+		clock_gettime(CLOCK_REALTIME, &timeCurrent);
+		timeSpan = timeDiff(&timeStart, &timeCurrent);
+		timeCopy(&timeStart, &timeCurrent);
+		physicsCountdown += timeSpan;
+		while(physicsCountdown >= physicsRate) {
+			movement(&game);
+			physicsCountdown -= physicsRate;
+		}
+		render(&game);
+		glXSwapBuffers(dpy, win);
+	}
+	cleanupXWindows();
+	cleanup_fonts();
+	return 0;
 }
 
 void set_title(void)
@@ -85,8 +86,6 @@ void initXWindows(void) {
 	glXMakeCurrent(dpy, win, glc);
 }
 
-
-
 void reshape_window(Game *game, int width, int height)
 {
 	Character *p = &game->character;
@@ -100,7 +99,6 @@ void reshape_window(Game *game, int width, int height)
 	glOrtho(0, width, (game->altitude - height), game->altitude, -1, 1);
 	set_title();
 }
-
 
 unsigned char *buildAlphaData(Ppmimage *img)
 {
@@ -158,29 +156,14 @@ void init_opengl(Game *game)
 	//
 	initSky();
 	initCharacter();
-	mountainImage = ppm6GetImage("./images/Background_Mount.ppm");
+	InitCloud();
+	InitCloud2();
+	InitMountain();
 	InitBlueBird();
-	InitBlueBird2();
-    InitMissile();
-    //create opengl texture elements
-
-	//Mountain
-	glBindTexture(GL_TEXTURE_2D, mountainTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, mountainImage->width,
-    mountainImage->height,0, GL_RGB, GL_UNSIGNED_BYTE, mountainImage->data);  
-
-	//
-	//mountain silhouette
-	glBindTexture(GL_TEXTURE_2D, msilhouetteTexture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	unsigned char *silhouetteData2 = buildAlphaData(mountainImage);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mountainImage->width,
-			mountainImage->height, 0, GL_RGBA, 
-            GL_UNSIGNED_BYTE, silhouetteData2);
-	delete [] silhouetteData2;
+	//InitBlueBird2();
+	InitMissile();
+	InitPlane();
+	//create opengl texture elements
 
 }
 
@@ -197,16 +180,17 @@ void check_resize(Game *game, XEvent *e)
 
 void makeCharacter(Game *game)
 {
-    Character *p = &game->body;
-    p->s.c[0] = xres/2;
-    p->s.c[1] = (game->altitude - (yres/2));
-    p->velocity.y = 0;
-    p->velocity.x = 0;
-    game->n++;
-    start_flag = false;
-	MakeBlueBird(game);
-	MakeBlueBird2(game);
-	MakeMissile(game);
+	Character *p = &game->body;
+	p->s.c[0] = xres/2;
+	p->s.c[1] = (game->altitude - (yres/2));
+	p->velocity.y = 0;
+	p->velocity.x = 0;
+	game->n++;
+	start_flag = false;
+	MakeMountain(game);
+	MakeCloud(game);
+	MakeCloud2(game);
+	MakePlane(game);
 }
 
 void check_mouse(XEvent *e, Game *game)
@@ -241,33 +225,43 @@ void check_mouse(XEvent *e, Game *game)
 
 void movement(Game *game)
 {
+	if (start_flag)
+		return;
+	Character *p;
+	p = &game->body;
+	p->s.c[0] += p->s.velocityx;
+	p->s.c[1] += p->s.velocityy;
+	p->s.c[1] -= GRAVITY;
+	game->altitude -= GRAVITY;
+	RagdollPhysics(game);
+	gCameraY += (float)GRAVITY;
+	//check for collision with objects here...
+	//border collision detection
+	if (p->s.c[0] <= 50) {
+		p->s.velocityx = 3;
+	}
+	if (p->s.c[0] >= (xres - 50)) {
+		p->s.velocityx = -3;
+	}
+	if (p->s.c[1] >= (game->altitude - 50)) {
+		p->s.velocityy = -3;
+	}
+	if (p->s.c[1] <= (game->altitude - (yres - 50))) {
+		p->s.velocityy = 3;
+	}
 
-    Character *p;
-    p = &game->body;
-    p->s.c[0] += p->s.velocityx;
-    p->s.c[1] += p->s.velocityy;
-    p->s.c[1] -= GRAVITY;
-    game->altitude -= GRAVITY;
-    RagdollPhysics(game);
-    gCameraY += (float)GRAVITY;
-    BlueBirdMovement(game);
-    BlueBirdMovement2(game);
-    MissileMovement(game);
-    //check for collision with objects here...
-        //border collision detection
-    if (p->s.c[0] <= 50) {
-        p->s.velocityx = 3;
-    }
-    if (p->s.c[0] >= (xres - 50)) {
-        p->s.velocityx = -3;
-    }
-    if (p->s.c[1] >= (game->altitude - 50)) {
-        p->s.velocityy = -3;
-    }
-    if (p->s.c[1] <= (game->altitude - (yres - 50))) {
-        p->s.velocityy = 3;
-    }
+	MountainMovement(game);
 
+	if (rand()%10 < 1) 
+		MakeBlueBird(game);
+	if (rand()%50 < 1)
+		MakeMissile(game);
+	BlueBirdMovement(game);
+	//BlueBirdMovement2(game);
+	MissileMovement(game);
+	CloudMovement(game);
+	Cloud2Movement(game);
+	PlaneMovement(game);
 }
 
 
@@ -284,10 +278,14 @@ void render(Game *game)
 		if (sky) {
 			renderSky(game); 
 		}
+		renderCloud2(game);
+		//renderPlane(game);
 		renderMountain(game);
-		renderCharacter(game);	
+		renderCloud(game);
+		renderCharacter(game);
+
 		BlueBirdRender(game);	
-		BlueBirdRender2(game);
+		//BlueBirdRender2(game);
 		MissileRender(game);
 		displayAltitude(game);
 		glPopMatrix();
@@ -301,6 +299,6 @@ void render(Game *game)
 		if (sky)
 			renderSky(game);
 		glPopMatrix();
-	    renderStartMenu(game);	
+		renderStartMenu(game);	
 	}
 }

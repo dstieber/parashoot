@@ -17,14 +17,14 @@ int xres = WINDOW_WIDTH;
 int yres = WINDOW_HEIGHT;
 bool size_flag = false;
 bool start_flag = true;
-
+bool end_flag = false;
 //Camera position
 GLfloat gCameraY = 0.0f;
 
-Ppmimage *mountainImage = NULL;
-GLuint mountainTexture;
+//Ppmimage *mountainImage = NULL;
+//GLuint mountainTexture;
 GLuint characterTexture;
-GLuint msilhouetteTexture;
+//GLuint msilhouetteTexture;
 int sky = 1;
 int character = 1;
 

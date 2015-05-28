@@ -20,14 +20,14 @@ extern Game game;
 extern int xres;
 extern int yres;
 extern unsigned char *buildAlphaData(Ppmimage *img);
+extern GLuint BirdTsilhouetteTexture;
 void play();
 void create_sounds();
-void InitBlueBird();
-void InitBlueBird2();
+void InitBlueBird(void);
 void MakeBlueBird(Game *game);
-void MakeBlueBird2(Game *game);
 void BlueBirdMovement(Game *game);
 void BlueBirdMovement2(Game *game);
 void BlueBirdRender(Game *game);
 void BlueBirdRender2(Game *game);
+extern void deleteBlueBird(Game *game, Bird *node);
 #endif

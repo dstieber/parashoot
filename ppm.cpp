@@ -9,9 +9,9 @@
 //Files can be used to store images for viewing or texture maps.
 /*
 
-sample image file is below:
-------------------------------------------
-P1
+   sample image file is below:
+   ------------------------------------------
+   P1
 #5x10 the number 1
 5 10
 0 0 0 0 0

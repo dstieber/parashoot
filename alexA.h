@@ -16,6 +16,9 @@ typedef float Flt;
 typedef Flt Vector[3];
 typedef Flt Matrix[3][3];
 
+extern int keys[65536];
+extern void deleteMissile(Game *game, Missile *node);
+extern void deleteBlueBird(Game *game, Bird *node);
 void DefineRagdoll(Game *);
 void RagdollPhysics(Game *);
 void init_keys();
