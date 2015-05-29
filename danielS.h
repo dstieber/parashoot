@@ -13,6 +13,9 @@
 extern Game game;
 extern int xres, yres;
 extern unsigned char *buildAlphaData(Ppmimage *img);
+extern void InitLogo();
+extern void MakeLogo(Game *game);
+extern void LogoRender(Game *game);
 void initSky(void);
 void renderSky(Game *game);
 void initCharacter(void);
@@ -22,9 +25,6 @@ void renderStartMenu(Game *game);
 void randomGenerator(Game *game);
 extern void BlueBirdRender(Game *game);
 extern void MakeBlueBird(Game *game);
-extern void renderRedBird(Game *game);
-extern void MakeRedBird(Game *game);
 void deleteBlueBird(Game *game, Bird *node);
 void deleteMissile(Game *game, Missile *node);
-void deleteRedBird(Game *game, Bird2 *node);
 #endif

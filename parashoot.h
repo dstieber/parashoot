@@ -1,7 +1,7 @@
 #include "danielS.h"
 #include "jonP.h"
 #include "michaelH.h"
-#include "alexB.h"
+#include "alexA.h"
 #include "types.h"
 #define WINDOW_WIDTH  800
 #define WINDOW_HEIGHT 800
@@ -17,7 +17,7 @@ int xres = WINDOW_WIDTH;
 int yres = WINDOW_HEIGHT;
 bool size_flag = false;
 bool start_flag = true;
-
+bool end_flag = false;
 //Camera position
 GLfloat gCameraY = 0.0f;
 
@@ -27,7 +27,6 @@ GLuint characterTexture;
 //GLuint msilhouetteTexture;
 int sky = 1;
 int character = 1;
-int keys[65536];
 
 //Function prototypes
 void initXWindows(void);

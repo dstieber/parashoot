@@ -22,35 +22,45 @@ extern "C" {
 
 #define GRAVITY 3.0
 #define STARTING_ALTITUDE 12000
+
+typedef float Flt;
+typedef Flt Vector[3];
+typedef Flt Matrix[3][3];
+
 struct Vec {
-    float x, y, z;
+	float x, y, z;
 };
 
 struct Shape {
-    float width, height;
-    float radius;
-    Vec center;
+	float width, height;
+	float radius;
+	Vec center;
+	Vector c;
+	float velocityx, velocityy;
+	Flt rot, rotInc;
+	Matrix m;
+	//unsigned char color[3];
 };
 
 struct Character {
-    Shape s;
-    Vec velocity;
+	Shape s;
+	Vec velocity;
 };
 
 struct Object {
-    Shape s;
-    Vec velocity;
+	Shape s;
+	Vec velocity;
 };
 
 struct Bird {
-    Shape s;
-    Vec velocity;
-    struct Bird *prev;
-    struct Bird *next;
-    Bird() {
-        prev = NULL;
-        next = NULL;
-    }
+	Shape s;
+	Vec velocity;
+	struct Bird *prev;
+	struct Bird *next;
+	Bird() {
+		prev = NULL;
+		next = NULL;
+	}
 };
 
 struct Bird2 {
@@ -65,41 +75,45 @@ struct Bird2 {
 };
 
 struct Missile {
-    Shape s;
-    Vec velocity;
-    struct Missile *prev;
-    struct Missile *next;
-    Missile() {
-        prev = NULL;
-        next = NULL;
-    }
+	Shape s;
+	Vec velocity;
+	struct Missile *prev;
+	struct Missile *next;
+	Missile() {
+		prev = NULL;
+		next = NULL;
+	}
 };
 
 struct Game {
-    //Shape box;
-    Character character;
-    Character BlueBird;
-    Character BlueBird2;
-    Missile missile;
-    Object Cloud2;
-    Object Cloud1;
-    Object Mountain;
-    Object Plane;
-    Bird *bhead; //pointer to head of bird linked list
-    Bird2 *bhead2;
-    Missile *mhead; //pointer to head of missile linked list
-    int n;
-    int nbirds;
-    int nmissiles;
-    float altitude;
-    Game() {
-	altitude = (float)STARTING_ALTITUDE;
-    bhead = NULL;
-    mhead = NULL;
-    nbirds = 0;
-    nmissiles = 0;
-	n = 0;
-    }
+	Character head, body, rarm1, rarm2, larm1, larm2, rleg1, rleg2,
+			  lleg1, lleg2;
+	//Shape box;
+	Character character;
+	Character BlueBird;
+	Character BlueBird2;
+	Missile missile;
+	Object Cloud2;
+	Object Cloud1;
+	Object Mountain;
+	Object Plane;
+	Object Logo;
+	Bird *bhead; //pointer to head of bird linked list
+	Missile *mhead; //pointer to head of missile linked list
+	int n;
+	int health;
+	int nbirds;
+	int nmissiles;
+	float altitude;
+	Game() {
+		health = 100;
+		altitude = (float)STARTING_ALTITUDE;
+		bhead = NULL;
+		mhead = NULL;
+		nbirds = 0;
+		nmissiles = 0;
+		n = 0;
+	}
 };
 
 #endif

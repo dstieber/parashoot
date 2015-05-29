@@ -24,14 +24,13 @@ extern GLuint BirdTsilhouetteTexture;
 void play();
 void create_sounds();
 void InitBlueBird(void);
+void InitLogo();
+void MakeLogo(Game *game);
+void LogoRender(Game *game);
 void MakeBlueBird(Game *game);
-void MakeRedBird(Game *game);
-void RedBirdMovement(Game *game);
 void BlueBirdMovement(Game *game);
 void BlueBirdMovement2(Game *game);
 void BlueBirdRender(Game *game);
 void BlueBirdRender2(Game *game);
-void renderRedBird(Game *game);
 extern void deleteBlueBird(Game *game, Bird *node);
-extern void deleteRedBird(Game *game, Bird2 *node);
 #endif
