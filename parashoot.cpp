@@ -1,13 +1,15 @@
 #include "parashoot.h"
+
 int main(void)
 {
 	int done=0;
 	srand(time(NULL));
 	initXWindows();
 	init_opengl(&game);
+	DefineRagdoll(&game);
+	init_keys();
 	create_sounds();
 	play();
-	init_keys();
 	clock_gettime(CLOCK_REALTIME, &timePause);
 	clock_gettime(CLOCK_REALTIME, &timeStart);
 
@@ -89,8 +91,8 @@ void reshape_window(Game *game, int width, int height)
 	Character *p = &game->character;
 	size_flag = true;
 	setup_screen_res(width, height);
-	p->s.center.x = width/2;
-	p->s.center.y = (game->altitude - height) / 2;
+	p->s.c[0] = width/2;
+	p->s.c[1] = (game->altitude - height) / 2;
 	glViewport(0,0, (GLint)width, (GLint)height);
 	glMatrixMode(GL_PROJECTION); glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW); glLoadIdentity();
@@ -154,11 +156,11 @@ void init_opengl(Game *game)
 	//
 	initSky();
 	initCharacter();
-        InitCloud();
+	InitCloud();
 	InitCloud2();
 	InitMountain();
 	InitBlueBird();
-	InitBlueBird2();
+	//InitBlueBird2();
 	InitMissile();
 	InitPlane();
 	//create opengl texture elements
@@ -178,17 +180,14 @@ void check_resize(Game *game, XEvent *e)
 
 void makeCharacter(Game *game)
 {
-	Character *p = &game->character;
-	p->s.center.x = xres/2;
-	p->s.center.y = (game->altitude - (yres/2));
+	Character *p = &game->body;
+	p->s.c[0] = xres/2;
+	p->s.c[1] = (game->altitude - (yres/2));
 	p->velocity.y = 0;
 	p->velocity.x = 0;
 	game->n++;
 	start_flag = false;
 	MakeMountain(game);
-	MakeBlueBird(game);
-	MakeBlueBird2(game);
-	MakeMissile(game);
 	MakeCloud(game);
 	MakeCloud2(game);
 	MakePlane(game);
@@ -227,54 +226,44 @@ void check_mouse(XEvent *e, Game *game)
 
 void movement(Game *game)
 {
-	Character *p;
-
-	if (game->n <= 0)
+	if (start_flag)
 		return;
-
-	p = &game->character;
-	p->s.center.x += p->velocity.x;
-	p->s.center.y += p->velocity.y;
-	p->s.center.y -= GRAVITY;
+	Character *p;
+	p = &game->body;
+	p->s.c[0] += p->s.velocityx;
+	p->s.c[1] += p->s.velocityy;
+	p->s.c[1] -= GRAVITY;
 	game->altitude -= GRAVITY;
+	RagdollPhysics(game);
 	gCameraY += (float)GRAVITY;
-        MountainMovement(game);
+
+	//check for collision with objects here...
+	//border collision detection
+	if (p->s.c[0] <= 50) {
+		p->s.velocityx = 3;
+	}
+	if (p->s.c[0] >= (xres - 50)) {
+		p->s.velocityx = -3;
+	}
+	if (p->s.c[1] >= (game->altitude - 50)) {
+		p->s.velocityy = -3;
+	}
+	if (p->s.c[1] <= (game->altitude - (yres - 50))) {
+		p->s.velocityy = 3;
+	}
+
+	MountainMovement(game);
+
+	if (rand()%10 < 1) 
+		MakeBlueBird(game);
+	if (rand()%50 < 1)
+		MakeMissile(game);
 	BlueBirdMovement(game);
-	BlueBirdMovement2(game);
+	//BlueBirdMovement2(game);
 	MissileMovement(game);
 	CloudMovement(game);
 	Cloud2Movement(game);
 	PlaneMovement(game);
-	//LogoMovement(game);
-	//check for collision with objects here...
-	//Shape *s;
-	if (keys[XK_Right]) {
-		p->velocity.x += 2;
-	}
-	if (keys[XK_Left]) {
-		p->velocity.x += -2;
-	}
-	if (keys[XK_Up]) {
-		p->velocity.y += 2;
-	}
-	if (keys[XK_Down]) {
-		p->velocity.y -= 2;
-	}
-
-	//border collision detection
-	//
-	if (p->s.center.x <= 50) {
-		p->velocity.x = 3;
-	}
-	if (p->s.center.x >= (xres - 50)) {
-		p->velocity.x = -3;
-	}
-	if (p->s.center.y >= (game->altitude - 50)) {
-		p->velocity.y = -3;
-	}
-	if (p->s.center.y <= (game->altitude - (yres - 50))) {
-		p->velocity.y = 3;
-	}
 }
 
 
@@ -291,18 +280,16 @@ void render(Game *game)
 		if (sky) {
 			renderSky(game); 
 		}
-		//renderCloud(game);
 		renderCloud2(game);
-		renderPlane(game);
+		//renderPlane(game);
 		renderMountain(game);
 		renderCloud(game);
 		renderCharacter(game);
+
 		BlueBirdRender(game);	
-		BlueBirdRender2(game);
+		//BlueBirdRender2(game);
 		MissileRender(game);
 		displayAltitude(game);
-		end(game);
-		grounded(game);
 		glPopMatrix();
 	}
 
