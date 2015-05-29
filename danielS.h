@@ -13,6 +13,9 @@
 extern Game game;
 extern int xres, yres;
 extern unsigned char *buildAlphaData(Ppmimage *img);
+extern void InitLogo();
+extern void MakeLogo(Game *game);
+extern void LogoRender(Game *game);
 void initSky(void);
 void renderSky(Game *game);
 void initCharacter(void);

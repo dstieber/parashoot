@@ -311,24 +311,18 @@ void displayAltitude(Game *game)
 }
 
 void renderStartMenu(Game *game)
-{       
-	Rect start;
+{  
+	InitLogo();
+	MakeLogo(game);
+	LogoRender(game);
+
 	Rect click;
-
-	start.bot = game->altitude - yres/4;
-	start.width = 500;
-	start.height = 100;
-	start.center = xres/2 + yres/4;
-	start.left = xres/2;
-
 	click.bot = game->altitude - yres/2;
 	click.width = 500;
 	click.height = 100;
 	click.center = xres/2;
 	click.left = xres/2;
-
-	ggprint16(&start, 1000, 0x00fff000, "PARASHOOT!");
-	ggprint16(&click, 1000, 0x00fff000, "Click to start");
+	ggprint16(&click, 1000, 0xffffffff, "Click to start");
 }
 
 void randomGenerator(Game *game) 

@@ -86,6 +86,7 @@ struct Game {
 	Object Cloud1;
 	Object Mountain;
 	Object Plane;
+	Object Logo;
 	Bird *bhead; //pointer to head of bird linked list
 	Missile *mhead; //pointer to head of missile linked list
 	int n;

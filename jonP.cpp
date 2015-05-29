@@ -11,6 +11,9 @@ GLuint BsilhouetteTexture;
 Ppmimage *BlueBirdImage2 = NULL;
 GLuint BsilhouetteTexture2;
 
+Ppmimage *LogoImage = NULL;
+GLuint LsilhouetteTexture;
+
 void InitBlueBird()
 {
 	BlueBirdImage = ppm6GetImage("./images/BirdsTemplate.ppm");
@@ -183,4 +186,52 @@ void create_sounds() {
 
 void play() {
 	fmod_playsound(0);
+}
+
+void InitLogo()
+{
+	LogoImage = ppm6GetImage("./images/LogoWhite.ppm");
+	glGenTextures(1, &LsilhouetteTexture);
+	//
+	//White Logo
+	glBindTexture(GL_TEXTURE_2D, LsilhouetteTexture);
+	glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	unsigned char *LsilhouetteData = buildAlphaData(LogoImage);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, LogoImage->width,
+			LogoImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+			LsilhouetteData);
+	delete [] LsilhouetteData;
+}
+
+void MakeLogo(Game *game)
+{
+	Object *l;
+
+	l = &game->Logo;
+	l->s.center.x = xres/2+2;
+	l->s.center.y = (game->altitude - (yres/2)+150);
+
+}
+
+void LogoRender(Game *game)
+{
+	int w= 350;
+	int h= 80;
+
+	Vec *l;
+	l = &game->Logo.s.center;
+
+	glBindTexture(GL_TEXTURE_2D, LsilhouetteTexture);
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f); //0.0f
+	glColor4ub(255, 255, 255, 255); //255 255 255 255
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(l->x-w, l->y-h);
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(l->x-w, l->y+h);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(l->x+w, l->y+h);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(l->x+w, l->y-h);
+	glEnd();
+
 }
