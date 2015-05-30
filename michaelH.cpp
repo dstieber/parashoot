@@ -231,7 +231,7 @@ void MakeMissile(Game *game) {
 	m->s.center.x = rand()%xres;
 	m->s.center.y = (game->altitude - yres - 84);
 	m->velocity.x = 0;
-	m->velocity.y = 15;
+	m->velocity.y = rand()%35 + 15;
 }
 
 void MissileMovement(Game *game) 

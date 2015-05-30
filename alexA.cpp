@@ -457,7 +457,7 @@ void RagdollPhysics(Game *game)
 				 mis->s.center.y > game->larm2.s.c[1] - game->larm2.s.height))
 				 {
 					 deleteMissile(game, mis);
-					 p->s.velocityy += 20;
+					 p->s.velocityy += mis->velocity.y;
 					 p->s.rotInc = 2*GRAVITY;
 				 }
 		mis = mis->next;
@@ -518,69 +518,9 @@ void RagdollPhysics(Game *game)
 				 b->s.center.y > game->lleg2.s.c[1] - game->lleg2.s.height))
 				 {
 					 p->s.rotInc += GRAVITY/4;
-					 p->s.velocityx += 6;
+					 p->s.velocityx += b->velocity.x;
 					 deleteBlueBird(game, b);
-					 //b->s.center.y += 100;
 				 }
 		b = b->next;
 	}
-
-	/*
-
-	   if(
-	   (b2->s.center.x >= p->s.c[0] - p->s.width &&
-	   b2->s.center.x <= p->s.c[0] + p->s.width &&
-	   b2->s.center.y < p->s.c[1] + p->s.height &&
-	   b2->s.center.y > p->s.c[1] - p->s.height)
-	   ||
-	   (b2->s.center.x >= game->head.s.c[0] - game->head.s.width &&
-	   b2->s.center.x <= game->head.s.c[0] + game->head.s.width &&
-	   b2->s.center.y < game->head.s.c[1] + game->head.s.height &&
-	   b2->s.center.y > game->head.s.c[1] - game->head.s.height)
-	   ||
-	   (b2->s.center.x >= game->rarm1.s.c[0] - game->rarm1.s.width &&
-	   b2->s.center.x <= game->rarm1.s.c[0] + game->rarm1.s.width &&
-	   b2->s.center.y < game->rarm1.s.c[1] + game->rarm1.s.height &&
-	   b2->s.center.y > game->rarm1.s.c[1] - game->rarm1.s.height)
-	   ||
-	   (b2->s.center.x >= game->larm1.s.c[0] - game->larm1.s.width &&
-	   b2->s.center.x <= game->larm1.s.c[0] + game->larm1.s.width &&
-	   b2->s.center.y < game->larm1.s.c[1] + game->larm1.s.height &&
-	   b2->s.center.y > game->larm1.s.c[1] - game->larm1.s.height)
-	   ||
-	   (b2->s.center.x >= game->rarm2.s.c[0] - game->rarm2.s.width &&
-	   b2->s.center.x <= game->rarm2.s.c[0] + game->rarm2.s.width &&
-	   b2->s.center.y < game->rarm2.s.c[1] + game->rarm2.s.height &&
-	   b2->s.center.y > game->rarm2.s.c[1] - game->rarm2.s.height)
-	   ||
-	   (b2->s.center.x >= game->larm2.s.c[0] - game->larm2.s.width &&
-	   b2->s.center.x <= game->larm2.s.c[0] + game->larm2.s.width &&
-	   b2->s.center.y < game->larm2.s.c[1] + game->larm2.s.height &&
-	   b2->s.center.y > game->larm2.s.c[1] - game->larm2.s.height)
-	   ||
-	   (b2->s.center.x >= game->rleg1.s.c[0] - game->rleg1.s.width &&
-	   b2->s.center.x <= game->rleg1.s.c[0] + game->rleg1.s.width &&
-	   b2->s.center.y < game->rleg1.s.c[1] + game->rleg1.s.height &&
-	   b2->s.center.y > game->rleg1.s.c[1] - game->rleg1.s.height)
-	   ||
-	   (b2->s.center.x >= game->rleg2.s.c[0] - game->rleg2.s.width &&
-	   b2->s.center.x <= game->rleg2.s.c[0] + game->rleg2.s.width &&
-	   b2->s.center.y < game->rleg2.s.c[1] + game->rleg2.s.height &&
-	   b2->s.center.y > game->rleg2.s.c[1] - game->rleg2.s.height)
-	   ||
-	   (b2->s.center.x >= game->lleg1.s.c[0] - game->lleg1.s.width &&
-	   b2->s.center.x <= game->lleg1.s.c[0] + game->lleg1.s.width &&
-	   b2->s.center.y < game->lleg1.s.c[1] + game->lleg1.s.height &&
-	   b2->s.center.y > game->lleg1.s.c[1] - game->lleg1.s.height)
-	   ||
-	   (b2->s.center.x >= game->lleg2.s.c[0] - game->lleg2.s.width &&
-	   b2->s.center.x <= game->lleg2.s.c[0] + game->lleg2.s.width &&
-	   b2->s.center.y < game->lleg2.s.c[1] + game->lleg2.s.height &&
-	   b2->s.center.y > game->lleg2.s.c[1] - game->lleg2.s.height))
-	   {
-	   p->s.rotInc += -GRAVITY/4;
-	   p->s.velocityx += -6;
-	   b2->s.center.y += 100;
-	   }
-	   */
 }
