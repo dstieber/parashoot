@@ -16,6 +16,7 @@ typedef float Flt;
 typedef Flt Vector[3];
 typedef Flt Matrix[3][3];
 
+extern bool end_flag;
 extern int keys[65536];
 extern void deleteMissile(Game *game, Missile *node);
 extern void deleteBlueBird(Game *game, Bird *node);
