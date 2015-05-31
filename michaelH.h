@@ -40,6 +40,11 @@ void MakePlane(Game *game);
 void PlaneMovement(Game *game);
 void renderPlane(Game *game);
 
+void deleteCloud(Game *game, Cloud *node);
+void MakeRandomCloud(Game *game);
+void randomCloudMovement(Game *game);
+void renderRandomCloud(Game *game);
+
 void init_keys();
 int check_keys(XEvent *e);
 

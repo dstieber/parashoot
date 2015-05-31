@@ -260,18 +260,16 @@ void movement(Game *game)
 	
 		if (rand()%10 < 1) {
 	    	MakeBlueBird(game);
-			if (rand()%10 < 1) {
-				fmod_playsound(1);
-			}
 		}
 	
 		if (rand()%50 < 1) {
 	    	if (game->altitude > 1500) {
 				MakeMissile(game);
-				if (rand()%10 < 1) {
-					fmod_playsound(2);
-				}
 			}
+		}
+
+		if (rand()%150 < 1) {
+			MakeRandomCloud(game);
 		}
     }
 
@@ -279,7 +277,8 @@ void movement(Game *game)
     MissileMovement(game);
     CloudMovement(game);
     Cloud2Movement(game);
-    PlaneMovement(game);
+    randomCloudMovement(game);	
+	PlaneMovement(game);
 }
 
 
@@ -303,6 +302,7 @@ void render(Game *game)
 	renderCharacter(game);
 	BlueBirdRender(game);	
 	MissileRender(game);
+	renderRandomCloud(game);
 	displayAltitude(game);
 	glPopMatrix();
     }

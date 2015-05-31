@@ -217,7 +217,7 @@ void create_sounds() {
 		printf("ERROR");
 		return;
 	}
-	if(fmod_createsound((char *)"./sounds/bird.mp3", 1)) {
+/*	if(fmod_createsound((char *)"./sounds/bird.mp3", 1)) {
 		printf("ERROR for bird sound");
 		return;
 	}
@@ -247,9 +247,9 @@ void create_sounds() {
 	if(fmod_createsound((char *)".sounds/win.mp3", 8)) {
 		printf("wind sound");
 		return;
-	}
+	}*/
 	
-	fmod_setmode(0, FMOD_LOOP_OFF);  //FMOD_LOOP_NORMAL
+	fmod_setmode(0, FMOD_LOOP_NORMAL);  //FMOD_LOOP_NORMAL/OFF
 #endif
 }
 

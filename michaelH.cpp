@@ -252,8 +252,7 @@ void MissileMovement(Game *game)
 	}
 }
 
-void MissileRender(Game *game) 
-{
+void MissileRender(Game *game) {
 	Missile *m = game->mhead;
 	while (m) {
 		int w = 40;
@@ -342,6 +341,81 @@ void renderPlane(Game *game) {
 
 void init_keys() {
 	memset(keys, 0, 65536);
+}
+
+void MakeRandomCloud(Game *game) {
+	Cloud *c = new Cloud;
+	c->next = game->chead;
+	if (game->chead != NULL)
+		game->chead->prev = c;
+	game->chead = c;
+	game->nclouds++;
+
+	c->s.center.x = rand()%xres;
+	c->s.center.y = (game->altitude - yres - 84);
+	c->velocity.x = 0;
+	c->velocity.y = 2;
+}
+
+void randomCloudMovement(Game *game) {
+	Cloud *c = game->chead;
+	while(c)
+	{
+		if(c->s.center.y > game->altitude + (yres/2))
+		{
+			deleteCloud(game, c);
+			c = c->next;
+			game->nclouds--;
+		} else {
+			c->s.center.x += c->velocity.x;
+			c->s.center.y += c->velocity.y;
+			c = c->next;
+		}
+	}
+}
+
+void renderRandomCloud(Game *game) {
+	Cloud *c = game->chead;
+	while (c) {
+		int w = 220;
+		int h = 120;
+
+		Vec *cv = &c->s.center;
+
+		glBindTexture(GL_TEXTURE_2D, CsilhouetteTexture);
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.0f);
+		glColor4ub(255, 255, 255, 255);
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 1.0f); glVertex2i(cv->x-w, cv->y-h);
+		glTexCoord2f(0.0f, 0.0f); glVertex2i(cv->x-w, cv->y+h);
+		glTexCoord2f(1.0f, 0.0f); glVertex2i(cv->x+w, cv->y+h);
+		glTexCoord2f(1.0f, 1.0f); glVertex2i(cv->x+w, cv->y-h);
+		glEnd();
+		c = c->next;
+	}
+}
+
+void deleteCloud(Game *game, Cloud *node) {
+	if (game->chead != NULL) {
+		if (node->prev == NULL) {
+			if (node->next == NULL) {
+				game->chead = NULL;
+			} else {
+				node->next->prev = NULL;
+				game->chead = node->next;
+			}
+		} else {
+			if (node->next == NULL) {
+				node->prev->next = NULL;
+			} else {
+				node->prev->next = node->next;
+				node->next->prev = node->prev;
+			}
+		}
+		delete node;
+		node = NULL;
+	}
 }
 
 int check_keys(XEvent *e) {
