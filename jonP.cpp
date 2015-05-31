@@ -211,11 +211,45 @@ void create_sounds() {
 		printf("ERROR");
 		return;
 	}
+	// Different parameter for different sound
+	// Ex) fmod_playsound(0) plays the first sound (the song)
 	if(fmod_createsound((char *)"./sounds/Highly_Suspicious.mp3", 0)) {
 		printf("ERROR");
 		return;
 	}
-	fmod_setmode(0, FMOD_LOOP_NORMAL);
+	if(fmod_createsound((char *)"./sounds/bird.mp3", 1)) {
+		printf("ERROR for bird sound");
+		return;
+	}
+	if(fmod_createsound((char *)"./sounds/missile.mp3", 2)) {
+		printf("Error for missile sound");
+		return;
+	}
+	if(fmod_createsound((char *)"./sounds/missile_whistle.mp3", 3)) {
+		printf("Error for missile whistle");
+		return;
+	}
+	if(fmod_createsound((char *)"./sounds/generic_collision.mp3", 4)) {
+		printf("Error for collision sound");
+		return;
+	}
+	if(fmod_createsound((char *)"./sounds/missile_loud.mp3", 5)) {
+		printf("Error for loud missile");
+		return;
+	}
+	if(fmod_createsound((char *)"./sounds/wind_soft.wav", 6)) {
+		printf("Wind sound");
+	}
+	if(fmod_createsound((char *)"./sounds/lose.mp3", 7)) {
+		printf("Lose sound");
+		return;
+	}
+	if(fmod_createsound((char *)".sounds/win.mp3", 8)) {
+		printf("wind sound");
+		return;
+	}
+	
+	fmod_setmode(0, FMOD_LOOP_OFF);  //FMOD_LOOP_NORMAL
 #endif
 }
 

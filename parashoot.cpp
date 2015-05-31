@@ -254,23 +254,27 @@ void movement(Game *game)
 	p->s.velocityy = 3;
     }
 
-    if (end_flag) {
-	if (p->s.c[1] >= (game->altitude - 700)) {
-	    p->s.velocityy = -2;
-    	} else {
-	    p->s.velocityy = 0;
-	}
-    }
-
     MountainMovement(game);
 
     if (!end_flag) {
-	if (rand()%10 < 1) 
-	    MakeBlueBird(game);
-	if (rand()%50 < 1) 
-	    if (game->altitude > 1500) 
-		MakeMissile(game);
+	
+		if (rand()%10 < 1) {
+	    	MakeBlueBird(game);
+			if (rand()%10 < 1) {
+				fmod_playsound(1);
+			}
+		}
+	
+		if (rand()%50 < 1) {
+	    	if (game->altitude > 1500) {
+				MakeMissile(game);
+				if (rand()%10 < 1) {
+					fmod_playsound(2);
+				}
+			}
+		}
     }
+
     BlueBirdMovement(game);
     MissileMovement(game);
     CloudMovement(game);
@@ -303,6 +307,10 @@ void render(Game *game)
 	glPopMatrix();
     }
 
+	if (end_flag) {
+		renderGameOver(game);
+	}
+
     if(start_flag) {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -312,5 +320,5 @@ void render(Game *game)
 	    renderSky(game);
 	glPopMatrix();
 	renderStartMenu(game);	
-    }
+	}
 }

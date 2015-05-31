@@ -325,6 +325,17 @@ void renderStartMenu(Game *game)
 	ggprint16(&click, 1000, 0xffffffff, "Click to start");
 }
 
+void renderGameOver(Game *game) 
+{	
+	Rect gameOver;
+	gameOver.bot = game->altitude - yres/2;
+	gameOver.width = 500;
+	gameOver.height = 100;
+	gameOver.center = xres/2;
+	gameOver.left = xres/2;
+	ggprint16(&gameOver, 16, 0xffffffff, "Game Over!");
+}
+
 void randomGenerator(Game *game) 
 {
 	srand (time(NULL));
