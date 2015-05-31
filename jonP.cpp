@@ -283,7 +283,7 @@ void displayHealth(Game *game) {
 	r.width = 500;
 	r.height = 100;
 	sprintf(cstr, "%d", i);
-	strcat(cstr, "ft");
+	strcat(cstr, " HP");
 	if (game->health >= 75) {
 		ggprint16(&r, 1000, 0x04B404, "%s", cstr);
 	}
@@ -295,6 +295,9 @@ void displayHealth(Game *game) {
 	}
 	if (game->health < 25) {
 		ggprint16(&r, 1000, 0x8A0808, "%s", cstr);
+	}
+	if (game->health <= 0) {
+		ggprint16(&r, 1000, 0x000000, "%s", cstr);
 	}
 }
 

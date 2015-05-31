@@ -225,7 +225,7 @@ void check_mouse(XEvent *e, Game *game)
 
 void movement(Game *game)
 {
-    if (game->altitude < 0)
+    if (game->altitude < 0 || game->health <= 0)
 	end_flag = true;
 
     if (start_flag)
