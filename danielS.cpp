@@ -322,7 +322,18 @@ void renderStartMenu(Game *game)
 	click.height = 100;
 	click.center = xres/2;
 	click.left = xres/2;
-	ggprint16(&click, 1000, 0xffffffff, "Click to start");
+	ggprint16(&click, 16, 0xffffff, "Click to start");
+}
+
+void renderGameOver(Game *game)
+{
+	Rect gameOver;
+	gameOver.bot = yres/2;
+	gameOver.width = 500;
+	gameOver.height = 100;
+	gameOver.center = xres/2;
+	gameOver.left = xres/2;
+	ggprint16(&gameOver, 16, 0xdd4814, "Game Over!");
 }
 
 void randomGenerator(Game *game) 

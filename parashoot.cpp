@@ -160,7 +160,6 @@ void init_opengl(Game *game)
 	InitCloud2();
 	InitMountain();
 	InitBlueBird();
-	//InitBlueBird2();
 	InitMissile();
 	InitPlane();
 	//create opengl texture elements
@@ -186,7 +185,8 @@ void makeCharacter(Game *game)
 	p->velocity.y = 0;
 	p->velocity.x = 0;
 	game->n++;
-	start_flag = false;
+	start_flag = true;
+	menu_flag = false;
 	MakeMountain(game);
 	MakeCloud(game);
 	MakeCloud2(game);
@@ -205,7 +205,7 @@ void check_mouse(XEvent *e, Game *game)
 	if (e->type == ButtonPress) {
 		if (e->xbutton.button==1) {
 			//Left button was pressed
-			if(start_flag)
+			if(!start_flag)
 				makeCharacter(game);
 			return;
 		}
@@ -225,49 +225,61 @@ void check_mouse(XEvent *e, Game *game)
 
 void movement(Game *game)
 {
-	if (start_flag)
+	if (game->altitude <= 0) 
+	{	
+		start_flag = false;
+		end_flag = true;
 		return;
-	Character *p;
-	p = &game->body;
-	p->s.c[0] += p->s.velocityx;
-	p->s.c[1] += p->s.velocityy;
-	p->s.c[1] -= GRAVITY;
-	game->altitude -= GRAVITY;
-	RagdollPhysics(game);
-	gCameraY += (float)GRAVITY;
-	//check for collision with objects here...
-	//border collision detection
-	if (p->s.c[0] <= 50) {
-		p->s.velocityx = 3;
 	}
-	if (p->s.c[0] >= (xres - 50)) {
-		p->s.velocityx = -3;
-	}
-	if (p->s.c[1] >= (game->altitude - 50)) {
-		p->s.velocityy = -3;
-	}
-	if (p->s.c[1] <= (game->altitude - (yres - 50))) {
-		p->s.velocityy = 3;
-	}
+	if (menu_flag)
+		return;
 
-	MountainMovement(game);
+	if (end_flag)
+		return;
 
-	if (rand()%10 < 1) 
-		MakeBlueBird(game);
-	if (rand()%50 < 1)
-		MakeMissile(game);
-	BlueBirdMovement(game);
-	//BlueBirdMovement2(game);
-	MissileMovement(game);
-	CloudMovement(game);
-	Cloud2Movement(game);
-	PlaneMovement(game);
+	if (start_flag)
+	{
+		Character *p;
+		p = &game->body;
+		p->s.c[0] += p->s.velocityx;
+		p->s.c[1] += p->s.velocityy;
+		p->s.c[1] -= GRAVITY;
+		game->altitude -= GRAVITY;
+		RagdollPhysics(game);
+		gCameraY += (float)GRAVITY;
+		//check for collision with objects here...
+		//border collision detection
+		if (p->s.c[0] <= 50) {
+			p->s.velocityx = 3;
+		}
+		if (p->s.c[0] >= (xres - 50)) {
+			p->s.velocityx = -3;
+		}
+		if (p->s.c[1] >= (game->altitude - 50)) {
+			p->s.velocityy = -3;
+		}
+		if (p->s.c[1] <= (game->altitude - (yres - 50))) {
+			p->s.velocityy = 3;
+		}
+
+		if (rand()%10 < 1) 
+			MakeBlueBird(game);
+		if (rand()%50 < 1)
+			MakeMissile(game);
+		MountainMovement(game);
+		BlueBirdMovement(game);
+		MissileMovement(game);
+		CloudMovement(game);
+		Cloud2Movement(game);
+		PlaneMovement(game);
+	}
 }
 
 
 void render(Game *game)
 {
-	if(!start_flag) {
+	if(start_flag) 
+	{
 		glClear(GL_COLOR_BUFFER_BIT);
 		//Pop default matrix onto current matrix
 		glMatrixMode(GL_MODELVIEW);
@@ -283,15 +295,14 @@ void render(Game *game)
 		renderMountain(game);
 		renderCloud(game);
 		renderCharacter(game);
-
 		BlueBirdRender(game);	
-		//BlueBirdRender2(game);
 		MissileRender(game);
 		displayAltitude(game);
 		glPopMatrix();
 	}
 
-	if(start_flag) {
+	if(menu_flag) 
+	{
 		glClear(GL_COLOR_BUFFER_BIT);
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
@@ -300,5 +311,22 @@ void render(Game *game)
 			renderSky(game);
 		glPopMatrix();
 		renderStartMenu(game);	
+	}
+
+	if (end_flag)
+	{
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glColor3f(1.0,1.0,1.0);
+		if (sky)
+			renderSky(game);
+		renderCloud2(game);
+		renderMountain(game);
+		renderCloud(game);
+		renderCharacter(game);
+		BlueBirdRender(game);
+		MissileRender(game);
+		glPopMatrix();
+		renderGameOver(game);
 	}
 }

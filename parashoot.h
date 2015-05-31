@@ -16,7 +16,8 @@ XEvent e;
 int xres = WINDOW_WIDTH;
 int yres = WINDOW_HEIGHT;
 bool size_flag = false;
-bool start_flag = true;
+bool menu_flag = true;
+bool start_flag = false;
 bool end_flag = false;
 //Camera position
 GLfloat gCameraY = 0.0f;
