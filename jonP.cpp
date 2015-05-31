@@ -14,8 +14,7 @@ GLuint BsilhouetteTexture2;
 Ppmimage *LogoImage = NULL;
 GLuint LsilhouetteTexture;
 
-void InitBlueBird()
-{
+void InitBlueBird() {
 	BlueBirdImage = ppm6GetImage("./images/BirdsTemplate.ppm");
 	glGenTextures(1, &BsilhouetteTexture);
 	//
@@ -31,8 +30,7 @@ void InitBlueBird()
 	delete [] BsilhouetteData;
 }
 
-void InitBlueBird2()
-{
+void InitBlueBird2() {
 	BlueBirdImage2 = ppm6GetImage("./images/BlueBird2.ppm");
 	glGenTextures(1, &BsilhouetteTexture2);
 	//
@@ -48,8 +46,7 @@ void InitBlueBird2()
 	delete [] BsilhouetteData2;
 }
 
-void MakeBlueBird(Game *game) 
-{
+void MakeBlueBird(Game *game) {
 	Bird *b = new Bird;
 	b->next = game->bhead;
 	if (game->bhead !=NULL)
@@ -71,8 +68,7 @@ void MakeBlueBird(Game *game)
 
 }
 
-void MakeBlueBird2(Game *game) 
-{
+void MakeBlueBird2(Game *game) {
 	Character *b;
 	b = &game->BlueBird2;
 
@@ -82,8 +78,7 @@ void MakeBlueBird2(Game *game)
 	b->velocity.y = 0;
 }
 
-void BlueBirdMovement(Game *game)
-{
+void BlueBirdMovement(Game *game) {
 	Bird *b = game->bhead;
 	while(b)
 	{
@@ -100,8 +95,7 @@ void BlueBirdMovement(Game *game)
 	}
 }
 
-void BlueBirdMovement2(Game *game)
-{
+void BlueBirdMovement2(Game *game) {
 	Character *b;
 	b= &game->BlueBird2;
 	b->s.center.x += b->velocity.x;
@@ -110,8 +104,7 @@ void BlueBirdMovement2(Game *game)
 
 }
 
-void BlueBirdRender(Game *game)
-{
+void BlueBirdRender(Game *game) {
 	Bird *b = game->bhead;
 	while (b) {
 		int wB= 17;
@@ -140,8 +133,7 @@ void BlueBirdRender(Game *game)
 	}
 }
 
-void renderRedBird(Game *game)
-{
+void renderRedBird(Game *game) {
     Bird *b = game->bhead;
     while (b) {
 	int wB= 17;
@@ -162,8 +154,7 @@ void renderRedBird(Game *game)
     }
 }
 
-void BlueBirdRender2(Game *game)
-{
+void BlueBirdRender2(Game *game) {
 	int wB= 17;
 	int hB= 13;
 
@@ -257,8 +248,7 @@ void play() {
 	fmod_playsound(0);
 }
 
-void InitLogo()
-{
+void InitLogo() {
 	LogoImage = ppm6GetImage("./images/LogoWhite.ppm");
 	glGenTextures(1, &LsilhouetteTexture);
 	//
@@ -274,8 +264,7 @@ void InitLogo()
 	delete [] LsilhouetteData;
 }
 
-void MakeLogo(Game *game)
-{
+void MakeLogo(Game *game) {
 	Object *l;
 
 	l = &game->Logo;
@@ -284,8 +273,32 @@ void MakeLogo(Game *game)
 
 }
 
-void LogoRender(Game *game)
-{
+void displayHealth(Game *game) {
+	int i = game->health;
+	Rect r;
+	char cstr[10];
+	r.left = 50;
+	r.bot = game->altitude - 50;
+	r.center = xres - 50;
+	r.width = 500;
+	r.height = 100;
+	sprintf(cstr, "%d", i);
+	strcat(cstr, "ft");
+	if (game->health >= 75) {
+		ggprint16(&r, 1000, 0x04B404, "%s", cstr);
+	}
+	if (game->health >= 50 && game->health < 75) {
+		ggprint16(&r, 1000, 0xFFFF00, "%s", cstr);
+	}
+	if (game->health >= 25 && game->health < 50) {
+		ggprint16(&r, 1000, 0xFF8000, "%s", cstr);
+	}
+	if (game->health < 25) {
+		ggprint16(&r, 1000, 0x8A0808, "%s", cstr);
+	}
+}
+
+void LogoRender(Game *game) {
 	int w= 350;
 	int h= 80;
 

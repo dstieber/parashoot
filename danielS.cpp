@@ -2,7 +2,6 @@
  * Filename:	danielS.cpp
  * Author:		Daniel Stieber
  * Purpose:		This cpp file defines functions declared in danielS.h
- *
  */
 
 #include "danielS.h"
@@ -30,8 +29,7 @@ GLuint LlegTexture;
 GLuint LimbTexture;
 GLuint HeadTexture;
 
-void initSky(void) 
-{
+void initSky(void) {
 	skyImage = ppm6GetImage("./images/Sky.ppm");
 	glGenTextures(1, &skyTexture);
 	glBindTexture(GL_TEXTURE_2D, skyTexture);
@@ -41,8 +39,7 @@ void initSky(void)
 			0, GL_RGB, GL_UNSIGNED_BYTE, skyImage->data);
 }
 
-void renderSky(Game *game) 
-{
+void renderSky(Game *game) {
 	glBindTexture(GL_TEXTURE_2D, skyTexture);
 	glBegin(GL_QUADS);
 	int ybottom = game->altitude - yres;
@@ -53,8 +50,7 @@ void renderSky(Game *game)
 	glEnd();
 }
 
-void initCharacter(void) 
-{
+void initCharacter(void) {
 	//body Texture
 	BodyImage = ppm6GetImage("./images/Body.ppm");
 	glGenTextures(1, &silhouetteTexture);
@@ -133,8 +129,7 @@ void initCharacter(void)
 
 }
 
-void renderCharacter(Game *game)
-{
+void renderCharacter(Game *game) {
 	float w, h;
 	//body
 	glPushMatrix();
@@ -287,11 +282,9 @@ void renderCharacter(Game *game)
 	glPopMatrix();
 
 	glPopMatrix();
-
 }
 
-void displayAltitude(Game *game) 
-{
+void displayAltitude(Game *game) {
 	/*
 	int i = STARTING_ALTITUDE;
 	while (i > 0) {
@@ -323,8 +316,7 @@ void displayAltitude(Game *game)
 	ggprint16(&r, 1000, 0xffffffff, "%s", cstr);
 }
 
-void renderStartMenu(Game *game)
-{  
+void renderStartMenu(Game *game) {  
 	InitLogo();
 	MakeLogo(game);
 	LogoRender(game);
@@ -338,19 +330,17 @@ void renderStartMenu(Game *game)
 	ggprint16(&click, 1000, 0xffffffff, "Click to start");
 }
 
-void renderGameOver(Game *game) 
-{	
+void renderGameOver(Game *game) {	
 	Rect gameOver;
 	gameOver.bot = game->altitude - yres/2;
 	gameOver.width = 500;
 	gameOver.height = 100;
 	gameOver.center = xres/2;
 	gameOver.left = xres/2;
-	ggprint16(&gameOver, 16, 0xffffffff, "Game Over!");
+	ggprint16(&gameOver, 1000, 0xffffffff, "Game Over!");
 }
 
-void randomGenerator(Game *game) 
-{
+void randomGenerator(Game *game) {
 	srand (time(NULL));
 
 	if (rand()%10 < 9) 
@@ -360,8 +350,7 @@ void randomGenerator(Game *game)
 	}
 }
 
-void deleteBlueBird(Game *game, Bird *node)
-{
+void deleteBlueBird(Game *game, Bird *node) {
 	if (game->bhead != NULL) {
 		if (node->prev == NULL) {
 			if (node->next == NULL) {
@@ -383,8 +372,7 @@ void deleteBlueBird(Game *game, Bird *node)
 	}
 }
 
-void deleteMissile(Game *game, Missile *node)
-{
+void deleteMissile(Game *game, Missile *node) {
 	if (game->mhead != NULL) {
 		if (node->prev == NULL) {
 			if (node->next == NULL) {

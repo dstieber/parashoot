@@ -25,6 +25,7 @@ void play();
 void create_sounds();
 void InitBlueBird(void);
 void InitLogo();
+void displayHealth(Game *game);
 void MakeLogo(Game *game);
 void LogoRender(Game *game);
 void MakeBlueBird(Game *game);

@@ -1,4 +1,9 @@
-// ALexzander Avila
+/*
+ * Filename:	alexA.h
+ * Author:		Alex Avila
+ * Purpose:		This is the header file for alexA.cpp
+ */
+
 #ifndef _ALEXA_H_
 #define _ALEXA_H_
 

@@ -1,9 +1,13 @@
-// Alexzander Avila
+/*
+ * Filename:	alexA.cpp
+ * Author:		Alex Avila
+ * Purpose:		This cpp file defines functions declared in alexA.h
+ */
+
 #include "alexA.h"
 int keys[65536];
 
-void DefineRagdoll(Game *game)
-{
+void DefineRagdoll(Game *game) {
     Character *c;
 
     //define body shape
@@ -131,13 +135,12 @@ void DefineRagdoll(Game *game)
     c->s.rot = -15.0f;
     identity33(c->s.m);
 }
-void identity33(Matrix mat)
-{
+void identity33(Matrix mat) {
     mat[0][0] = mat[1][1] = mat[2][2] = 1.0f;
     mat[0][1] = mat[0][2] = mat[1][0] = mat[1][2] = mat[2][0] = mat[2][1] = 0.0f;
 }
-void yy_transform(Flt rotate, Matrix a)
-{
+
+void yy_transform(Flt rotate, Matrix a) {
     if(rotate != 0.0f)
     {
 	Flt ct = cos(rotate), st = sin(rotate);
@@ -156,8 +159,7 @@ void yy_transform(Flt rotate, Matrix a)
 	return;
     }
 }
-void trans_vector(Matrix mat, const Vector in, Vector out)
-{
+void trans_vector(Matrix mat, const Vector in, Vector out) {
     Flt f0 = mat[0][0] * in[0] + mat[1][0] * in[1] + mat[2][0] * in[2];
     Flt f1 = mat[0][1] * in[0] + mat[1][1] * in[1] + mat[2][1] * in[2];
     Flt f2 = mat[0][2] * in[0] + mat[1][2] * in[1] + mat[2][2] * in[2];
@@ -166,8 +168,7 @@ void trans_vector(Matrix mat, const Vector in, Vector out)
     out[2] = f2;
 }
 
-void RagdollPhysics(Game *game)
-{
+void RagdollPhysics(Game *game) {
     if (!end_flag) {
 	Character *p;
 	Missile *mis = game->mhead;
