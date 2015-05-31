@@ -418,6 +418,81 @@ void deleteCloud(Game *game, Cloud *node) {
 	}
 }
 
+void MakeRandomPlane(Game *game) {
+	Planes *p = new Planes;
+	p->next = game->phead;
+	if (game->phead != NULL)
+		game->phead->prev = p;
+	game->phead = p;
+	game->nplanes++;
+
+	p->s.center.x = 0;
+	p->s.center.y = (game->altitude - rand()%(yres/2));
+	p->velocity.x = rand()%4 + 2;
+	p->velocity.y = -GRAVITY;
+}
+
+void randomPlaneMovement(Game *game) {
+	Planes *p = game->phead;
+	while(p)
+	{
+		if(p->s.center.y > game->altitude + (yres/2))
+		{
+			deletePlane(game, p);
+			p = p->next;
+			game->nplanes--;
+		} else {
+			p->s.center.x += p->velocity.x;
+			p->s.center.y += p->velocity.y;
+			p = p->next;
+		}
+	}
+}
+
+void renderRandomPlane(Game *game) {
+	Planes *p = game->phead;
+	while (p) {
+		int w = 75;  //220 
+		int h = 30;  //120
+
+		Vec *pv = &p->s.center;
+
+		glBindTexture(GL_TEXTURE_2D, PsilhouetteTexture);
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.0f);
+		glColor4ub(255, 255, 255, 255);
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 1.0f); glVertex2i(pv->x-w, pv->y-h);
+		glTexCoord2f(0.0f, 0.5f); glVertex2i(pv->x-w, pv->y+h);
+		glTexCoord2f(1.0f, 0.5f); glVertex2i(pv->x+w, pv->y+h);
+		glTexCoord2f(1.0f, 1.0f); glVertex2i(pv->x+w, pv->y-h);
+		glEnd();
+		p = p->next;
+	}
+}
+
+void deletePlane(Game *game, Planes *node) {
+	if (game->phead != NULL) {
+		if (node->prev == NULL) {
+			if (node->next == NULL) {
+				game->phead = NULL;
+			} else {
+				node->next->prev = NULL;
+				game->phead = node->next;
+			}
+		} else {
+			if (node->next == NULL) {
+				node->prev->next = NULL;
+			} else {
+				node->prev->next = node->next;
+				node->next->prev = node->prev;
+			}
+		}
+		delete node;
+		node = NULL;
+	}
+}
+
 int check_keys(XEvent *e) {
 	//keyboard input?
 	static int shift=0;

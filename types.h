@@ -96,6 +96,17 @@ struct Cloud {
 	}
 };
 
+struct Planes {
+	Shape s;
+	Vec velocity;
+	struct Planes *prev;
+	struct Planes *next;
+	Planes() {
+		prev = NULL;
+		next = NULL;
+	}
+};
+
 struct Game {
 	Character head, body, rarm1, rarm2, larm1, larm2, rleg1, rleg2,
 			  lleg1, lleg2;
@@ -112,11 +123,13 @@ struct Game {
 	Bird *bhead; //pointer to head of bird linked list
 	Missile *mhead; //pointer to head of missile linked list
 	Cloud *chead; //pointer to head of cloud linked list
+	Planes *phead; //pointer to head of plane linked list
 	int n;
 	int health;
 	int nbirds;
 	int nmissiles;
 	int nclouds;
+	int nplanes;
 	float altitude;
 	Game() {
 		health = 100;
@@ -126,6 +139,7 @@ struct Game {
 		nbirds = 0;
 		nmissiles = 0;
 		nclouds = 0;
+		nplanes = 0;
 		n = 0;
 	}
 };

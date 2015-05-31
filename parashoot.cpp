@@ -271,6 +271,10 @@ void movement(Game *game)
 		if (rand()%150 < 1) {
 			MakeRandomCloud(game);
 		}
+
+		if (rand()%250 < 1) {
+			MakeRandomPlane(game);
+		}
     }
 
     BlueBirdMovement(game);
@@ -279,6 +283,7 @@ void movement(Game *game)
     Cloud2Movement(game);
     randomCloudMovement(game);	
 	PlaneMovement(game);
+	randomPlaneMovement(game);
 }
 
 
@@ -296,6 +301,7 @@ void render(Game *game)
 	    renderSky(game); 
 	}
 	renderCloud2(game);
+	renderRandomPlane(game);
 	renderMountain(game);
 	renderCloud(game);
 	renderPlane(game);
