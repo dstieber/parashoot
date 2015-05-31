@@ -295,10 +295,10 @@ void MakePlane(Game *game) {
 	Object *p;
 	p = &game->Plane;
 
-	p->s.center.x = 400;
+	p->s.center.x = 1150;
 	p->s.center.y = (game->altitude - 400);
 	p->velocity.x = 0;
-	p->velocity.y = 0;
+	p->velocity.y = 7;
 }
 
 void PlaneMovement(Game *game) {
@@ -310,8 +310,8 @@ void PlaneMovement(Game *game) {
 }
 
 void renderPlane(Game *game) {
-	int w = 150;		//646   //646
-	int h = 75;		//632   //316
+	int w = 646;		   //646, 150
+	int h = 316;		   //316, 75
 
 	//Object *pv;
 	Vec *p;

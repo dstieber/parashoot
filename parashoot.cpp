@@ -293,12 +293,11 @@ void render(Game *game)
 	    renderSky(game); 
 	}
 	renderCloud2(game);
-	//renderPlane(game);
 	renderMountain(game);
 	renderCloud(game);
+	renderPlane(game);
 	renderCharacter(game);
 	BlueBirdRender(game);	
-	//BlueBirdRender2(game);
 	MissileRender(game);
 	displayAltitude(game);
 	glPopMatrix();
