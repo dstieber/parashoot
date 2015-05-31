@@ -292,22 +292,35 @@ void renderCharacter(Game *game)
 
 void displayAltitude(Game *game) 
 {
+	/*
 	int i = STARTING_ALTITUDE;
 	while (i > 0) {
 		if ((game->altitude < (i + yres/2)) && (game->altitude > (i - yres/2))) {
 			Rect r;
 			char cstr[10];
 			r.left = xres - 50;
-			r.bot = i - yres/2;
+			r.bot = i - yres/2;  
 			r.center = xres - 50;
 			r.width = 500;
 			r.height = 100;
 			sprintf (cstr, "%d", i);
 			strcat (cstr, "ft");
-			ggprint16(&r, 16, 0xdd4814, "%s", cstr);
+			ggprint16(&r, 16, 0xffffffff, "%s", cstr);
 		}
 		i = i - 100;
-	}
+	}*/
+
+	int i = game->altitude;
+	Rect r;
+	char cstr[10];
+	r.left = xres - 50;
+	r.bot = game->altitude - 50;
+	r.center = xres - 50;
+	r.width = 500;
+	r.height = 100;
+	sprintf(cstr, "%d", i);
+	strcat(cstr, "ft");
+	ggprint16(&r, 1000, 0xffffffff, "%s", cstr);
 }
 
 void renderStartMenu(Game *game)
@@ -345,7 +358,6 @@ void randomGenerator(Game *game)
 		MakeBlueBird(game);
 		BlueBirdRender(game);
 	}
-
 }
 
 void deleteBlueBird(Game *game, Bird *node)
