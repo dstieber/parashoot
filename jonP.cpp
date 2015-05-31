@@ -57,10 +57,18 @@ void MakeBlueBird(Game *game)
 	game->bhead = b;
 	game->nbirds++;
 
-	b->s.center.x = 0;
-	b->s.center.y = (game->altitude - rand()%yres);
-	b->velocity.x = rand()%10 + 10;
-	b->velocity.y = -GRAVITY;
+	if (rand()%2 == 0) {
+		b->s.center.x = 0;
+		b->s.center.y = (game->altitude - rand()%yres);
+		b->velocity.x = rand()%10 + 10;
+		b->velocity.y = -GRAVITY;
+	} else {
+		b->s.center.x = xres;
+		b->s.center.y = (game->altitude - rand()%yres);
+		b->velocity.x = -rand()%10 - 10;
+		b->velocity.y = -GRAVITY;
+	}
+
 }
 
 void MakeBlueBird2(Game *game) 
@@ -116,10 +124,17 @@ void BlueBirdRender(Game *game)
 		glAlphaFunc(GL_GREATER, 0.0f);
 		glColor4ub(255, 255, 255, 255);
 		glBegin(GL_QUADS);
-		glTexCoord2f(0.0f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
-		glTexCoord2f(0.0f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
-		glTexCoord2f(0.25f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
-		glTexCoord2f(0.25f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+		if (b->velocity.x > 0) {
+			glTexCoord2f(0.0f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+			glTexCoord2f(0.0f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+			glTexCoord2f(0.25f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+			glTexCoord2f(0.25f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+		} else {
+			glTexCoord2f(0.75f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+			glTexCoord2f(0.75f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+			glTexCoord2f(1.0f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+			glTexCoord2f(1.0f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+		}
 		glEnd();
 		b = b->next;
 	}
