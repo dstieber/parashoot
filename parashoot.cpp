@@ -231,48 +231,46 @@ void movement(Game *game)
     if (start_flag)
 	return;
 
-	Character *p;
-	p = &game->body;
-	p->s.c[0] += p->s.velocityx;
-	p->s.c[1] += p->s.velocityy;
-	p->s.c[1] -= GRAVITY;
-	game->altitude -= GRAVITY;
-	RagdollPhysics(game);
-	gCameraY += (float)GRAVITY;
-	//check for collision with objects here...
-	//border collision detection
-	if (p->s.c[0] <= 50) {
-	    p->s.velocityx = 3;
-	}
-	if (p->s.c[0] >= (xres - 50)) {
-	    p->s.velocityx = -3;
-	}
-	if (p->s.c[1] >= (game->altitude - 50)) {
-	    p->s.velocityy = -3;
-	}
-	if (p->s.c[1] <= (game->altitude - (yres - 50))) {
-	    p->s.velocityy = 3;
-	}
+    Character *p;
+    p = &game->body;
+    p->s.c[0] += p->s.velocityx;
+    p->s.c[1] += p->s.velocityy;
+    p->s.c[1] -= GRAVITY;
+    game->altitude -= GRAVITY;
+    RagdollPhysics(game);
+    gCameraY += (float)GRAVITY;
+    //check for collision with objects here...
+    //border collision detection
+    if (p->s.c[0] <= 50) {
+	p->s.velocityx = 3;
+    }
+    if (p->s.c[0] >= (xres - 50)) {
+	p->s.velocityx = -3;
+    }
+    if (p->s.c[1] >= (game->altitude - 50)) {
+	p->s.velocityy = -3;
+    }
+    if (p->s.c[1] <= (game->altitude - (yres - 50))) {
+	p->s.velocityy = 3;
+    }
 
-	if (end_flag) {
-	    if (p->s.c[1] < 200) {
-		p->s.velocityy = -2;
-		p->s.velocityx = 0;
-            } else {		
-	    	p->s.velocityy = 0;
-		p->s.velocityx = 0;
-	    }
+    if (end_flag) {
+	if (p->s.c[1] >= (game->altitude - 700)) {
+	    p->s.velocityy = -2;
+    	} else {
+	    p->s.velocityy = 0;
 	}
+    }
 
-	MountainMovement(game);
+    MountainMovement(game);
 
-	if (!end_flag) {
+    if (!end_flag) {
 	if (rand()%10 < 1) 
 	    MakeBlueBird(game);
 	if (rand()%50 < 1) 
 	    if (game->altitude > 1500) 
 		MakeMissile(game);
-	}
+    }
     BlueBirdMovement(game);
     MissileMovement(game);
     CloudMovement(game);
