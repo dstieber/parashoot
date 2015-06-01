@@ -314,11 +314,11 @@ void displayAltitude(Game *game) {
 	sprintf(cstr, "%d", i);
 	strcat(cstr, "ft");
 	if (game->altitude >= 0) {
-		ggprint16(&r, 1000, 0xffffffff, "%s", cstr);
+		ggprint16(&r, 1000, 0x000000, "%s", cstr);
 	} else {
 		sprintf(cstr, "%d", 0);
 		strcat(cstr, "ft");
-		ggprint16(&r, 1000, 0xffffffff, "%s", cstr);
+		ggprint16(&r, 1000, 0x000000, "%s", cstr);
 	}
 }
 
