@@ -2,7 +2,7 @@
 Program : Homework 3/Lab 6
 Author : Jonathan Popkin
 Purpose: The Purpose of this lab is to seperate game files
-*/ 
+ */ 
 #include "jonP.h"
 
 Ppmimage *BlueBirdImage = NULL;
@@ -134,24 +134,24 @@ void BlueBirdRender(Game *game) {
 }
 
 void renderRedBird(Game *game) {
-    Bird *b = game->bhead;
-    while (b) {
-	int wB= 17;
-	int hB= 13;
-	Vec *bv = &b->s.center;
+	Bird *b = game->bhead;
+	while (b) {
+		int wB= 17;
+		int hB= 13;
+		Vec *bv = &b->s.center;
 
-	glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.0f);
-	glColor4ub(255, 255, 255, 255);
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.6f); glVertex2i(bv->x-wB, bv->y-hB);
-	glTexCoord2f(0.0f, 0.4f); glVertex2i(bv->x-wB, bv->y+hB);
-	glTexCoord2f(0.25f, 0.4f); glVertex2i(bv->x+wB, bv->y+hB);
-	glTexCoord2f(0.25f, 0.6f); glVertex2i(bv->x+wB, bv->y-hB);
-	glEnd();
-	b = b->next;
-    }
+		glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.0f);
+		glColor4ub(255, 255, 255, 255);
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.6f); glVertex2i(bv->x-wB, bv->y-hB);
+		glTexCoord2f(0.0f, 0.4f); glVertex2i(bv->x-wB, bv->y+hB);
+		glTexCoord2f(0.25f, 0.4f); glVertex2i(bv->x+wB, bv->y+hB);
+		glTexCoord2f(0.25f, 0.6f); glVertex2i(bv->x+wB, bv->y-hB);
+		glEnd();
+		b = b->next;
+	}
 }
 
 void BlueBirdRender2(Game *game) {
@@ -171,7 +171,7 @@ void BlueBirdRender2(Game *game) {
 	firstTime = 1;
 	}
 	}
-	*/
+	 */
 
 	if(game->altitude < 11600 && game->altitude > 10000)
 	{
@@ -208,7 +208,7 @@ void create_sounds() {
 		printf("ERROR");
 		return;
 	}
-/*	if(fmod_createsound((char *)"./sounds/bird.mp3", 1)) {
+	if(fmod_createsound((char *)"./sounds/bird.mp3", 1)) {
 		printf("ERROR for bird sound");
 		return;
 	}
@@ -235,19 +235,42 @@ void create_sounds() {
 		printf("Lose sound");
 		return;
 	}
-	if(fmod_createsound((char *)".sounds/win.mp3", 8)) {
+	if(fmod_createsound((char *)"./sounds/win.mp3", 8)) {
 		printf("wind sound");
 		return;
-	}*/
-	
+	}
 	fmod_setmode(0, FMOD_LOOP_NORMAL);  //FMOD_LOOP_NORMAL/OFF
+
+/*
+	fmod_setmode(1, FMOD_LOOP_NORMAL);
+	fmod_setmode(2, FMOD_LOOP_NORMAL);
+	fmod_setmode(3, FMOD_LOOP_NORMAL);
+	fmod_setmode(4, FMOD_LOOP_NORMAL);
+	fmod_setmode(5, FMOD_LOOP_NORMAL);
+	fmod_setmode(6, FMOD_LOOP_NORMAL);
+	fmod_setmode(7, FMOD_LOOP_NORMAL);
+	fmod_setmode(8, FMOD_LOOP_NORMAL);
+
+*/
 #endif
 }
 
 void play() {
 	fmod_playsound(0);
-}
 
+}
+void playSoundEffects() {
+//**********************************************************************************************
+//Needs to be some random function here!!
+/*
+	if(rand()%10 == 17)
+	{
+	fmod_playsound(1);
+	}
+*/
+
+
+}
 void InitLogo() {
 	LogoImage = ppm6GetImage("./images/LogoWhite.ppm");
 	glGenTextures(1, &LsilhouetteTexture);

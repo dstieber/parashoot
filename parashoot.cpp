@@ -32,6 +32,7 @@ int main(void)
 	}
 	render(&game);
 	glXSwapBuffers(dpy, win);
+	playSoundEffects();
     }
     cleanupXWindows();
     cleanup_fonts();

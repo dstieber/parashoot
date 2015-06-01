@@ -22,6 +22,7 @@ extern int yres;
 extern unsigned char *buildAlphaData(Ppmimage *img);
 extern GLuint BirdTsilhouetteTexture;
 void play();
+void playSoundEffects();
 void create_sounds();
 void InitBlueBird(void);
 void InitLogo();
