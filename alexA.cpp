@@ -461,6 +461,7 @@ void RagdollPhysics(Game *game) {
 					 deleteMissile(game, mis);
 					 p->s.velocityy += mis->velocity.y;
 					 p->s.rotInc = 2*GRAVITY;
+					 game->hits = game->hits + 1;
 					 game->health = game->health - 4;
 				 }
 		mis = mis->next;
@@ -522,6 +523,7 @@ void RagdollPhysics(Game *game) {
 					 p->s.rotInc += GRAVITY/4;
 					 p->s.velocityx += b->velocity.x;
 					 deleteBlueBird(game, b);
+					 game->hits = game->hits + 1;
 					 game->health = game->health - 1;
 				 }
 		b = b->next;

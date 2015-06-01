@@ -126,6 +126,7 @@ struct Game {
 	Planes *phead; //pointer to head of plane linked list
 	int n;
 	int health;
+    int hits;
 	int nbirds;
 	int nmissiles;
 	int nclouds;
@@ -133,6 +134,7 @@ struct Game {
 	float altitude;
 	Game() {
 		health = 100;
+		hits = 0;
 		altitude = (float)STARTING_ALTITUDE;
 		bhead = NULL;
 		mhead = NULL;

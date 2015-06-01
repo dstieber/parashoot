@@ -493,6 +493,27 @@ void deletePlane(Game *game, Planes *node) {
 	}
 }
 
+void renderScore(Game *game) {	
+	
+	char str[8] = "Score: ";
+	char cstr[10];
+	int i = 0;
+	if (game->health <= 0) {
+		i = game->hits;
+	} else {
+		i = (game->health * 100) - game->hits;
+	}
+	Rect score;
+	score.bot = game->altitude - yres/2 - 50;
+	score.width = 500;
+	score.height = 100;
+	score.center = xres/2;
+	score.left = xres/2;
+	sprintf(cstr, "%d", i);
+	strcat(str, cstr);
+	ggprint16(&score, 1000, 0xffffffff, "%s", str);
+}
+
 int check_keys(XEvent *e) {
 	//keyboard input?
 	static int shift=0;

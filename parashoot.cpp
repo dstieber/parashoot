@@ -313,6 +313,7 @@ void render(Game *game)
 	displayAltitude(game);
 		if (end_flag) {
 			renderGameOver(game);
+			renderScore(game);
 		}
 	glPopMatrix();
     }
