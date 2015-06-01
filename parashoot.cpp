@@ -9,7 +9,7 @@ int main(void)
     DefineRagdoll(&game);
     init_keys();
     create_sounds();
-    play();
+    playSound("song");
     clock_gettime(CLOCK_REALTIME, &timePause);
     clock_gettime(CLOCK_REALTIME, &timeStart);
 
@@ -32,7 +32,6 @@ int main(void)
 	}
 	render(&game);
 	glXSwapBuffers(dpy, win);
-	playSoundEffects();
     }
     cleanupXWindows();
     cleanup_fonts();
