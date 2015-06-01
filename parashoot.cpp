@@ -311,12 +311,11 @@ void render(Game *game)
 	renderRandomCloud(game);
 	displayHealth(game);
 	displayAltitude(game);
+		if (end_flag) {
+			renderGameOver(game);
+		}
 	glPopMatrix();
     }
-
-	if (end_flag) {
-		renderGameOver(game);
-	}
 
     if(start_flag) {
 	glClear(GL_COLOR_BUFFER_BIT);
