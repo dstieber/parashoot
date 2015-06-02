@@ -25,4 +25,6 @@ void init_keys();
 void identity33(Matrix mat);
 void yy_transform(Flt rotate, Matrix a);
 void trans_vector(Matrix mat, const Vector in, Vector out);
+void renderParachute(Game *);
+void displayHealth(Game *);
 #endif

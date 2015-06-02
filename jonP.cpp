@@ -109,16 +109,58 @@ void BlueBirdRender(Game *game)
 
 		Vec *bv = &b->s.center;
 
+		b->Wingspan = WingDiff(&b->Wingdown, &b->Wingcurrent);
 		glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
 		glEnable(GL_ALPHA_TEST);
 		glAlphaFunc(GL_GREATER, 0.0f);
 		glColor4ub(255, 255, 255, 255);
+		clock_gettime(CLOCK_REALTIME, &b->Wingcurrent);
+		if(b->velocity.x > 0)
+{
+		if(WingDiff(&b->Wingdown, &b->Wingcurrent) < 0.5 || (int)b->Wingspan == 1 || (int)b->Wingspan == 2)
+		{
+		//wings up
 		glBegin(GL_QUADS);
 		glTexCoord2f(0.0f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
 		glTexCoord2f(0.0f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
 		glTexCoord2f(0.25f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
 		glTexCoord2f(0.25f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
 		glEnd();
+		}
+		else if(b->Wingspan >= 0.5 || b->s.center.x > 500 || b->s.center.x > 575)
+		{
+		//wings down
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.25f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+		glTexCoord2f(0.25f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+		glTexCoord2f(0.5f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+		glTexCoord2f(0.5f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+		glEnd();
+		}
+}
+		else
+		{
+		if(WingDiff(&b->Wingdown, &b->Wingcurrent) < 0.5 || (int)b->Wingspan == 1 || (int)b->Wingspan == 2)
+		{
+		//wings up
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.75f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+		glTexCoord2f(0.75f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+		glTexCoord2f(1.0f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+		glTexCoord2f(1.0f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+		glEnd();
+		}
+		else if(b->Wingspan >= 0.5 || b->s.center.x < 500 || b->s.center.x < 575)
+		{
+		//wings down
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.5f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+		glTexCoord2f(0.5f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+		glTexCoord2f(0.75f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+		glTexCoord2f(0.75f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+		glEnd();
+		}
+}
 		b = b->next;
 	}
 }

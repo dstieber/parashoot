@@ -1,7 +1,8 @@
 // Alexzander Avila
 #include "alexA.h"
 int keys[65536];
-
+extern int xres;
+extern int yres;
 void DefineRagdoll(Game *game)
 {
 	Character *c;
@@ -17,6 +18,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] += 50;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 30.0f;
+	c->s.radius = 40.265;
 	identity33(c->s.m);
 	//head
 	c = &game->head;
@@ -29,6 +31,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] += -30;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 330.0f;
+	c->s.radius = 18.03;
 	identity33(c->s.m);
 
 	//define upper right arm
@@ -42,6 +45,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] += 28;
 	c->s.rotInc = -GRAVITY;
 	c->s.rot = 75.0f;
+	c->s.radius = 20.615;
 	identity33(c->s.m);
 	//define lower right arm
 	c = &game->rarm2;
@@ -54,6 +58,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] += 30;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 315.0f;
+	c->s.radius = 20.615;
 	identity33(c->s.m);
 
 	//define upper left arm
@@ -67,6 +72,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] += 20;
 	c->s.rotInc = GRAVITY;
 	c->s.rot = 255.0f;
+	c->s.radius = 20.615;
 	identity33(c->s.m);
 	//define lower left arm
 	c = &game->larm2;
@@ -79,6 +85,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] += 30;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 45.0f;
+	c->s.radius = 20.615;
 	identity33(c->s.m);
 
 	//define right quad
@@ -92,6 +99,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] += 5;
 	c->s.rotInc = -GRAVITY;
 	c->s.rot = 150.0f;
+	c->s.radius = 23.045;
 	identity33(c->s.m);
 	//define right shin
 	c = &game->rleg2;
@@ -104,6 +112,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] += 35;
 	c->s.rotInc = 0.0f;
 	c->s.rot = 15.0f;
+	c->s.radius = 21.35;
 	identity33(c->s.m);
 
 	//define left quad
@@ -117,6 +126,7 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] += 5;
 	c->s.rotInc = GRAVITY;
 	c->s.rot = 180.0f;
+	c->s.radius = 23.045;
 	identity33(c->s.m);
 	//define left shin
 	c = &game->lleg2;
@@ -129,6 +139,20 @@ void DefineRagdoll(Game *game)
 	c->s.c[1] += 35;
 	c->s.rotInc = 0.0f;
 	c->s.rot = -15.0f;
+	c->s.radius = 21.35;
+	identity33(c->s.m);
+	
+	//parachute
+	c = &game->par;
+	c->s.width = 80;
+	c->s.height = 150;
+	c->s.c[0] = c->s.width;
+	c->s.c[1] = 0;
+	c->s.c[0] += 0;
+	c->s.c[1] += 25;
+	c->s.rot = 0;
+	c->s.rotInc = 0;
+	c->s.radius = 0;
 	identity33(c->s.m);
 }
 void identity33(Matrix mat)
@@ -168,6 +192,11 @@ void trans_vector(Matrix mat, const Vector in, Vector out)
 
 void RagdollPhysics(Game *game)
 {
+	if(game->altitude == 3000)
+		game->parachute_flag = true;
+
+	if(game->end_of_game == false)
+{
 	Character *p;
 	Missile *mis = game->mhead;
 	Bird *b = game->bhead;
@@ -176,21 +205,22 @@ void RagdollPhysics(Game *game)
 	p = &game->body;
 	
 	if(p->s.rot == 360)
-	{
 		p->s.rot = 0;
+	if(game->parachute_flag == true)
+	{
+		if(p->s.velocityx > 0)
+			game->par.s.rotInc += -0.1;
+		if(p->s.velocityx < 0)
+			game->par.s.rotInc += 0.1;
 	}
-
 	if (keys[XK_Right]) {
 		p->s.velocityx += 2;
 		game->rarm1.s.rotInc += GRAVITY/8;
 		game->larm1.s.rotInc += -GRAVITY/8;
 		game->rleg1.s.rotInc += GRAVITY/8;
 		game->lleg1.s.rotInc += GRAVITY/8;
-
 		if(game->body.s.rot < 30.0)
-		{
 			game->body.s.rotInc += 0.7f;
-		}
 		else
 			game->body.s.rotInc += 0.1f;
 
@@ -208,9 +238,7 @@ void RagdollPhysics(Game *game)
 		game->lleg1.s.rotInc += -GRAVITY/8;
 
 		if(game->body.s.rot > 30.0)
-		{
 			game->body.s.rotInc += -0.7f;
-		}
 		else
 			game->body.s.rotInc += -0.1f;
 
@@ -271,85 +299,62 @@ void RagdollPhysics(Game *game)
 		game->lleg2.s.rotInc += GRAVITY/8;
 	}
 
+	//parachute restriction
+	if(game->par.s.rot < -26)
+		game->par.s.rot = -25;
+	if(game->par.s.rot > 26)
+		game->par.s.rot = 25;
+	//parachute body restriction
+	if(game->parachute_flag)
+	{
+		if(game->body.s.rot > 76)
+			game->body.s.rot = 75;
+		if(game->body.s.rot < -1)
+			game->body.s.rot = 0;
+	}
 	//right arm restriction
 	if(game->rarm1.s.rot > 151)
-	{
 		game->rarm1.s.rot = 150;
-	}
 	if(game->rarm1.s.rot < 19)
-	{
 		game->rarm1.s.rot = 20;
-	}
 
-	if(game->rarm2.s.rot < 289)
-	{
-		game->rarm2.s.rot = 290;
-	}
+	if(game->rarm2.s.rot < 314)
+		game->rarm2.s.rot = 315;
 	if(game->rarm2.s.rot > 361)
-	{
 		game->rarm2.s.rot = 360;
-	}
 	//left arm restriction
 	if(game->larm1.s.rot > 311)
-	{
 		game->larm1.s.rot = 310;
-	}
 	if(game->larm1.s.rot < 189)
-	{
 		game->larm1.s.rot = 190;
-	}
 
 	if(game->larm2.s.rot < -1)
-	{
 		game->larm2.s.rot = 0;
-	}
 	if(game->larm2.s.rot > 56)
-	{
 		game->larm2.s.rot = 55;
-	}
 	//right leg restriction
 	if(game->rleg1.s.rot > 161)
-	{
 		game->rleg1.s.rot = 160;
-	}
 	if(game->rleg1.s.rot < 119)
-	{
 		game->rleg1.s.rot = 120;
-	}
 	if(game->rleg2.s.rot < 9)
-	{
 		game->rleg2.s.rot = 10;
-	}
 	if(game->rleg2.s.rot > 61)
-	{
 		game->rleg2.s.rot = 60;
-	}
 	//left leg restriction
 	if(game->lleg1.s.rot < 180)
-	{
 		game->lleg1.s.rot = 181;
-	}
 	if(game->lleg1.s.rot > 220)
-	{
 		game->lleg1.s.rot = 219;
-	}
 	if(game->lleg2.s.rot > 1)
-	{
 		game->lleg2.s.rot = 0;
-	}
 	if(game->lleg2.s.rot < -51)
-	{
 		game->lleg2.s.rot = -50;
-	}
 
 	if(game->body.s.rotInc > 7)
-	{
 		game->body.s.rotInc += -5.0f;
-	}
 	if(game->body.s.rotInc < -7)
-	{
 		game->body.s.rotInc += 5.0f;
-	}
 
 	game->rarm1.s.rot += game->rarm1.s.rotInc;
 	game->larm1.s.rot += game->larm1.s.rotInc;
@@ -357,6 +362,7 @@ void RagdollPhysics(Game *game)
 	game->lleg1.s.rot += game->lleg1.s.rotInc;
 
 	game->body.s.rot += game->body.s.rotInc;
+	game->par.s.rot += game->par.s.rotInc;
 
 	game->rarm2.s.rot += game->rarm2.s.rotInc;
 	game->larm2.s.rot += game->larm2.s.rotInc;
@@ -369,96 +375,65 @@ void RagdollPhysics(Game *game)
 	yy_transform(game->rarm1.s.rotInc*d2r, game->rarm1.s.m);
 	yy_transform(game->larm1.s.rotInc*d2r, game->larm1.s.m);
 
+	//parachute restriction
+	if(game->par.s.rot > 25 || game->par.s.rot < -25)
+		game->par.s.rotInc = 0;
+	//parachute body restrition
+	if(game->parachute_flag)
+	{
+		if(game->body.s.rot > 75)
+			game->body.s.rotInc -= GRAVITY/4;
+		if(game->body.s.rot < 0)
+			game->body.s.rotInc += GRAVITY/4;
+	}
 	//limb restriction
 	if(game->rarm1.s.rot > 151 || game->rarm1.s.rot < 19)
-	{
 		game->rarm1.s.rotInc = 0;
-	}
-	if(game->rarm2.s.rot > 361 || game->rarm2.s.rot < 289)
-	{
+	if(game->rarm2.s.rot > 361 || game->rarm2.s.rot < 314)
 		game->rarm2.s.rotInc = 0;
-	}
 	if(game->larm1.s.rot > 311 || game->larm1.s.rot < 189)
-	{
 		game->larm1.s.rotInc = 0;
-	}
 	if(game->larm2.s.rot > 56 || game->larm2.s.rot < -1)
-	{
 		game->larm2.s.rotInc = 0;
-	}
 	if(game->rleg1.s.rot > 160 || game->rleg1.s.rot < 120)
-	{
 		game->rleg1.s.rotInc = 0;
-	}
 	if(game->rleg2.s.rot > 61 || game->rleg2.s.rot < 9)
-	{
 		game->rleg2.s.rotInc = 0;
-	}
 	if(game->lleg1.s.rot > 220 || game->lleg1.s.rot < 180)
-	{
 		game->lleg1.s.rotInc = 0;
-	}
 	if(game->lleg2.s.rot > 1 || game->lleg2.s.rot < -51)
-	{
 		game->lleg2.s.rotInc = 0;
-	}
 
 	//missile collision
 	while (mis) {
-		if(
-				(mis->s.center.x >= p->s.c[0] - p->s.width &&
-				 mis->s.center.x <= p->s.c[0] + p->s.width &&
-				 mis->s.center.y < p->s.c[1] + p->s.height &&
-				 mis->s.center.y > p->s.c[1] - p->s.height)
-				||
-				(mis->s.center.x >= game->head.s.c[0] - game->head.s.width &&
-				 mis->s.center.x <= game->head.s.c[0] + game->head.s.width &&
-				 mis->s.center.y < game->head.s.c[1] + game->head.s.height &&
-				 mis->s.center.y > game->head.s.c[1] - game->head.s.height)
-				||
-				(mis->s.center.x >= game->rarm1.s.c[0] - game->rarm1.s.width &&
-				 mis->s.center.x <= game->rarm1.s.c[0] + game->rarm1.s.width &&
-				 mis->s.center.y < game->rarm1.s.c[1] + game->rarm1.s.height &&
-				 mis->s.center.y > game->rarm1.s.c[1] - game->rarm1.s.height)
-				||
-				(mis->s.center.x >= game->rarm2.s.c[0] - game->rarm2.s.width &&
-				 mis->s.center.x <= game->rarm2.s.c[0] + game->rarm2.s.width &&
-				 mis->s.center.y < game->rarm2.s.c[1] + game->rarm2.s.height &&
-				 mis->s.center.y > game->rarm2.s.c[1] - game->rarm2.s.height)
-				||
-				(mis->s.center.x >= game->rleg1.s.c[0] - game->rleg1.s.width &&
-				 mis->s.center.x <= game->rleg1.s.c[0] + game->rleg1.s.width &&
-				 mis->s.center.y < game->rleg1.s.c[1] + game->rleg1.s.height &&
-				 mis->s.center.y > game->rleg1.s.c[1] - game->rleg1.s.height)
-				||
-				(mis->s.center.x >= game->rleg2.s.c[0] - game->rleg2.s.width &&
-				 mis->s.center.x <= game->rleg2.s.c[0] + game->rleg2.s.width &&
-				 mis->s.center.y < game->rleg2.s.c[1] + game->rleg2.s.height &&
-				 mis->s.center.y > game->rleg2.s.c[1] - game->rleg2.s.height)
-				||
-				(mis->s.center.x >= game->lleg1.s.c[0] - game->lleg1.s.width &&
-				 mis->s.center.x <= game->lleg1.s.c[0] + game->lleg1.s.width &&
-				 mis->s.center.y < game->lleg1.s.c[1] + game->lleg1.s.height &&
-				 mis->s.center.y > game->lleg1.s.c[1] - game->lleg1.s.height)
-				||
-				(mis->s.center.x >= game->lleg2.s.c[0] - game->lleg2.s.width &&
-				 mis->s.center.x <= game->lleg2.s.c[0] + game->lleg2.s.width &&
-				 mis->s.center.y < game->lleg2.s.c[1] + game->lleg2.s.height &&
-				 mis->s.center.y > game->lleg2.s.c[1] - game->lleg2.s.height)
-				||
-				(mis->s.center.x >= game->larm1.s.c[0] - game->larm1.s.width &&
-				 mis->s.center.x <= game->larm1.s.c[0] + game->larm1.s.width &&
-				 mis->s.center.y < game->larm1.s.c[1] + game->larm1.s.height &&
-				 mis->s.center.y > game->larm1.s.c[1] - game->larm1.s.height)
-				||
-				(mis->s.center.x >= game->larm2.s.c[0] - game->larm2.s.width &&
-				 mis->s.center.x <= game->larm2.s.c[0] + game->larm2.s.width &&
-				 mis->s.center.y < game->larm2.s.c[1] + game->larm2.s.height &&
-				 mis->s.center.y > game->larm2.s.c[1] - game->larm2.s.height))
-				 {
+        	float bodydist = sqrt(pow((p->s.c[0] - mis->s.center.x), 2) + pow((p->s.c[1] - mis->s.center.y), 2));
+        	float headdist = sqrt(pow((game->head.s.c[0] - mis->s.center.x), 2) + pow((game->head.s.c[1] - mis->s.center.y), 2));
+        	float rarm1dist = sqrt(pow((game->rarm1.s.c[0] - mis->s.center.x), 2) + pow((game->rarm1.s.c[1] - mis->s.center.y), 2));
+        	float rarm2dist = sqrt(pow((game->rarm2.s.c[0] - mis->s.center.x), 2) + pow((game->rarm2.s.c[1] - mis->s.center.y), 2));
+        	float larm1dist = sqrt(pow((game->larm1.s.c[0] - mis->s.center.x), 2) + pow((game->larm1.s.c[1] - mis->s.center.y), 2));
+        	float larm2dist = sqrt(pow((game->larm2.s.c[0] - mis->s.center.x), 2) + pow((game->larm2.s.c[1] - mis->s.center.y), 2));
+        	float rleg1dist = sqrt(pow((game->rleg1.s.c[0] - mis->s.center.x), 2) + pow((game->rleg1.s.c[1] - mis->s.center.y), 2));
+        	float rleg2dist = sqrt(pow((game->rleg2.s.c[0] - mis->s.center.x), 2) + pow((game->rleg2.s.c[1] - mis->s.center.y), 2));
+        	float lleg1dist = sqrt(pow((game->lleg1.s.c[0] - mis->s.center.x), 2) + pow((game->lleg1.s.c[1] - mis->s.center.y), 2));
+        	float lleg2dist = sqrt(pow((game->lleg2.s.c[0] - mis->s.center.x), 2) + pow((game->lleg2.s.c[1] - mis->s.center.y), 2));
+
+                if(
+                        bodydist < p->s.radius + mis->s.radius ||
+                        headdist < game->head.s.radius + mis->s.radius ||
+                        rarm1dist < game->rarm1.s.radius + mis->s.radius ||
+                        rarm2dist < game->rarm2.s.radius + mis->s.radius ||
+                        larm1dist < game->larm1.s.radius + mis->s.radius ||
+                        larm2dist < game->larm2.s.radius + mis->s.radius ||
+                        rleg1dist < game->rleg1.s.radius + mis->s.radius ||
+                        rleg2dist < game->rleg2.s.radius + mis->s.radius ||
+                        lleg1dist < game->lleg1.s.radius + mis->s.radius ||
+                        lleg2dist < game->lleg2.s.radius + mis->s.radius
+                   )
+			 {
 					 deleteMissile(game, mis);
-					 p->s.velocityy += 20;
-					 p->s.rotInc = 2*GRAVITY;
+					 game->health -= 10;
+					 p->s.velocityy += p->s.velocityy + 20;
+					 p->s.rotInc += 16*GRAVITY;
 				 }
 		mis = mis->next;
 	}
@@ -518,69 +493,84 @@ void RagdollPhysics(Game *game)
 				 b->s.center.y > game->lleg2.s.c[1] - game->lleg2.s.height))
 				 {
 					 p->s.rotInc += GRAVITY/4;
+					 game->health -= 1;
 					 p->s.velocityx += 6;
 					 deleteBlueBird(game, b);
-					 //b->s.center.y += 100;
 				 }
 		b = b->next;
 	}
-
-	/*
-
-	   if(
-	   (b2->s.center.x >= p->s.c[0] - p->s.width &&
-	   b2->s.center.x <= p->s.c[0] + p->s.width &&
-	   b2->s.center.y < p->s.c[1] + p->s.height &&
-	   b2->s.center.y > p->s.c[1] - p->s.height)
-	   ||
-	   (b2->s.center.x >= game->head.s.c[0] - game->head.s.width &&
-	   b2->s.center.x <= game->head.s.c[0] + game->head.s.width &&
-	   b2->s.center.y < game->head.s.c[1] + game->head.s.height &&
-	   b2->s.center.y > game->head.s.c[1] - game->head.s.height)
-	   ||
-	   (b2->s.center.x >= game->rarm1.s.c[0] - game->rarm1.s.width &&
-	   b2->s.center.x <= game->rarm1.s.c[0] + game->rarm1.s.width &&
-	   b2->s.center.y < game->rarm1.s.c[1] + game->rarm1.s.height &&
-	   b2->s.center.y > game->rarm1.s.c[1] - game->rarm1.s.height)
-	   ||
-	   (b2->s.center.x >= game->larm1.s.c[0] - game->larm1.s.width &&
-	   b2->s.center.x <= game->larm1.s.c[0] + game->larm1.s.width &&
-	   b2->s.center.y < game->larm1.s.c[1] + game->larm1.s.height &&
-	   b2->s.center.y > game->larm1.s.c[1] - game->larm1.s.height)
-	   ||
-	   (b2->s.center.x >= game->rarm2.s.c[0] - game->rarm2.s.width &&
-	   b2->s.center.x <= game->rarm2.s.c[0] + game->rarm2.s.width &&
-	   b2->s.center.y < game->rarm2.s.c[1] + game->rarm2.s.height &&
-	   b2->s.center.y > game->rarm2.s.c[1] - game->rarm2.s.height)
-	   ||
-	   (b2->s.center.x >= game->larm2.s.c[0] - game->larm2.s.width &&
-	   b2->s.center.x <= game->larm2.s.c[0] + game->larm2.s.width &&
-	   b2->s.center.y < game->larm2.s.c[1] + game->larm2.s.height &&
-	   b2->s.center.y > game->larm2.s.c[1] - game->larm2.s.height)
-	   ||
-	   (b2->s.center.x >= game->rleg1.s.c[0] - game->rleg1.s.width &&
-	   b2->s.center.x <= game->rleg1.s.c[0] + game->rleg1.s.width &&
-	   b2->s.center.y < game->rleg1.s.c[1] + game->rleg1.s.height &&
-	   b2->s.center.y > game->rleg1.s.c[1] - game->rleg1.s.height)
-	   ||
-	   (b2->s.center.x >= game->rleg2.s.c[0] - game->rleg2.s.width &&
-	   b2->s.center.x <= game->rleg2.s.c[0] + game->rleg2.s.width &&
-	   b2->s.center.y < game->rleg2.s.c[1] + game->rleg2.s.height &&
-	   b2->s.center.y > game->rleg2.s.c[1] - game->rleg2.s.height)
-	   ||
-	   (b2->s.center.x >= game->lleg1.s.c[0] - game->lleg1.s.width &&
-	   b2->s.center.x <= game->lleg1.s.c[0] + game->lleg1.s.width &&
-	   b2->s.center.y < game->lleg1.s.c[1] + game->lleg1.s.height &&
-	   b2->s.center.y > game->lleg1.s.c[1] - game->lleg1.s.height)
-	   ||
-	   (b2->s.center.x >= game->lleg2.s.c[0] - game->lleg2.s.width &&
-	   b2->s.center.x <= game->lleg2.s.c[0] + game->lleg2.s.width &&
-	   b2->s.center.y < game->lleg2.s.c[1] + game->lleg2.s.height &&
-	   b2->s.center.y > game->lleg2.s.c[1] - game->lleg2.s.height))
-	   {
-	   p->s.rotInc += -GRAVITY/4;
-	   p->s.velocityx += -6;
-	   b2->s.center.y += 100;
-	   }
-	   */
 }
+	if(game->end_of_game == true)
+        {
+                if(game->body.s.c[1] > game->altitude - (yres - 135))
+                        game->body.s.c[1] -= 2*GRAVITY;
+                else
+                {
+                        game->parachute_flag = false;
+                        game->body.s.c[1] -= GRAVITY;
+                }
+                //------------------------------------
+                if(game->body.s.rot != 30)
+                {
+                        if(game->body.s.rot > 30)
+                                game->body.s.rot += -5;
+                        if(game->body.s.rot < 30)
+                                game->body.s.rot += 5;
+                }
+                //-------------------------------------
+                if(game->rarm1.s.rot != 100)
+                        game->rarm1.s.rot += 5;
+                if(game->rarm1.s.rot > 100)
+                        game->rarm1.s.rot = 150;
+                //--------------------------------------
+                if(game->rarm2.s.rot != 0)
+                        game->rarm2.s.rot += 5;
+                if(game->rarm2.s.rot > 0)
+                        game->rarm2.s.rot = 0;
+                //--------------------------------------
+                if(game->larm1.s.rot != 190)
+                        game->larm1.s.rot += -5;
+                if(game->larm1.s.rot < 190)
+                        game->larm1.s.rot = 190;
+                //--------------------------------------
+                if(game->larm2.s.rot != 0)
+                        game->larm2.s.rot += -5;
+                if(game->larm2.s.rot < 0)
+                        game->larm2.s.rot = 0;
+                //--------------------------------------
+                if(game->rleg1.s.rot != 170)
+                        game->rleg1.s.rot += 5;
+                if(game->rleg1.s.rot > 170)
+                        game->rleg1.s.rot = 150;
+                //--------------------------------------
+                if(game->rleg2.s.rot != 5)
+                        game->rleg2.s.rot += -5;
+                if(game->rleg2.s.rot < 5)
+                        game->rleg2.s.rot = 10;
+                //--------------------------------------
+                if(game->lleg1.s.rot != 180)
+                        game->lleg1.s.rot += -5;
+                if(game->lleg1.s.rot < 180)
+                        game->lleg1.s.rot = 180;
+                //--------------------------------------
+                if(game->lleg2.s.rot != 0)
+                        game->lleg2.s.rot += 5;
+                if(game->lleg2.s.rot > 0)
+                        game->lleg2.s.rot = 0;
+        }
+}
+
+void displayHealth(Game *game)
+{
+        Rect h;
+        char hstr[10];
+        h.left = 50;
+        h.bot = game->altitude - 50;
+        h.center = 200;
+        h.width = 300;
+        h.height = 100;
+        sprintf(hstr, "%d", game->health);
+        strcat(hstr, "hp");
+        ggprint16(&h, 16, 0xdd4814, "%s", hstr);
+}
+

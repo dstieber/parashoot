@@ -23,6 +23,7 @@ extern "C" {
 #define GRAVITY 3.0
 #define STARTING_ALTITUDE 12000
 
+extern double WingDiff(struct timespec *start, struct timespec *end);
 typedef float Flt;
 typedef Flt Vector[3];
 typedef Flt Matrix[3][3];
@@ -39,7 +40,6 @@ struct Shape {
 	float velocityx, velocityy;
 	Flt rot, rotInc;
 	Matrix m;
-	//unsigned char color[3];
 };
 
 struct Character {
@@ -57,7 +57,11 @@ struct Bird {
 	Vec velocity;
 	struct Bird *prev;
 	struct Bird *next;
+	double Wingspan;
+	struct timespec Wingdown;
+	struct timespec Wingcurrent;
 	Bird() {
+		clock_gettime(CLOCK_REALTIME, &Wingdown);
 		prev = NULL;
 		next = NULL;
 	}
@@ -76,7 +80,7 @@ struct Missile {
 
 struct Game {
 	Character head, body, rarm1, rarm2, larm1, larm2, rleg1, rleg2,
-			  lleg1, lleg2;
+			  lleg1, lleg2, par;
 	//Shape box;
 	Character character;
 	Character BlueBird;
@@ -86,6 +90,8 @@ struct Game {
 	Object Cloud1;
 	Object Mountain;
 	Object Plane;
+	bool parachute_flag;
+	bool end_of_game;
 	Bird *bhead; //pointer to head of bird linked list
 	Missile *mhead; //pointer to head of missile linked list
 	int n;
@@ -94,6 +100,8 @@ struct Game {
 	int nmissiles;
 	float altitude;
 	Game() {
+		end_of_game = false;
+		parachute_flag = false;
 		health = 100;
 		altitude = (float)STARTING_ALTITUDE;
 		bhead = NULL;

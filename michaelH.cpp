@@ -232,6 +232,7 @@ void MakeMissile(Game *game) {
 	m->s.center.y = (game->altitude - yres - 84);
 	m->velocity.x = 0;
 	m->velocity.y = 15;
+	m->s.radius = 53;
 }
 
 void MissileMovement(Game *game) 

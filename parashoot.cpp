@@ -225,13 +225,19 @@ void check_mouse(XEvent *e, Game *game)
 
 void movement(Game *game)
 {
+	if(game->altitude <= 0)
+		game->end_of_game = true;
 	if (start_flag)
 		return;
 	Character *p;
 	p = &game->body;
+	if(!game->end_of_game)
+{
 	p->s.c[0] += p->s.velocityx;
 	p->s.c[1] += p->s.velocityy;
 	p->s.c[1] -= GRAVITY;
+}
+
 	game->altitude -= GRAVITY;
 	RagdollPhysics(game);
 	gCameraY += (float)GRAVITY;
@@ -246,16 +252,22 @@ void movement(Game *game)
 	if (p->s.c[1] >= (game->altitude - 50)) {
 		p->s.velocityy = -3;
 	}
-	if (p->s.c[1] <= (game->altitude - (yres - 50))) {
+	if (p->s.c[1] <= (game->altitude - (yres - 50)) && !game->end_of_game) {
 		p->s.velocityy = 3;
 	}
 
 	MountainMovement(game);
 
+	if(!game->end_of_game)
+{
 	if (rand()%10 < 1) 
 		MakeBlueBird(game);
+}
+	if(game->altitude > 2700)
+{
 	if (rand()%50 < 1)
 		MakeMissile(game);
+}
 	BlueBirdMovement(game);
 	//BlueBirdMovement2(game);
 	MissileMovement(game);
@@ -288,6 +300,7 @@ void render(Game *game)
 		//BlueBirdRender2(game);
 		MissileRender(game);
 		displayAltitude(game);
+		displayHealth(game);
 		glPopMatrix();
 	}
 
