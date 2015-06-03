@@ -4,8 +4,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <cstring>
-#include <cmath>
 #include <string>
+#include <cmath>
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
@@ -22,7 +22,7 @@ extern "C" {
 
 
 //#define GRAVITY 30.0
-#define STARTING_ALTITUDE 12000
+#define STARTING_ALTITUDE 24000
 typedef float Flt;
 typedef Flt Vector[3];
 typedef Flt Matrix[3][3];
@@ -63,12 +63,45 @@ struct Bird {
 	}
 };
 
+struct Bird2 {
+    Shape s;
+    Vec velocity;
+    struct Bird2 *prev;
+    struct Bird2 *next;
+    Bird2() {
+        prev = NULL;
+        next = NULL;
+    }
+};
+
 struct Missile {
 	Shape s;
 	Vec velocity;
 	struct Missile *prev;
 	struct Missile *next;
 	Missile() {
+		prev = NULL;
+		next = NULL;
+	}
+};
+
+struct Cloud {
+	Shape s;
+	Vec velocity;
+	struct Cloud *prev;
+	struct Cloud *next;
+	Cloud() {
+		prev = NULL;
+		next = NULL;
+	}
+};
+
+struct Planes {
+	Shape s;
+	Vec velocity;
+	struct Planes *prev;
+	struct Planes *next;
+	Planes() {
 		prev = NULL;
 		next = NULL;
 	}
@@ -89,18 +122,26 @@ struct Game {
 	Object Logo;
 	Bird *bhead; //pointer to head of bird linked list
 	Missile *mhead; //pointer to head of missile linked list
+	Cloud *chead; //pointer to head of cloud linked list
+	Planes *phead; //pointer to head of plane linked list
 	int n;
 	int health;
+    int hits;
 	int nbirds;
 	int nmissiles;
+	int nclouds;
+	int nplanes;
 	float altitude;
 	Game() {
 		health = 100;
+		hits = 0;
 		altitude = (float)STARTING_ALTITUDE;
 		bhead = NULL;
 		mhead = NULL;
 		nbirds = 0;
 		nmissiles = 0;
+		nclouds = 0;
+		nplanes = 0;
 		n = 0;
 	}
 };

@@ -3,8 +3,8 @@
 #include "michaelH.h"
 #include "alexA.h"
 #include "types.h"
-#define WINDOW_WIDTH  800
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH  1396
+#define WINDOW_HEIGHT 1018
 #define USE_SOUND
 //X Windows variables
 Display *dpy;

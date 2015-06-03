@@ -2,7 +2,6 @@
  * Filename:	danielS.cpp
  * Author:		Daniel Stieber
  * Purpose:		This cpp file defines functions declared in danielS.h
- *
  */
 
 #include "danielS.h"
@@ -30,8 +29,7 @@ GLuint LlegTexture;
 GLuint LimbTexture;
 GLuint HeadTexture;
 
-void initSky(void) 
-{
+void initSky(void) {
 	skyImage = ppm6GetImage("./images/Sky.ppm");
 	glGenTextures(1, &skyTexture);
 	glBindTexture(GL_TEXTURE_2D, skyTexture);
@@ -41,8 +39,7 @@ void initSky(void)
 			0, GL_RGB, GL_UNSIGNED_BYTE, skyImage->data);
 }
 
-void renderSky(Game *game) 
-{
+void renderSky(Game *game) {
 	glBindTexture(GL_TEXTURE_2D, skyTexture);
 	glBegin(GL_QUADS);
 	int ybottom = game->altitude - yres;
@@ -53,8 +50,7 @@ void renderSky(Game *game)
 	glEnd();
 }
 
-void initCharacter(void) 
-{
+void initCharacter(void) {
 	//body Texture
 	BodyImage = ppm6GetImage("./images/Body.ppm");
 	glGenTextures(1, &silhouetteTexture);
@@ -133,8 +129,7 @@ void initCharacter(void)
 
 }
 
-void renderCharacter(Game *game)
-{
+void renderCharacter(Game *game) {
 	float w, h;
 	//body
 	glPushMatrix();
@@ -287,31 +282,47 @@ void renderCharacter(Game *game)
 	glPopMatrix();
 
 	glPopMatrix();
-
 }
 
-void displayAltitude(Game *game) 
-{
+void displayAltitude(Game *game) {
+	/*
 	int i = STARTING_ALTITUDE;
 	while (i > 0) {
 		if ((game->altitude < (i + yres/2)) && (game->altitude > (i - yres/2))) {
 			Rect r;
 			char cstr[10];
 			r.left = xres - 50;
-			r.bot = i - yres/2;
+			r.bot = i - yres/2;  
 			r.center = xres - 50;
 			r.width = 500;
 			r.height = 100;
 			sprintf (cstr, "%d", i);
 			strcat (cstr, "ft");
-			ggprint16(&r, 16, 0xdd4814, "%s", cstr);
+			ggprint16(&r, 16, 0xffffffff, "%s", cstr);
 		}
 		i = i - 100;
+	}*/
+
+	int i = game->altitude;
+	Rect r;
+	char cstr[10];
+	r.left = xres - 50;
+	r.bot = game->altitude - 50;
+	r.center = xres - 50;
+	r.width = 500;
+	r.height = 100;
+	sprintf(cstr, "%d", i);
+	strcat(cstr, "ft");
+	if (game->altitude >= 0) {
+		ggprint16(&r, 1000, 0x000000, "%s", cstr);
+	} else {
+		sprintf(cstr, "%d", 0);
+		strcat(cstr, "ft");
+		ggprint16(&r, 1000, 0x000000, "%s", cstr);
 	}
 }
 
-void renderStartMenu(Game *game)
-{  
+void renderStartMenu(Game *game) {  
 	InitLogo();
 	MakeLogo(game);
 	LogoRender(game);
@@ -336,8 +347,17 @@ void renderGameOver(void)
 	ggprint16(&gameOver, 16, 0xdd4814, "Game Over!");
 }
 
-void randomGenerator(Game *game) 
-{
+void renderGameOver(Game *game) {	
+	Rect gameOver;
+	gameOver.bot = game->altitude - yres/2;
+	gameOver.width = 500;
+	gameOver.height = 100;
+	gameOver.center = xres/2 - 200;
+	gameOver.left = xres/2;
+	ggprint16(&gameOver, 1000, 0xffffffff, "Game Over!");
+}
+
+void randomGenerator(Game *game) {
 	srand (time(NULL));
 
 	if (rand()%10 < 9) 
@@ -345,11 +365,9 @@ void randomGenerator(Game *game)
 		MakeBlueBird(game);
 		BlueBirdRender(game);
 	}
-
 }
 
-void deleteBlueBird(Game *game, Bird *node)
-{
+void deleteBlueBird(Game *game, Bird *node) {
 	if (game->bhead != NULL) {
 		if (node->prev == NULL) {
 			if (node->next == NULL) {
@@ -371,8 +389,7 @@ void deleteBlueBird(Game *game, Bird *node)
 	}
 }
 
-void deleteMissile(Game *game, Missile *node)
-{
+void deleteMissile(Game *game, Missile *node) {
 	if (game->mhead != NULL) {
 		if (node->prev == NULL) {
 			if (node->next == NULL) {

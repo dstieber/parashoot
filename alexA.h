@@ -1,4 +1,9 @@
-// ALexzander Avila
+/*
+ * Filename:	alexA.h
+ * Author:		Alex Avila
+ * Purpose:		This is the header file for alexA.cpp
+ */
+
 #ifndef _ALEXA_H_
 #define _ALEXA_H_
 
@@ -10,13 +15,14 @@
 #include <X11/keysym.h>
 #include <GL/glx.h>
 #include "types.h"
-#define STARTING_ALTITUDE 12000
+//#define STARTING_ALTITUDE 12000
 
 extern float GRAVITY;
 typedef float Flt;
 typedef Flt Vector[3];
 typedef Flt Matrix[3][3];
-
+extern void playSound(std::string str);
+extern bool end_flag;
 extern int keys[65536];
 extern void deleteMissile(Game *game, Missile *node);
 extern void deleteBlueBird(Game *game, Bird *node);
