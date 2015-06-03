@@ -327,6 +327,6 @@ void render(Game *game)
 		BlueBirdRender(game);
 		MissileRender(game);
 		glPopMatrix();
-		renderGameOver(game);
+		renderGameOver();
 	}
 }

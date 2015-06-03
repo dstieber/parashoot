@@ -325,7 +325,7 @@ void renderStartMenu(Game *game)
 	ggprint16(&click, 16, 0xffffff, "Click to start");
 }
 
-void renderGameOver(Game *game)
+void renderGameOver(void)
 {
 	Rect gameOver;
 	gameOver.bot = yres/2;

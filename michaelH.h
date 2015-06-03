@@ -6,7 +6,7 @@
 #define _MICHAELH_H_
 
 #include "types.h"
-
+extern float GRAVITY;
 extern int keys[65536];
 extern XEvent e;
 extern Game game;

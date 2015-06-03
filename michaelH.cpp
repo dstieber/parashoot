@@ -173,15 +173,23 @@ void MakeMountain(Game *game) {
 	Object *m = &game->Mountain;
 
 	m->s.center.x = xres/2;
-	m->s.center.y = (game->altitude - yres*0.875);
+	m->s.center.y = (game->altitude - yres*.875);
 	m->velocity.x = 0;
-	m->velocity.y = -GRAVITY + (float)yres/5333;
+	m->velocity.y = -GRAVITY*0.95;// + (float)yres/5333;
 }
 
 void MountainMovement(Game *game) {
 	Object *m = &game->Mountain;
 	if (game->altitude < 500)
 		m->velocity.y = -GRAVITY;
+    //m->velocity.y = -GRAVITY + (GRAVITY/3)*(float)(yres/5333);
+    //if (game->body.s.velocityy + (float)yres/5333 < m->velocity.y)
+    //    m->velocity.y -= -GRAVITY/10000.0;
+    //else
+    //    m->velocity.y = -GRAVITY +(float)yres/5333;
+    //if (game->body.s.velocityy + (float)yres/5333 > m->velocity.y)
+    //    m->velocity.y += -GRAVITY/100.0;
+    m->velocity.y = -GRAVITY*0.95;
 	m->s.center.y += m->velocity.y;
 }
 

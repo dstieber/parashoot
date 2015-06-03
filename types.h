@@ -20,9 +20,9 @@ extern "C" {
 #include "fonts.h"
 }
 
-#define GRAVITY 30.0
-#define STARTING_ALTITUDE 12000
 
+//#define GRAVITY 30.0
+#define STARTING_ALTITUDE 12000
 typedef float Flt;
 typedef Flt Vector[3];
 typedef Flt Matrix[3][3];

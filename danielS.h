@@ -9,14 +9,14 @@
 #define _DANIELS_H_
 
 #include "types.h"
-
+extern float GRAVITY;
 extern Game game;
 extern int xres, yres;
 extern unsigned char *buildAlphaData(Ppmimage *img);
 extern void InitLogo();
 extern void MakeLogo(Game *game);
 extern void LogoRender(Game *game);
-void renderGameOver(Game *game);
+void renderGameOver(void);
 void initSky(void);
 void renderSky(Game *game);
 void initCharacter(void);

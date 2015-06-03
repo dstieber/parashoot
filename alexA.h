@@ -12,6 +12,7 @@
 #include "types.h"
 #define STARTING_ALTITUDE 12000
 
+extern float GRAVITY;
 typedef float Flt;
 typedef Flt Vector[3];
 typedef Flt Matrix[3][3];

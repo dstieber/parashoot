@@ -10,7 +10,7 @@
 Display *dpy;
 Window win;
 GLXContext glc;
-
+float GRAVITY = 3.0;
 Game game;
 XEvent e;
 int xres = WINDOW_WIDTH;

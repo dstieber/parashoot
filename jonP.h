@@ -15,7 +15,7 @@ Purpose: The purpose of this lab is to seperate game files
 #include <FMOD/wincompat.h>
 #include "fmod.h"
 #endif
-
+extern float GRAVITY;
 extern Game game;
 extern int xres;
 extern int yres;

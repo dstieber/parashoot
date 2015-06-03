@@ -221,6 +221,8 @@ void RagdollPhysics(Game *game)
 
 	}
 	if (keys[XK_Up]) {
+        if (GRAVITY >= 3.0)
+            GRAVITY -= 0.3;
 		p->s.velocityy += 2;
 		game->rarm1.s.rotInc += GRAVITY/8;
 		game->larm1.s.rotInc += -GRAVITY/8;
@@ -234,6 +236,8 @@ void RagdollPhysics(Game *game)
 	}
 
 	if (keys[XK_Down]) {
+        if (GRAVITY <= 15.0)
+            GRAVITY += 0.3;
 		p->s.velocityy -= 2;
 		game->rarm1.s.rotInc += -GRAVITY/4;
 		game->larm1.s.rotInc += GRAVITY/4;
