@@ -341,9 +341,9 @@ void renderGameOver(Game *game) {
 	gameOver.bot = game->altitude - yres/2;
 	gameOver.width = 500;
 	gameOver.height = 100;
-	gameOver.center = xres/2;
+	gameOver.center = xres/2 - 200;
 	gameOver.left = xres/2;
-	ggprint16(&gameOver, 1000, 0x0000cc, "Game Over!");
+	ggprint16(&gameOver, 1000, 0xffffffff, "Game Over!");
 }
 
 void randomGenerator(Game *game) {

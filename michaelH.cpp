@@ -518,11 +518,11 @@ void renderScore(Game *game) {
     score.bot = game->altitude - yres/2 - 50;
     score.width = 500;
     score.height = 100;
-    score.center = xres/2;
+    score.center = xres/2 - 200;
     score.left = xres/2;
     sprintf(cstr, "%d", i);
     strcat(str, cstr);
-    ggprint16(&score, 1000, 0x0000cc, "%s", str);
+    ggprint16(&score, 1000, 0xffffffff, "%s", str);
 }
 
 int check_keys(XEvent *e) {
