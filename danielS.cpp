@@ -343,7 +343,7 @@ void renderGameOver(Game *game) {
 	gameOver.height = 100;
 	gameOver.center = xres/2;
 	gameOver.left = xres/2;
-	ggprint16(&gameOver, 1000, 0xffffffff, "Game Over!");
+	ggprint16(&gameOver, 1000, 0x0000cc, "Game Over!");
 }
 
 void randomGenerator(Game *game) {

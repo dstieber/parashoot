@@ -342,7 +342,7 @@ void MakeLogo(Game *game) {
 }
 
 void displayHealth(Game *game) {
-    int i = game->health;
+    int i = game->health, j = 0;
     Rect r;
     char cstr[10];
     r.left = 50;
@@ -365,6 +365,8 @@ void displayHealth(Game *game) {
 	ggprint16(&r, 1000, 0x8A0808, "%s", cstr);
     }
     if (game->health <= 0) {
+	sprintf(cstr, "%d", j);
+	strcat(cstr, " HP");
 	ggprint16(&r, 1000, 0x000000, "%s", cstr);
     }
 }
