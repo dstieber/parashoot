@@ -43,6 +43,7 @@ void init_keys();
 //Setup timers
 const double physicsRate = 1.0 / 30.0;
 const double oobillion = 1.0 / 1e9;
+const double oomillion = 1.0 / 1e8;
 struct timespec timeStart, timeCurrent;
 struct timespec timePause;
 double physicsCountdown=0.0;
@@ -53,5 +54,9 @@ double timeDiff(struct timespec *start, struct timespec *end) {
 }
 void timeCopy(struct timespec *dest, struct timespec *source) {
     memcpy(dest, source, sizeof(struct timespec));
+}
+double WingDiff(struct timespec *start, struct timespec *end) {
+    return (double)(end->tv_sec - start->tv_sec ) +
+	(double)(end->tv_nsec - start->tv_nsec) * oomillion;
 }
 //-----------------------------------------------------------------------------

@@ -105,35 +105,6 @@ void BlueBirdMovement2(Game *game) {
 
 }
 
-void BlueBirdRender(Game *game) {
-    Bird *b = game->bhead;
-    while (b) {
-        int wB= 17;
-        int hB= 13;
-
-        Vec *bv = &b->s.center;
-
-        glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
-        glEnable(GL_ALPHA_TEST);
-        glAlphaFunc(GL_GREATER, 0.0f);
-        glColor4ub(255, 255, 255, 255);
-        glBegin(GL_QUADS);
-        if (b->velocity.x > 0) {
-            glTexCoord2f(0.0f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
-            glTexCoord2f(0.0f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
-            glTexCoord2f(0.25f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
-            glTexCoord2f(0.25f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
-        } else {
-            glTexCoord2f(0.75f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
-            glTexCoord2f(0.75f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
-            glTexCoord2f(1.0f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
-            glTexCoord2f(1.0f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
-        }
-        glEnd();
-        b = b->next;
-    }
-}
-
 void renderRedBird(Game *game) {
     Bird *b = game->bhead;
     while (b) {
@@ -155,24 +126,99 @@ void renderRedBird(Game *game) {
     }
 }
 
+void BlueBirdRender(Game *game)
+{
+    Bird *b = game->bhead;
+    while (b) 
+    {
+        int wB= 17;
+        int hB= 13;
+
+        Vec *bv = &b->s.center;
+
+        b->Wingspan = WingDiff(&b->Wingdown, &b->Wingcurrent);
+        glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
+        glEnable(GL_ALPHA_TEST);
+        glAlphaFunc(GL_GREATER, 0.0f);
+        glColor4ub(255, 255, 255, 255);
+        clock_gettime(CLOCK_REALTIME, &b->Wingcurrent);
+        if(b->velocity.x > 0)
+        {
+            if (end_flag)
+            {   //wings up
+                glBegin(GL_QUADS);
+                glTexCoord2f(0.75f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+                glTexCoord2f(0.75f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+                glTexCoord2f(1.0f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+                glTexCoord2f(1.0f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+                glEnd();
+            } else {
+                if(WingDiff(&b->Wingdown, &b->Wingcurrent) < 0.5 
+                        || (int)b->Wingspan == 1 || (int)b->Wingspan == 2)
+                {
+                    //wings up
+                    glBegin(GL_QUADS);
+                    glTexCoord2f(0.0f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+                    glTexCoord2f(0.0f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+                    glTexCoord2f(0.25f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+                    glTexCoord2f(0.25f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+                    glEnd();
+                }
+                else if(b->Wingspan >= 0.5 || b->s.center.x > 500 
+                        || b->s.center.x > 575)
+                {
+                    //wings down
+                    glBegin(GL_QUADS);
+                    glTexCoord2f(0.25f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+                    glTexCoord2f(0.25f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+                    glTexCoord2f(0.5f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+                    glTexCoord2f(0.5f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+                    glEnd();
+                }
+            }
+        }
+        else
+        {
+            if (end_flag)
+            {   //wings up
+                glBegin(GL_QUADS);
+                glTexCoord2f(0.75f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+                glTexCoord2f(0.75f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+                glTexCoord2f(1.0f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+                glTexCoord2f(1.0f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+                glEnd();
+            } else {
+                if(WingDiff(&b->Wingdown, &b->Wingcurrent) < 0.5 
+                        || (int)b->Wingspan == 1 || (int)b->Wingspan == 2)
+                {
+                    //wings up
+                    glBegin(GL_QUADS);
+                    glTexCoord2f(0.75f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+                    glTexCoord2f(0.75f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+                    glTexCoord2f(1.0f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+                    glTexCoord2f(1.0f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+                    glEnd();
+                }
+                else if(b->Wingspan >= 0.5 || b->s.center.x < 500 
+                        || b->s.center.x < 575)
+                {
+                    //wings down
+                    glBegin(GL_QUADS);
+                    glTexCoord2f(0.5f, 1.0f); glVertex2i(bv->x-wB, bv->y-hB);
+                    glTexCoord2f(0.5f, 0.8f); glVertex2i(bv->x-wB, bv->y+hB);
+                    glTexCoord2f(0.75f, 0.8f); glVertex2i(bv->x+wB, bv->y+hB);
+                    glTexCoord2f(0.75f, 1.0f); glVertex2i(bv->x+wB, bv->y-hB);
+                    glEnd();
+                }
+            }
+        }
+        b = b->next;
+    }
+}
+
 void BlueBirdRender2(Game *game) {
     int wB= 17;
     int hB= 13;
-
-    /*
-       if (birdFires) {
-       if (firstTime) { 
-       float currentAltitude = game->altitude;
-       firstTime = 0;
-       }
-       while ((currentAltitude + yres) > currentAltitude > (currentAltitude - yres))
-       {
-    //render
-
-    firstTime = 1;
-    }
-    }
-     */
 
     if(game->altitude < 11600 && game->altitude > 10000)
     {
@@ -284,39 +330,7 @@ void playSound(std::string str) {
     if(str == "win")
         fmod_playsound(8);
 }
-/*
-   void playBlueBirdSoundEffect() {
-   fmod_playsound(1);
-   }
 
-   void playMissleSoundEffect() {
-   fmod_playsound(2);
-   }
-
-   void playMissleWhistleSoundEffect() {
-   fmod_playsound(3);
-   }
-
-   void playGenericCollisionSoundEffect() {
-   fmod_playsound(4);
-   }
-
-   void playMissleLoudSoundEffect() {
-   fmod_playsound(5);
-   }
-
-   void playWindSoftSoundEffect() {
-   fmod_playsound(6);
-   }
-
-   void playLoseSoundEffect() {
-   fmod_playsound(7);
-   }
-
-   void playWinSoundEffect() {
-   fmod_playsound(8);
-   }
- */
 void InitLogo() {
     LogoImage = ppm6GetImage("./images/LogoWhite.ppm");
     glGenTextures(1, &LsilhouetteTexture);

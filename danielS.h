@@ -32,4 +32,5 @@ void cleanupBlueBirds(Game *game);
 void cleanupRandomClouds(Game *game);
 void cleanupPlanes(Game *game);
 void cleanupMissiles(Game *game);
+void renderParachute(Game *game);
 #endif

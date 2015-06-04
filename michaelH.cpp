@@ -221,7 +221,8 @@ void InitMissile() {
     delete [] MSsilhouetteData;
 }
 
-void MakeMissile(Game *game) {
+void MakeMissile(Game *game) 
+{
     Missile *m = new Missile;
     m->next = game->mhead;
     if (game->mhead != NULL)
@@ -233,6 +234,7 @@ void MakeMissile(Game *game) {
     m->s.center.y = (game->altitude - yres - 84);
     m->velocity.x = 0;
     m->velocity.y = rand()%35 + 15;
+	m->s.radius = 53;
 }
 
 void MissileMovement(Game *game) 

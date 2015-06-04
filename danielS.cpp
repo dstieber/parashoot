@@ -14,6 +14,7 @@ Ppmimage *RlegImage = NULL;
 Ppmimage *LlegImage = NULL;
 Ppmimage *LimbImage = NULL;
 Ppmimage *HeadImage = NULL;
+Ppmimage *ParImage = NULL;
 GLuint skyTexture;
 GLuint silhouetteTexture;
 GLuint RarmsilhouetteTexture;
@@ -21,15 +22,14 @@ GLuint LarmsilhouetteTexture;
 GLuint RlegsilhouetteTexture;
 GLuint LlegsilhouetteTexture;
 GLuint HeadsilhouetteTexture;
-GLuint RarmTexture;
-GLuint BodyTexture;
-GLuint LarmTexture;
-GLuint RlegTexture;
-GLuint LlegTexture;
 GLuint LimbTexture;
 GLuint HeadTexture;
+GLuint ParsilhouetteTexture;
+float k = 0;
+float j = 0;
 
-void initSky(void) {
+void initSky(void) 
+{
 	skyImage = ppm6GetImage("./images/Sky.ppm");
 	glGenTextures(1, &skyTexture);
 	glBindTexture(GL_TEXTURE_2D, skyTexture);
@@ -127,13 +127,26 @@ void initCharacter(void) {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, LimbImage->width, 
 			LimbImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, LimbData);
 
+	//Parachute
+        ParImage = ppm6GetImage("./images/ParBlue.ppm");
+        glGenTextures(1, &ParsilhouetteTexture);
+        glBindTexture(GL_TEXTURE_2D, ParsilhouetteTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        unsigned char *ParsilhouetteData = buildAlphaData(ParImage);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ParImage->width,
+                        ParImage->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, ParsilhouetteData);
+        delete[] ParsilhouetteData;
+
 }
 
-void renderCharacter(Game *game) {
+void renderCharacter(Game *game) 
+{
 	float w, h;
+	if(game->parachute_flag)
+		renderParachute(game);
 	//body
 	glPushMatrix();
-
 	Character *s1 = &game->body;
 	glBindTexture(GL_TEXTURE_2D, silhouetteTexture);
 	glEnable(GL_ALPHA_TEST);
@@ -163,64 +176,6 @@ void renderCharacter(Game *game) {
 	glTexCoord2f(0.5f, 0.0f); glVertex2f( (float)w, h+40);
 	glTexCoord2f(0.5f, 1.0f); glVertex2f( (float)w, h);
 	glEnd();
-	//draw right arm
-	glPushMatrix();
-	Character *s2 = &game->rarm1;
-	glBindTexture(GL_TEXTURE_2D, LimbTexture);
-	glTranslatef(s2->s.c[0], s2->s.c[1], 0.0f);
-	glRotatef(-s2->s.rot, 0.0f, 0.0f, 1.0f);
-	w = s2->s.width;
-	h = s2->s.height;
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, h);
-	glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
-	glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
-	glEnd();
-	//draw right lower arm
-	glBindTexture(GL_TEXTURE_2D, RarmsilhouetteTexture);
-	Character *s3 = &game->rarm2;
-	glTranslatef(s3->s.c[0], s3->s.c[1], 0.0f);
-	glRotatef(-s3->s.rot, 0.0f, 0.0f, 1.0f);
-	glColor4ub(255,255,255,255);
-	w = s3->s.width;
-	h = s3->s.height;
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
-	glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, h);
-	glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
-	glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
-	glEnd();
-	glPopMatrix();
-	//draw left arm
-	glPushMatrix();
-	Character*s4 = &game->larm1;
-	glBindTexture(GL_TEXTURE_2D, LimbTexture);
-	glTranslatef(s4->s.c[0], s4->s.c[1], 0.0f);
-	glRotatef(-s4->s.rot, 0.0f, 0.0f, 1.0f);
-	w = s4->s.width;
-	h = s4->s.height;
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, h);
-	glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
-	glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
-	glEnd();
-	//draw lower left arm
-	Character *s5 = &game->larm2;
-	glBindTexture(GL_TEXTURE_2D, LarmsilhouetteTexture);
-	glTranslatef(s5->s.c[0], s5->s.c[1], 0.0f);
-	glRotatef(-s5->s.rot, 0.0f, 0.0f, 1.0f);
-	glColor4ub(255,255,255,255);
-	w = s5->s.width;
-	h = s5->s.height;
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
-	glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, h);
-	glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
-	glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
-	glEnd();
-	glPopMatrix();
 	//draw right quad
 	glPushMatrix();
 	Character *s6 = &game->rleg1;
@@ -281,28 +236,70 @@ void renderCharacter(Game *game) {
 	glEnd();
 	glPopMatrix();
 
+
+	//draw right arm
+	glPushMatrix();
+	Character *s2 = &game->rarm1;
+	glBindTexture(GL_TEXTURE_2D, LimbTexture);
+	glTranslatef(s2->s.c[0], s2->s.c[1], 0.0f);
+	glRotatef(-s2->s.rot, 0.0f, 0.0f, 1.0f);
+	w = s2->s.width;
+	h = s2->s.height;
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, h);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
+	glEnd();
+	//draw right lower arm
+	glBindTexture(GL_TEXTURE_2D, RarmsilhouetteTexture);
+	Character *s3 = &game->rarm2;
+	glTranslatef(s3->s.c[0], s3->s.c[1], 0.0f);
+	glRotatef(-s3->s.rot, 0.0f, 0.0f, 1.0f);
+	glColor4ub(255,255,255,255);
+	w = s3->s.width;
+	h = s3->s.height;
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, h);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
+	glEnd();
+	glPopMatrix();
+	//draw left arm
+	glPushMatrix();
+	Character*s4 = &game->larm1;
+	glBindTexture(GL_TEXTURE_2D, LimbTexture);
+	glTranslatef(s4->s.c[0], s4->s.c[1], 0.0f);
+	glRotatef(-s4->s.rot, 0.0f, 0.0f, 1.0f);
+	w = s4->s.width;
+	h = s4->s.height;
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, h);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
+	glEnd();
+	//draw lower left arm
+	Character *s5 = &game->larm2;
+	glBindTexture(GL_TEXTURE_2D, LarmsilhouetteTexture);
+	glTranslatef(s5->s.c[0], s5->s.c[1], 0.0f);
+	glRotatef(-s5->s.rot, 0.0f, 0.0f, 1.0f);
+	glColor4ub(255,255,255,255);
+	w = s5->s.width;
+	h = s5->s.height;
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
+	glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, h);
+	glTexCoord2f(1.0f, 0.0f); glVertex2i(w, h);
+	glTexCoord2f(1.0f, 1.0f); glVertex2i(w, 0);
+	glEnd();
+	glPopMatrix();
 	glPopMatrix();
 }
 
-void displayAltitude(Game *game) {
-	/*
-	int i = STARTING_ALTITUDE;
-	while (i > 0) {
-		if ((game->altitude < (i + yres/2)) && (game->altitude > (i - yres/2))) {
-			Rect r;
-			char cstr[10];
-			r.left = xres - 50;
-			r.bot = i - yres/2;  
-			r.center = xres - 50;
-			r.width = 500;
-			r.height = 100;
-			sprintf (cstr, "%d", i);
-			strcat (cstr, "ft");
-			ggprint16(&r, 16, 0xffffffff, "%s", cstr);
-		}
-		i = i - 100;
-	}*/
-
+void displayAltitude(Game *game) 
+{
 	int i = game->altitude;
 	Rect r;
 	char cstr[10];
@@ -322,7 +319,8 @@ void displayAltitude(Game *game) {
 	}
 }
 
-void renderStartMenu(Game *game) {  
+void renderStartMenu(Game *game) 
+{  
 	InitLogo();
 	MakeLogo(game);
 	LogoRender(game);
@@ -336,7 +334,8 @@ void renderStartMenu(Game *game) {
 	ggprint16(&click, 16, 0xffffff, "Click to start");
 }
 
-void renderGameOver(Game *game) {	
+void renderGameOver(Game *game) 
+{	
 	Rect gameOver;
 	gameOver.bot = game->altitude - yres/2;
 	gameOver.width = 500;
@@ -346,7 +345,8 @@ void renderGameOver(Game *game) {
 	ggprint16(&gameOver, 1000, 0xffffffff, "Game Over!");
 }
 
-void randomGenerator(Game *game) {
+void randomGenerator(Game *game) 
+{
 	srand (time(NULL));
 
 	if (rand()%10 < 9) 
@@ -356,7 +356,8 @@ void randomGenerator(Game *game) {
 	}
 }
 
-void deleteBlueBird(Game *game, Bird *node) {
+void deleteBlueBird(Game *game, Bird *node) 
+{
 	if (game->bhead != NULL) {
 		if (node->prev == NULL) {
 			if (node->next == NULL) {
@@ -378,7 +379,8 @@ void deleteBlueBird(Game *game, Bird *node) {
 	}
 }
 
-void deleteMissile(Game *game, Missile *node) {
+void deleteMissile(Game *game, Missile *node) 
+{
 	if (game->mhead != NULL) {
 		if (node->prev == NULL) {
 			if (node->next == NULL) {
@@ -446,4 +448,29 @@ void cleanupPlanes(Game *game)
         game->phead = p;
     }
     game->phead = NULL;
+}
+
+void renderParachute(Game *game)
+{
+        float w, h;
+        glPushMatrix();
+        Character *p = &game->par;
+        if(k < 1.4)
+                k += .025;
+        if(j < 1.0)
+                j += .025;
+        glBindTexture(GL_TEXTURE_2D, ParsilhouetteTexture);
+        w = p->s.width;
+        h = p->s.height;
+        glTranslatef(game->body.s.c[0], game->body.s.c[1], 0.0f);
+        glScalef(j, k, 1.0f);
+        glRotatef(-p->s.rot, 0.0f, 0.0f, 1.0f);
+        glColor4ub(255,255,255,255);
+        glBegin(GL_QUADS);
+        glTexCoord2f(0.0f, 1.0f); glVertex2i(-w, 0);
+        glTexCoord2f(0.0f, 0.0f); glVertex2i(-w, h);
+        glTexCoord2f(0.5f, 0.0f); glVertex2i(w, h);
+        glTexCoord2f(0.5f, 1.0f); glVertex2i(w, 0);
+        glEnd();
+        glPopMatrix();
 }

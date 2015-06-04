@@ -302,7 +302,6 @@ void render(Game *game)
 {
     if(start_flag) 
     {
-
         glClear(GL_COLOR_BUFFER_BIT);
         //Pop default matrix onto current matrix
         glMatrixMode(GL_MODELVIEW);
