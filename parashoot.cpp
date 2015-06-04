@@ -268,19 +268,20 @@ void movement(Game *game)
 
         if (!end_flag) {
 
+	    /* Spawn blue birds any time */
             if (rand()%10 < 1) {
                 MakeBlueBird(game);
             }
 
+	    /* Spawn orange birds */
 	    if (game->altitude <= 20000) {
 	    	if (rand()%40 < 1) {
-		   MakeRedBird(game);
+		   MakeOrangeBird(game);
 	        }
-		if (rand()%30 < 1) {
-		    MakeOrangeBird(game);
-		}
 	    }
-	    if (game->altitude <= 18000) {
+	    
+	    /* Spawn green birds */
+	    if (game->altitude <= 15000) {
 		if (rand()%30 < 1) {
 		    MakeGreenBird(game);
 		}
@@ -288,19 +289,50 @@ void movement(Game *game)
 		    MakePurpleBird(game);
 		}
 	    }
-	    if (game->altitude > 1500) {
-                if (rand()%50 < 1) {
+
+            /* Spawn purple and red birds */	    
+	    if (game->altitude <= 10000) {
+	       if (rand()%25 < 1) {
+	           MakePurpleBird(game);
+               }
+
+               if (rand()%40 < 1) {
+    	           MakeRedBird(game);
+               }
+            }
+
+	    /* Spawn Missiles */
+	    if (game->altitude >= 1500) {
+                
+		if (rand()%50 < 1) {
                     MakeMissile(game);
                 }
-		if (rand()%60 < 1) {
-		    MakeBlueMissile(game);
+		
+		if (game->altitude <= 15000) {
+		    if (rand()%60 < 1) {
+		        MakeBlueMissile(game);
+		    }
+		}
+
+		if (game->altitude <= 10000) {
+		    if (rand()%30 < 1) {
+		        MakeYellowMissile(game);
+		    }
+		}
+
+		if (game->altitude <= 5000) {
+		    if (rand()%25 < 1) {
+		        MakeRedMissile(game);
+		    }
 		}
 	    } 
 
+	    /* Spawn Random Clouds */
             if (rand()%100 < 1) {
                 MakeRandomCloud(game);
             }
 
+            /* Spawn Random Planes */
             if (rand()%250 < 1) {
                 MakeRandomPlane(game);
             }

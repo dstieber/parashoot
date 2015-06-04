@@ -259,6 +259,44 @@ void MakeBlueMissile(Game *game)
 	m->s.radius = 53;
 }
 
+void MakeYellowMissile(Game *game) 
+{
+    Missile *m = new Missile;
+    m->next = game->mhead;
+    if (game->mhead != NULL) {
+        game->mhead->prev = m;
+	m->c.yellow = true;
+    }
+    game->mhead = m;
+    game->nmissiles++;
+    m->c.yellow = true;
+
+    m->s.center.x = rand()%xres;
+    m->s.center.y = (game->altitude - yres - 84);
+    m->velocity.x = 0;
+    m->velocity.y = rand()%35 + 15;
+	m->s.radius = 53;
+}
+
+void MakeRedMissile(Game *game) 
+{
+    Missile *m = new Missile;
+    m->next = game->mhead;
+    if (game->mhead != NULL) {
+        game->mhead->prev = m;
+	m->c.red = true;
+    }
+    game->mhead = m;
+    game->nmissiles++;
+    m->c.red = true;
+
+    m->s.center.x = rand()%xres;
+    m->s.center.y = (game->altitude - yres - 84);
+    m->velocity.x = 0;
+    m->velocity.y = rand()%35 + 15;
+	m->s.radius = 53;
+}
+
 void MissileMovement(Game *game) 
 {
     Missile *m = game->mhead;
@@ -303,7 +341,23 @@ void MissileRender(Game *game) {
             glTexCoord2f(0.0f, 0.5f); glVertex2i(mv->x-w, mv->y+h);
             glTexCoord2f(0.25f, 0.5f); glVertex2i(mv->x+w, mv->y+h);
             glTexCoord2f(0.25f, 1.0f); glVertex2i(mv->x+w, mv->y-h);
-	}
+	    glEnd();
+	} else if (m->c.yellow) {
+	    glBegin(GL_QUADS);
+            glTexCoord2f(0.5f, 0.5f); glVertex2i(mv->x-w, mv->y-h);
+            glTexCoord2f(0.5f, 0.0f); glVertex2i(mv->x-w, mv->y+h);
+            glTexCoord2f(0.75f, 0.0f); glVertex2i(mv->x+w, mv->y+h);
+            glTexCoord2f(0.75f, 0.5f); glVertex2i(mv->x+w, mv->y-h);
+	    glEnd();
+	} else if (m->c.red) {
+	    glBegin(GL_QUADS);
+            glTexCoord2f(0.5f, 1.0f); glVertex2i(mv->x-w, mv->y-h);
+            glTexCoord2f(0.5f, 0.5f); glVertex2i(mv->x-w, mv->y+h);
+            glTexCoord2f(0.75f, 0.5f); glVertex2i(mv->x+w, mv->y+h);
+            glTexCoord2f(0.75f, 1.0f); glVertex2i(mv->x+w, mv->y-h);
+	    glEnd();
+        }
+
         m = m->next;
     }
 }

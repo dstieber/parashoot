@@ -467,10 +467,14 @@ void RagdollPhysics(Game *game)
             p->s.velocityy += mis->velocity.y;
             p->s.rotInc = 2*GRAVITY;
             game->hits = game->hits + 1;
-            if (b->c.green) {
+            if (mis->c.green) {
 		game->health = game->health - mis->velocity.y/6;
-	    } else if (b->c.blue) {
+	    } else if (mis->c.blue) {
 		game->health = game->health - mis->velocity.y/4;
+	    } else if (mis->c.yellow) {
+		game->health = game->health - mis->velocity.y/2;
+	    } else if (mis->c.red) {
+		game->health = game->health - mis->velocity.y;
 	    }
         }
         mis = mis->next;

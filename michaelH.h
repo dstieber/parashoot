@@ -56,6 +56,8 @@ void MakeOrangeBird(Game *game);
 void MakePurpleBird(Game *game);
 
 void MakeBlueMissile(Game *game);
+void MakeYellowMissile(Game *game);
+void MakeRedMissile(Game *game);
 
 void init_keys();
 int check_keys(XEvent *e);
