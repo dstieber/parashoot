@@ -173,7 +173,7 @@ void MakeMountain(Game *game) {
     Object *m = &game->Mountain;
 
     m->s.center.x = xres/2;
-    m->s.center.y = (game->altitude - (yres*1.6));
+    m->s.center.y = (game->altitude - (yres*1.4));
     m->velocity.x = 0;
     m->velocity.y = -GRAVITY*0.95;
 }
@@ -599,9 +599,9 @@ void renderScore(Game *game) {
     char cstr[10];
     int i = 0;
     if (game->health <= 0) {
-        i = game->altitude;
+        i = (STARTING_ALTITUDE - game->altitude);
     } else {
-        i = (game->health * game->altitude);//100) - game->hits;
+        i = (game->health * (STARTING_ALTITUDE - game->altitude));//100) - game->hits;
     }
     Rect score;
     score.bot = game->altitude - yres/2 - 50;
