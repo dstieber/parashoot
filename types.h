@@ -28,6 +28,10 @@ typedef float Flt;
 typedef Flt Vector[3];
 typedef Flt Matrix[3][3];
 
+struct Color {
+    bool blue, red, green, orange, purple;
+};
+
 struct Vec {
 	float x, y, z;
 };
@@ -55,6 +59,7 @@ struct Object {
 struct Bird {
 	Shape s;
 	Vec velocity;
+	Color c;
 	struct Bird *prev;
 	struct Bird *next;
 	double Wingspan;

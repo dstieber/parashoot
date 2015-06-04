@@ -49,10 +49,13 @@ void InitBlueBird2() {
 void MakeBlueBird(Game *game) {
     Bird *b = new Bird;
     b->next = game->bhead;
-    if (game->bhead !=NULL)
+    if (game->bhead !=NULL) {
         game->bhead->prev = b;
+	b->c.blue = true;
+    }
     game->bhead = b;
     game->nbirds++;
+    b->c.blue = true;
 
     if (rand()%2 == 0) {
         b->s.center.x = 0;
@@ -67,7 +70,32 @@ void MakeBlueBird(Game *game) {
         b->velocity.y = -GRAVITY;
 	b->s.radius = 10.7;
     }
+}
 
+void MakeRedBird(Game *game) {
+    Bird *b = new Bird;
+    b->next = game->bhead;
+    if (game->bhead !=NULL) {
+        game->bhead->prev = b;
+	b->c.red = true;
+    }
+    game->bhead = b;
+    game->nbirds++;
+    b->c.red = true;
+
+    if (rand()%2 == 0) {
+        b->s.center.x = 0;
+        b->s.center.y = (game->altitude - rand()%yres);
+        b->velocity.x = rand()%10 + 10;
+        b->velocity.y = -GRAVITY;
+	b->s.radius = 10.7;
+    } else {
+        b->s.center.x = xres;
+        b->s.center.y = (game->altitude - rand()%yres);
+        b->velocity.x = -rand()%10 - 10;
+        b->velocity.y = -GRAVITY;
+	b->s.radius = 10.7;
+    }
 }
 
 void MakeBlueBird2(Game *game) {
@@ -105,28 +133,6 @@ void BlueBirdMovement2(Game *game) {
     b->s.center.x += b->velocity.x;
     b->s.center.y += b->velocity.y;
     b->s.center.y -= GRAVITY;
-
-}
-
-void renderRedBird(Game *game) {
-    Bird *b = game->bhead;
-    while (b) {
-        int wB= 17;
-        int hB= 13;
-        Vec *bv = &b->s.center;
-
-        glBindTexture(GL_TEXTURE_2D, BsilhouetteTexture);
-        glEnable(GL_ALPHA_TEST);
-        glAlphaFunc(GL_GREATER, 0.0f);
-        glColor4ub(255, 255, 255, 255);
-        glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 0.6f); glVertex2i(bv->x-wB, bv->y-hB);
-        glTexCoord2f(0.0f, 0.4f); glVertex2i(bv->x-wB, bv->y+hB);
-        glTexCoord2f(0.25f, 0.4f); glVertex2i(bv->x+wB, bv->y+hB);
-        glTexCoord2f(0.25f, 0.6f); glVertex2i(bv->x+wB, bv->y-hB);
-        glEnd();
-        b = b->next;
-    }
 }
 
 void BlueBirdRender(Game *game)
@@ -145,7 +151,7 @@ void BlueBirdRender(Game *game)
         glAlphaFunc(GL_GREATER, 0.0f);
         glColor4ub(255, 255, 255, 255);
         clock_gettime(CLOCK_REALTIME, &b->Wingcurrent);
-        if(b->velocity.x > 0)
+        if(b->velocity.x > 0 && b->c.blue)
         {
             if (end_flag)
             {   //wings up
@@ -180,7 +186,7 @@ void BlueBirdRender(Game *game)
                 }
             }
         }
-        else
+        else if (b->c.blue)
         {
             if (end_flag)
             {   //wings up
