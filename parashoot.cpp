@@ -288,11 +288,14 @@ void movement(Game *game)
 		    MakePurpleBird(game);
 		}
 	    }
-            if (rand()%50 < 1) {
-                if (game->altitude > 1500) {
+	    if (game->altitude > 1500) {
+                if (rand()%50 < 1) {
                     MakeMissile(game);
                 }
-            }
+		if (rand()%60 < 1) {
+		    MakeBlueMissile(game);
+		}
+	    } 
 
             if (rand()%100 < 1) {
                 MakeRandomCloud(game);

@@ -32,6 +32,10 @@ struct Color {
     bool blue, red, green, orange, purple;
 };
 
+struct ColorM {
+    bool green, yellow, blue, red;
+};
+
 struct Vec {
 	float x, y, z;
 };
@@ -86,6 +90,7 @@ struct Bird2 {
 struct Missile {
 	Shape s;
 	Vec velocity;
+	ColorM c;
 	struct Missile *prev;
 	struct Missile *next;
 	Missile() {
