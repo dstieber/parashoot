@@ -53,6 +53,7 @@ void renderRandomPlane(Game *game);
 void renderScore(Game *game);
 void MakeGreenBird(Game *game);
 void MakeOrangeBird(Game *game);
+void MakePurpleBird(Game *game);
 
 void init_keys();
 int check_keys(XEvent *e);

@@ -520,7 +520,13 @@ void RagdollPhysics(Game *game)
 			 game->health = game->health + abs(b->velocity.x)/10;
 		     } else if (b->c.orange) {
 			game->health = game->health - abs(b->velocity.x)/10;
-	             }		
+	             } else if (b->c.purple) {
+			if (rand()%2 < 1) {
+	 		    game->health = game->health - abs(b->velocity.x)/10;
+			} else {
+			    game->health = game->health + abs(b->velocity.x)/10;
+			}
+                     }			
                  }
         b = b->next;
     }
