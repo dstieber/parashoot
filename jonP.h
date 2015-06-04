@@ -30,6 +30,7 @@ void displayHealth(Game *game);
 void MakeLogo(Game *game);
 void LogoRender(Game *game);
 void MakeBlueBird(Game *game);
+void MakeRedBird(Game *game);
 void BlueBirdMovement(Game *game);
 void BlueBirdMovement2(Game *game);
 void BlueBirdRender(Game *game);
