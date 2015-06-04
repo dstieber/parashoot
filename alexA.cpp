@@ -472,60 +472,42 @@ void RagdollPhysics(Game *game)
         mis = mis->next;
     }
 
-
     //bird collision
     while (b) {
-        if((b->s.center.x >= p->s.c[0] - p->s.width &&
-                    b->s.center.x <= p->s.c[0] + p->s.width &&
-                    b->s.center.y < p->s.c[1] + p->s.height &&
-                    b->s.center.y > p->s.c[1] - p->s.height)
-                ||
-                (b->s.center.x >= game->head.s.c[0] - game->head.s.width &&
-                 b->s.center.x <= game->head.s.c[0] + game->head.s.width &&
-                 b->s.center.y < game->head.s.c[1] + game->head.s.height &&
-                 b->s.center.y > game->head.s.c[1] - game->head.s.height)
-                ||
-                (b->s.center.x >= game->rarm1.s.c[0] - game->rarm1.s.width &&
-                 b->s.center.x <= game->rarm1.s.c[0] + game->rarm1.s.width &&
-                 b->s.center.y < game->rarm1.s.c[1] + game->rarm1.s.height &&
-                 b->s.center.y > game->rarm1.s.c[1] - game->rarm1.s.height)
-                ||
-                (b->s.center.x >= game->larm1.s.c[0] - game->larm1.s.width &&
-                 b->s.center.x <= game->larm1.s.c[0] + game->larm1.s.width &&
-                 b->s.center.y < game->larm1.s.c[1] + game->larm1.s.height &&
-                 b->s.center.y > game->larm1.s.c[1] - game->larm1.s.height)
-                ||
-                (b->s.center.x >= game->rarm2.s.c[0] - game->rarm2.s.width &&
-                 b->s.center.x <= game->rarm2.s.c[0] + game->rarm2.s.width &&
-                 b->s.center.y < game->rarm2.s.c[1] + game->rarm2.s.height &&
-                 b->s.center.y > game->rarm2.s.c[1] - game->rarm2.s.height)
-                ||
-                (b->s.center.x >= game->larm2.s.c[0] - game->larm2.s.width &&
-                 b->s.center.x <= game->larm2.s.c[0] + game->larm2.s.width &&
-                 b->s.center.y < game->larm2.s.c[1] + game->larm2.s.height &&
-                 b->s.center.y > game->larm2.s.c[1] - game->larm2.s.height)
-                ||
-                (b->s.center.x >= game->rleg1.s.c[0] - game->rleg1.s.width &&
-                 b->s.center.x <= game->rleg1.s.c[0] + game->rleg1.s.width &&
-                 b->s.center.y < game->rleg1.s.c[1] + game->rleg1.s.height &&
-                 b->s.center.y > game->rleg1.s.c[1] - game->rleg1.s.height)
-                ||
-                (b->s.center.x >= game->rleg2.s.c[0] - game->rleg2.s.width &&
-                 b->s.center.x <= game->rleg2.s.c[0] + game->rleg2.s.width &&
-                 b->s.center.y < game->rleg2.s.c[1] + game->rleg2.s.height &&
-                 b->s.center.y > game->rleg2.s.c[1] - game->rleg2.s.height)
-                ||
-                (b->s.center.x >= game->lleg1.s.c[0] - game->lleg1.s.width &&
-                 b->s.center.x <= game->lleg1.s.c[0] + game->lleg1.s.width &&
-                 b->s.center.y < game->lleg1.s.c[1] + game->lleg1.s.height &&
-                 b->s.center.y > game->lleg1.s.c[1] - game->lleg1.s.height)
-                ||
-                (b->s.center.x >= game->lleg2.s.c[0] - game->lleg2.s.width &&
-                 b->s.center.x <= game->lleg2.s.c[0] + game->lleg2.s.width &&
-                 b->s.center.y < game->lleg2.s.c[1] + game->lleg2.s.height &&
-                 b->s.center.y > game->lleg2.s.c[1] - game->lleg2.s.height))
-                 {
-                     //playSound("bird");
+	float bbodydist = sqrt(pow((p->s.c[0] - b->s.center.x), 2)
+                + pow((p->s.c[1] - b->s.center.y), 2));
+        float bheaddist = sqrt(pow((game->head.s.c[0] - b->s.center.x), 2)
+                + pow((game->head.s.c[1] - b->s.center.y), 2));
+        float brarm1dist = sqrt(pow((game->rarm1.s.c[0] - b->s.center.x), 2)
+                + pow((game->rarm1.s.c[1] - b->s.center.y), 2));
+        float brarm2dist = sqrt(pow((game->rarm2.s.c[0] - b->s.center.x), 2)
+                + pow((game->rarm2.s.c[1] - b->s.center.y), 2));
+        float blarm1dist = sqrt(pow((game->larm1.s.c[0] - b->s.center.x), 2)
+                + pow((game->larm1.s.c[1] - b->s.center.y), 2));
+        float blarm2dist = sqrt(pow((game->larm2.s.c[0] - b->s.center.x), 2)
+                + pow((game->larm2.s.c[1] - b->s.center.y), 2));
+        float brleg1dist = sqrt(pow((game->rleg1.s.c[0] - b->s.center.x), 2)
+                + pow((game->rleg1.s.c[1] - b->s.center.y), 2));
+        float brleg2dist = sqrt(pow((game->rleg2.s.c[0] - b->s.center.x), 2)
+                + pow((game->rleg2.s.c[1] - b->s.center.y), 2));
+        float blleg1dist = sqrt(pow((game->lleg1.s.c[0] - b->s.center.x), 2)
+                + pow((game->lleg1.s.c[1] - b->s.center.y), 2));
+        float blleg2dist = sqrt(pow((game->lleg2.s.c[0] - b->s.center.x), 2)
+                + pow((game->lleg2.s.c[1] - b->s.center.y), 2));
+
+        if(
+                bbodydist < p->s.radius + b->s.radius ||
+                bheaddist < game->head.s.radius + b->s.radius ||
+                brarm1dist < game->rarm1.s.radius + b->s.radius ||
+                brarm2dist < game->rarm2.s.radius + b->s.radius ||
+                blarm1dist < game->larm1.s.radius + b->s.radius ||
+                blarm2dist < game->larm2.s.radius + b->s.radius ||
+                brleg1dist < game->rleg1.s.radius + b->s.radius ||
+                brleg2dist < game->rleg2.s.radius + b->s.radius ||
+                blleg1dist < game->lleg1.s.radius + b->s.radius ||
+                blleg2dist < game->lleg2.s.radius + b->s.radius
+          )
+                {
                      p->s.rotInc += GRAVITY/4;
                      p->s.velocityx += b->velocity.x;
                      deleteBlueBird(game, b);
@@ -535,4 +517,3 @@ void RagdollPhysics(Game *game)
         b = b->next;
     }
 }
-

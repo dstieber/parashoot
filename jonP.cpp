@@ -59,11 +59,13 @@ void MakeBlueBird(Game *game) {
         b->s.center.y = (game->altitude - rand()%yres);
         b->velocity.x = rand()%10 + 10;
         b->velocity.y = -GRAVITY;
+	b->s.radius = 10.7;
     } else {
         b->s.center.x = xres;
         b->s.center.y = (game->altitude - rand()%yres);
         b->velocity.x = -rand()%10 - 10;
         b->velocity.y = -GRAVITY;
+	b->s.radius = 10.7;
     }
 
 }
@@ -76,6 +78,7 @@ void MakeBlueBird2(Game *game) {
     b->s.center.y = (game->altitude- (yres/2)+50);
     b->velocity.x = 0;
     b->velocity.y = 0;
+    b->s.radius = 10.7;
 }
 
 void BlueBirdMovement(Game *game) {
