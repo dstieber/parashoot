@@ -516,6 +516,7 @@ void RagdollPhysics(Game *game)
                 blleg2dist < game->lleg2.s.radius + b->s.radius
           )
                 {
+		     playSound("collision");
                      p->s.rotInc += GRAVITY/4;
                      p->s.velocityx += b->velocity.x;
                      deleteBlueBird(game, b);
