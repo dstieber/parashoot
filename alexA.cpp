@@ -530,7 +530,7 @@ void RagdollPhysics(Game *game) {
 					 p->s.velocityx += b->velocity.x;
 					 deleteBlueBird(game, b);
 					 game->hits = game->hits + 1;
-					 game->health = game->health - 1;
+					 game->health = game->health - abs(b->velocity.x)/10;
 				 }
 		b = b->next;
 	}

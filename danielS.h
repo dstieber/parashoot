@@ -28,4 +28,8 @@ extern void BlueBirdRender(Game *game);
 extern void MakeBlueBird(Game *game);
 void deleteBlueBird(Game *game, Bird *node);
 void deleteMissile(Game *game, Missile *node);
+void cleanupBlueBirds(Game *game);
+void cleanupRandomClouds(Game *game);
+void cleanupPlanes(Game *game);
+void cleanupMissiles(Game *game);
 #endif

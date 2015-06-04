@@ -54,5 +54,8 @@ void renderScore(Game *game);
 
 void init_keys();
 int check_keys(XEvent *e);
-
+extern void cleanupBlueBirds(Game *game);
+extern void cleanupRandomClouds(Game *game);
+extern void cleanupPlanes(Game *game);
+extern void cleanupMissiles(Game *game);
 #endif

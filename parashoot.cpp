@@ -34,6 +34,9 @@ int main(void)
     }
     cleanupXWindows();
     cleanup_fonts();
+#ifdef USE_SOUND
+    fmod_cleanup();
+#endif
     return 0;
 }
 

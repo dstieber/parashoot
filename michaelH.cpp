@@ -514,7 +514,7 @@ void renderScore(Game *game) {
     if (game->health <= 0) {
         i = game->altitude;
     } else {
-        i = (game->health * 100) - game->hits;
+        i = (game->health * game->altitude);//100) - game->hits;
     }
     Rect score;
     score.bot = game->altitude - yres/2 - 50;
@@ -550,6 +550,10 @@ int check_keys(XEvent *e) {
     if (shift){}
     switch(key) {
         case XK_Escape:
+            cleanupBlueBirds(&game);
+            cleanupMissiles(&game);
+            cleanupRandomClouds(&game);
+            cleanupPlanes(&game);
             return 1;
         case XK_f:
             break;

@@ -336,17 +336,6 @@ void renderStartMenu(Game *game) {
 	ggprint16(&click, 16, 0xffffff, "Click to start");
 }
 
-void renderGameOver(void)
-{
-	Rect gameOver;
-	gameOver.bot = yres/2;
-	gameOver.width = 500;
-	gameOver.height = 100;
-	gameOver.center = xres/2;
-	gameOver.left = xres/2;
-	ggprint16(&gameOver, 16, 0xdd4814, "Game Over!");
-}
-
 void renderGameOver(Game *game) {	
 	Rect gameOver;
 	gameOver.bot = game->altitude - yres/2;
@@ -409,4 +398,52 @@ void deleteMissile(Game *game, Missile *node) {
 		delete node;
 		node = NULL;
 	}
+}
+
+void cleanupBlueBirds(Game *game)
+{
+    Bird *b;
+    while (game->bhead)
+    {
+        b = game->bhead->next;
+        delete game->bhead;
+        game->bhead = b;
+    }
+    game->bhead = NULL;
+}
+
+void cleanupMissiles(Game *game)
+{
+    Missile *m;
+    while (game->mhead)
+    {
+        m = game->mhead->next;
+        delete game->mhead;
+        game->mhead = m;
+    }
+    game->mhead = NULL;
+}
+
+void cleanupRandomClouds(Game *game)
+{
+    Cloud *c;
+    while (game->chead)
+    {
+        c = game->chead->next;
+        delete game->chead;
+        game->chead = c;
+    }
+    game->chead = NULL;
+}
+
+void cleanupPlanes(Game *game)
+{
+    Planes *p;
+    while (game->phead)
+    {
+        p = game->phead->next;
+        delete game->phead;
+        game->phead = p;
+    }
+    game->phead = NULL;
 }
