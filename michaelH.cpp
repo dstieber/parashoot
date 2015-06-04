@@ -543,13 +543,39 @@ void MakeGreenBird(Game *game) {
     if (rand()%2 == 0) {
         b->s.center.x = 0;
         b->s.center.y = (game->altitude - rand()%yres);
-        b->velocity.x = rand()%10 + 17;
+        b->velocity.x = rand()%10 + 13;
         b->velocity.y = -GRAVITY;
 	b->s.radius = 10.7;
     } else {
         b->s.center.x = xres;
         b->s.center.y = (game->altitude - rand()%yres);
-        b->velocity.x = -rand()%10 - 17;
+        b->velocity.x = -rand()%10 - 13;
+        b->velocity.y = -GRAVITY;
+	b->s.radius = 10.7;
+    }
+}
+
+void MakeOrangeBird(Game *game) {
+    Bird *b = new Bird;
+    b->next = game->bhead;
+    if (game->bhead !=NULL) {
+        game->bhead->prev = b;
+	b->c.orange = true;
+    }
+    game->bhead = b;
+    game->nbirds++;
+    b->c.orange = true;
+
+    if (rand()%2 == 0) {
+        b->s.center.x = 0;
+        b->s.center.y = (game->altitude - rand()%yres);
+        b->velocity.x = rand()%10 + 13;
+        b->velocity.y = -GRAVITY;
+	b->s.radius = 10.7;
+    } else {
+        b->s.center.x = xres;
+        b->s.center.y = (game->altitude - rand()%yres);
+        b->velocity.x = -rand()%10 - 13;
         b->velocity.y = -GRAVITY;
 	b->s.radius = 10.7;
     }
