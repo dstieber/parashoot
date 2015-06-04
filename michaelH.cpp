@@ -529,6 +529,32 @@ void renderScore(Game *game) {
     ggprint16(&score, 1000, 0xffffffff, "%s", str);
 }
 
+void MakeGreenBird(Game *game) {
+    Bird *b = new Bird;
+    b->next = game->bhead;
+    if (game->bhead !=NULL) {
+        game->bhead->prev = b;
+	b->c.green = true;
+    }
+    game->bhead = b;
+    game->nbirds++;
+    b->c.green = true;
+
+    if (rand()%2 == 0) {
+        b->s.center.x = 0;
+        b->s.center.y = (game->altitude - rand()%yres);
+        b->velocity.x = rand()%10 + 17;
+        b->velocity.y = -GRAVITY;
+	b->s.radius = 10.7;
+    } else {
+        b->s.center.x = xres;
+        b->s.center.y = (game->altitude - rand()%yres);
+        b->velocity.x = -rand()%10 - 17;
+        b->velocity.y = -GRAVITY;
+	b->s.radius = 10.7;
+    }
+}
+
 int check_keys(XEvent *e) {
     //keyboard input?
     static int shift=0;

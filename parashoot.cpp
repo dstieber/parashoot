@@ -277,6 +277,11 @@ void movement(Game *game)
 		   MakeRedBird(game);
 	        }
 	    }
+	    if (game->altitude <= 18000) {
+		if (rand()%30 < 1) {
+		    MakeGreenBird(game);
+		}
+	    }
             if (rand()%50 < 1) {
                 if (game->altitude > 1500) {
                     MakeMissile(game);

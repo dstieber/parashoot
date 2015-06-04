@@ -291,6 +291,76 @@ void BlueBirdRender(Game *game)
                 }
             }
 	}
+	else if(b->velocity.x > 0 && b->c.green)
+        {
+            if (end_flag)
+            {   //wings up
+                glBegin(GL_QUADS);
+                glTexCoord2f(0.75f, 0.2f); glVertex2i(bv->x-wB, bv->y-hB);
+                glTexCoord2f(0.75f, 0.0f); glVertex2i(bv->x-wB, bv->y+hB);
+                glTexCoord2f(1.0f, 0.0f); glVertex2i(bv->x+wB, bv->y+hB);
+                glTexCoord2f(1.0f, 0.2f); glVertex2i(bv->x+wB, bv->y-hB);
+                glEnd();
+            } else {
+                if(WingDiff(&b->Wingdown, &b->Wingcurrent) < 0.5 
+                        || (int)b->Wingspan == 1 || (int)b->Wingspan == 2)
+                {
+                    //wings up
+                    glBegin(GL_QUADS);
+                    glTexCoord2f(0.0f, 0.2f); glVertex2i(bv->x-wB, bv->y-hB);
+                    glTexCoord2f(0.0f, 0.0f); glVertex2i(bv->x-wB, bv->y+hB);
+                    glTexCoord2f(0.25f, 0.0f); glVertex2i(bv->x+wB, bv->y+hB);
+                    glTexCoord2f(0.25f, 0.2f); glVertex2i(bv->x+wB, bv->y-hB);
+                    glEnd();
+                }
+                else if(b->Wingspan >= 0.5 || b->s.center.x > 500 
+                        || b->s.center.x > 575)
+                {
+                    //wings down
+                    glBegin(GL_QUADS);
+                    glTexCoord2f(0.25f, 0.2f); glVertex2i(bv->x-wB, bv->y-hB);
+                    glTexCoord2f(0.25f, 0.0f); glVertex2i(bv->x-wB, bv->y+hB);
+                    glTexCoord2f(0.5f, 0.0f); glVertex2i(bv->x+wB, bv->y+hB);
+                    glTexCoord2f(0.5f, 0.2f); glVertex2i(bv->x+wB, bv->y-hB);
+                    glEnd();
+                }
+            }
+	}
+        else if (b->c.green)
+        {
+            if (end_flag)
+            {   //wings up
+                glBegin(GL_QUADS);
+                glTexCoord2f(0.75f, 0.2f); glVertex2i(bv->x-wB, bv->y-hB);
+                glTexCoord2f(0.75f, 0.0f); glVertex2i(bv->x-wB, bv->y+hB);
+                glTexCoord2f(1.0f, 0.0f); glVertex2i(bv->x+wB, bv->y+hB);
+                glTexCoord2f(1.0f, 0.2f); glVertex2i(bv->x+wB, bv->y-hB);
+                glEnd();
+            } else {
+                if(WingDiff(&b->Wingdown, &b->Wingcurrent) < 0.5 
+                        || (int)b->Wingspan == 1 || (int)b->Wingspan == 2)
+                {
+                    //wings up
+                    glBegin(GL_QUADS);
+                    glTexCoord2f(0.75f, 0.2f); glVertex2i(bv->x-wB, bv->y-hB);
+                    glTexCoord2f(0.75f, 0.0f); glVertex2i(bv->x-wB, bv->y+hB);
+                    glTexCoord2f(1.0f, 0.0f); glVertex2i(bv->x+wB, bv->y+hB);
+                    glTexCoord2f(1.0f, 0.2f); glVertex2i(bv->x+wB, bv->y-hB);
+                    glEnd();
+                }
+                else if(b->Wingspan >= 0.5 || b->s.center.x < 500 
+                        || b->s.center.x < 575)
+                {
+                    //wings down
+                    glBegin(GL_QUADS);
+                    glTexCoord2f(0.5f, 0.2f); glVertex2i(bv->x-wB, bv->y-hB);
+                    glTexCoord2f(0.5f, 0.0f); glVertex2i(bv->x-wB, bv->y+hB);
+                    glTexCoord2f(0.75f, 0.0f); glVertex2i(bv->x+wB, bv->y+hB);
+                    glTexCoord2f(0.75f, 0.2f); glVertex2i(bv->x+wB, bv->y-hB);
+                    glEnd();
+                }
+            }
+	}
         b = b->next;
     }
 }
