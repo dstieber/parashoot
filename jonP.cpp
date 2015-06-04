@@ -289,6 +289,10 @@ void create_sounds() {
         printf("wind sound");
         return;
     }
+    if(fmod_createsound((char *)"./sounds/Mission.mp3", 9)) {
+        printf("mission");
+        return;
+    }
     fmod_setmode(0, FMOD_LOOP_NORMAL);  //FMOD_LOOP_NORMAL/OFF
 
 
@@ -300,7 +304,7 @@ void create_sounds() {
     fmod_setmode(6, FMOD_LOOP_OFF);
     fmod_setmode(7, FMOD_LOOP_OFF);
     fmod_setmode(8, FMOD_LOOP_OFF);
-
+    fmod_setmode(9, FMOD_LOOP_OFF);
 
 #endif
 }
@@ -332,6 +336,9 @@ void playSound(std::string str) {
 
     if(str == "win")
         fmod_playsound(8);
+
+    if(str == "mission")
+    	fmod_playsound(9);
 }
 
 void InitLogo() {
@@ -379,7 +386,7 @@ void displayHealth(Game *game) {
     if (game->health >= 25 && game->health < 50) {
         ggprint16(&r, 1000, 0xFF8000, "%s", cstr);
     }
-    if (game->health < 25) {
+    if (game->health < 25 && game->health > 0) {
         ggprint16(&r, 1000, 0x8A0808, "%s", cstr);
     }
     if (game->health <= 0) {

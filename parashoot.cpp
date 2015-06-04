@@ -180,7 +180,7 @@ void check_resize(Game *game, XEvent *e)
 
 void makeCharacter(Game *game)
 {
-    playSound("song");
+    playSound("mission");
     Character *p = &game->body;
     p->s.c[0] = xres/2;
     p->s.c[1] = (game->altitude - (yres/2));
