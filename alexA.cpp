@@ -195,7 +195,10 @@ void trans_vector(Matrix mat, const Vector in, Vector out) {
 void RagdollPhysics(Game *game)
 {
     if(game->altitude <= 3000)
+    {
         game->parachute_flag = true;
+        MAX_GRAVITY = MAX_GRAVITY/2;
+    }
 
     Character *p;
     Missile *mis = game->mhead;
@@ -265,7 +268,7 @@ void RagdollPhysics(Game *game)
     }
 
     if (keys[XK_Down]) {
-        if (GRAVITY <= 15.0)
+        if (GRAVITY <= MAX_GRAVITY)
             GRAVITY += 0.3;
         p->s.velocityy -= 2;
         game->rarm1.s.rotInc += -GRAVITY/4;
@@ -468,21 +471,21 @@ void RagdollPhysics(Game *game)
             p->s.rotInc = 2*GRAVITY;
             game->hits = game->hits + 1;
             if (mis->c.green) {
-		game->health = game->health - mis->velocity.y/6;
-	    } else if (mis->c.blue) {
-		game->health = game->health - mis->velocity.y/4;
-	    } else if (mis->c.yellow) {
-		game->health = game->health - mis->velocity.y/2;
-	    } else if (mis->c.red) {
-		game->health = game->health - mis->velocity.y;
-	    }
+                game->health = game->health - mis->velocity.y/6;
+            } else if (mis->c.blue) {
+                game->health = game->health - mis->velocity.y/4;
+            } else if (mis->c.yellow) {
+                game->health = game->health - mis->velocity.y/2;
+            } else if (mis->c.red) {
+                game->health = game->health - mis->velocity.y;
+            }
         }
         mis = mis->next;
     }
 
     //bird collision
     while (b) {
-	float bbodydist = sqrt(pow((p->s.c[0] - b->s.center.x), 2)
+        float bbodydist = sqrt(pow((p->s.c[0] - b->s.center.x), 2)
                 + pow((p->s.c[1] - b->s.center.y), 2));
         float bheaddist = sqrt(pow((game->head.s.c[0] - b->s.center.x), 2)
                 + pow((game->head.s.c[1] - b->s.center.y), 2));
@@ -515,28 +518,28 @@ void RagdollPhysics(Game *game)
                 blleg1dist < game->lleg1.s.radius + b->s.radius ||
                 blleg2dist < game->lleg2.s.radius + b->s.radius
           )
-                {
-		     playSound("collision");
-                     p->s.rotInc += GRAVITY/4;
-                     p->s.velocityx += b->velocity.x;
-                     deleteBlueBird(game, b);
-                     game->hits = game->hits + 1;
-                     if (b->c.blue) {
-			 game->health = game->health - abs(b->velocity.x)/10;
-	             } else if (b->c.red) {
-			 game->health = game->health - abs(b->velocity.x)/10;
-	             } else if (b->c.green) {
-			 game->health = game->health + abs(b->velocity.x)/10;
-		     } else if (b->c.orange) {
-			game->health = game->health - abs(b->velocity.x)/10;
-	             } else if (b->c.purple) {
-			if (rand()%2 < 1) {
-	 		    game->health = game->health - abs(b->velocity.x)/10;
-			} else {
-			    game->health = game->health + abs(b->velocity.x)/10;
-			}
-                     }			
-                 }
+        {
+            playSound("collision");
+            p->s.rotInc += GRAVITY/4;
+            p->s.velocityx += b->velocity.x;
+            deleteBlueBird(game, b);
+            game->hits = game->hits + 1;
+            if (b->c.blue) {
+                game->health = game->health - abs(b->velocity.x)/10;
+            } else if (b->c.red) {
+                game->health = game->health - abs(b->velocity.x)/10;
+            } else if (b->c.green) {
+                game->health = game->health + abs(b->velocity.x)/10;
+            } else if (b->c.orange) {
+                game->health = game->health - abs(b->velocity.x)/10;
+            } else if (b->c.purple) {
+                if (rand()%2 < 1) {
+                    game->health = game->health - abs(b->velocity.x)/10;
+                } else {
+                    game->health = game->health + abs(b->velocity.x)/10;
+                }
+            }			
+        }
         b = b->next;
     }
 }

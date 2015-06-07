@@ -20,6 +20,7 @@
 extern int xres;
 extern int yres;
 extern float GRAVITY;
+extern float MAX_GRAVITY;
 typedef float Flt;
 typedef Flt Vector[3];
 typedef Flt Matrix[3][3];
